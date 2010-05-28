@@ -1,23 +1,9 @@
 package ru.greeneyes.project.pomidoro;
 
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.lang.reflect.InvocationTargetException;
-
-import javax.swing.ImageIcon;
-import javax.swing.JLayeredPane;
-import javax.swing.JProgressBar;
-import javax.swing.JRootPane;
-import javax.swing.SwingUtilities;
-
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.popup.Balloon;
-import com.intellij.openapi.ui.popup.BalloonBuilder;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.openapi.wm.IdeFrame;
-import com.intellij.openapi.wm.WindowManager;
-import com.intellij.ui.awt.RelativePoint;
+
+import javax.swing.*;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author ivanalx
@@ -45,50 +31,50 @@ public class PomodoroController {
 
 	public void buttonPressed() {
 		switch (state) {
-		case RUN: {
-			moveToStop();
-			return;
-		}
-		case STOP: {
-			moveToRun();
-			return;
-		}
-		case BREAK: {
-			moveToStop();
-			return;
-		}
+			case RUN: {
+				moveToStop();
+				return;
+			}
+			case STOP: {
+				moveToRun();
+				return;
+			}
+			case BREAK: {
+				moveToStop();
+				return;
+			}
 		}
 	}
 
 	public void update() {
 		long time = System.currentTimeMillis();
 		switch (state) {
-		case RUN: {
-			if (time >= (lastTimeStart + runTime)) {
-				updateTimer(lastTimeStart + runTime);
-				moveToBreak();
-				makeOneMorePomodoroDone();
-			} else {
-				updateTimer(time);
-				updateProgressBarText("Working");
-			}
+			case RUN: {
+				if (time >= (lastTimeStart + runTime)) {
+					updateTimer(lastTimeStart + runTime);
+					moveToBreak();
+					makeOneMorePomodoroDone();
+				} else {
+					updateTimer(time);
+					updateProgressBarText("Working");
+				}
 
-			return;
-		}
-		case BREAK: {
-			if (time >= (lastTimeStart + breakTime)) {
-				updateTimer(lastTimeStart + breakTime);
-				updateProgressBarText("Break is done");
-				moveToStop();
-			} else {
-				updateTimer(time);
-				updateProgressBarText("Break");
+				return;
 			}
-			return;
-		}
-		case STOP: {
-			return;
-		}
+			case BREAK: {
+				if (time >= (lastTimeStart + breakTime)) {
+					updateTimer(lastTimeStart + breakTime);
+					updateProgressBarText("Break is done");
+					moveToStop();
+				} else {
+					updateTimer(time);
+					updateProgressBarText("Break");
+				}
+				return;
+			}
+			case STOP: {
+				return;
+			}
 		}
 	}
 
@@ -117,20 +103,20 @@ public class PomodoroController {
 				form.getProgressBar1().setValue(0);
 				updateProgressBarText("Break");
 				int s = getDonePomodoroAmount() + 1;
-				createBaloon("You have done " + s + " Pomodoro" + ((s > 1)? "s":"") + ". Take break.");
+				createBalloon("You have done " + s + " Pomodoro" + ((s > 1)? "s":"") + ". Take break.");
 			}
 		});
 		state = PomodoroState.BREAK;
 	}
 
 	private void makeButtonStop() {
-		form.getControllButton().setText("Stop");
-		form.getControllButton().setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/stop-icon.png")));
+		form.getControlButton().setText("Stop");
+		form.getControlButton().setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/stop-icon.png")));
 	}
 
 	private void makeButtonStart() {
-		form.getControllButton().setText("Play");
-		form.getControllButton().setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/play-icon.png")));
+		form.getControlButton().setText("Play");
+		form.getControlButton().setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/play-icon.png")));
 	}
 
 
@@ -158,7 +144,7 @@ public class PomodoroController {
 		state = PomodoroState.RUN;
 	}
 
-	private void createBaloon(String text) {
+	private void createBalloon(String text) {
 		/*
 		JRootPane rp = SwingUtilities.getRootPane(form.getRootPanel());
 		IdeFrame ideFrame = WindowManager.getInstance().getAllFrames()[0];

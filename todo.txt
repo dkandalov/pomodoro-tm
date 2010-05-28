@@ -1,0 +1,5 @@
+ - sound
+ - timer in panel
+ - bubble
+ - shortcut
+ - config persistence

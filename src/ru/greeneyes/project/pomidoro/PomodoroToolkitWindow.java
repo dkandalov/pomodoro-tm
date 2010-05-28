@@ -64,7 +64,7 @@ public class PomodoroToolkitWindow implements ProjectComponent {
 	private void initToolWindow() {
 		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
 
-		final PomodoroForm pomodoroForm = createContantPane();
+		final PomodoroForm pomodoroForm = createContentPane();
 
 		pomodoroForm.getProgressBar1().setMaximum(MAX_WORKING_TIME);
 		pomodoroForm.setPomodoroAmount(0);
@@ -80,7 +80,7 @@ public class PomodoroToolkitWindow implements ProjectComponent {
 		final PomodoroController pomodoroController = new PomodoroController(project, pomodoroForm, MAX_WORKING_TIME, MAX_BREAK_TIME);
 		PomodoroControlThread t = new PomodoroControlThread(pomodoroController);
 
-		pomodoroForm.getControllButton().addActionListener(new ActionListener() {
+		pomodoroForm.getControlButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				pomodoroController.buttonPressed();
 			}
@@ -97,9 +97,8 @@ public class PomodoroToolkitWindow implements ProjectComponent {
 
 	}
 
-	private static PomodoroForm createContantPane() {
-		PomodoroForm pomidoroForm = new PomodoroForm();
-		return pomidoroForm;
+	private static PomodoroForm createContentPane() {
+		return new PomodoroForm();
 	}
 
 	private void unregisterToolWindow() {

@@ -2,13 +2,14 @@
   <name>Pomodoro-tm</name>
   <description>Pomodoro time management plugin.</description>
   <version>0.1</version>
-  <vendor></vendor>
+  <vendor url="http://github.com/dkandalov/pomodoro-tm">mq0</vendor>
   <idea-version since-build="8000"/>
   <description>
 	  <![CDATA[
 	<html><body>
-	Time management helper for Pomotoro Technique. (http://www.pomodorotechnique.com)</br>
-	The Pomodoro Technique™ is a way to get the most out of time management. Turn time into a valuable ally to accomplish what we want to do and chart continuous improvement in the way we do it.</br>
+	Time management helper for Pomodoro Technique. (http://www.pomodorotechnique.com)</br>
+	The Pomodoro Technique™ is a way to get the most out of time management. Turn time into a valuable ally to 
+	accomplish what we want to do and chart continuous improvement in the way we do it.</br>
 	The basic unit of work in the Pomodoro Technique™ can be split in five simple steps:
    <ol>
    <li>Choose a task to be accomplished</li>

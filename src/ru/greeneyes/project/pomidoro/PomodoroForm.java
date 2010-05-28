@@ -1,17 +1,11 @@
 package ru.greeneyes.project.pomidoro;
 
-import java.awt.Insets;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author ivanalx
@@ -19,7 +13,7 @@ import com.intellij.uiDesigner.core.Spacer;
  */
 public class PomodoroForm {
 	private JProgressBar progressBar1;
-	private JButton controllButton;
+	private JButton controlButton;
 	private JPanel rootPanel;
 	private JLabel pomodoroAmount;
 	private int pomodoros;
@@ -32,8 +26,8 @@ public class PomodoroForm {
 		return pomodoros;
 	}
 
-	public JButton getControllButton() {
-		return controllButton;
+	public JButton getControlButton() {
+		return controlButton;
 	}
 
 	public void setPomodoroAmount(int p) {
@@ -95,10 +89,10 @@ public class PomodoroForm {
 		panel1.add(spacer2,
 				new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
 						GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-		controllButton = new JButton();
-		controllButton.setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/play-icon.png")));
-		controllButton.setText("Start");
-		panel1.add(controllButton,
+		controlButton = new JButton();
+		controlButton.setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/play-icon.png")));
+		controlButton.setText("Start");
+		panel1.add(controlButton,
 				new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
 						GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
 						GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
