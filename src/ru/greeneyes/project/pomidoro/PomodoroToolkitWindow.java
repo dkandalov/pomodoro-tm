@@ -1,15 +1,6 @@
 package ru.greeneyes.project.pomidoro;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JPanel;
-
-import org.jetbrains.annotations.NotNull;
-
-import com.intellij.openapi.components.ProjectComponent;
+import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
@@ -17,48 +8,60 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.peer.PeerFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
+import org.jetbrains.annotations.NotNull;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * @author ivanalx
  * @date 28.04.2010 12:02:26
  */
-public class PomodoroToolkitWindow implements ProjectComponent {
-	private final Project project;
-
-	public static final int MAX_WORKING_TIME = 25 * 60 * 1000;
-	public static final int MAX_BREAK_TIME = 5 * 60 * 1000;
-
-
-	public static final String TOOL_WINDOW_ID = "Pomodoro";
+public class PomodoroToolkitWindow extends AbstractProjectComponent {
+	private static final int MAX_WORKING_TIME = 25 * 60 * 1000;
+	private static final int MAX_BREAK_TIME = 5 * 60 * 1000;
+	private static final String TOOL_WINDOW_ID = "Pomodoro";
+	private static final String WINDOW_TITLE = "PTimer";
 
 
 	public PomodoroToolkitWindow(Project project) {
-		this.project = project;
+		super(project);
 	}
 
+	@Override
 	public void projectOpened() {
 		initToolWindow();
 	}
 
+	@Override
 	public void projectClosed() {
 		unregisterToolWindow();
 	}
 
+	@Override
 	@NotNull
 	public String getComponentName() {
 		return "Pomodoro";
 	}
 
-	public void initComponent() {
-
-	}
-
-	public void disposeComponent() {
-
-	}
-
 	private void initToolWindow() {
-		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+		Config config = new Config();
+		PomodoroModel model = new PomodoroModel(config);
+		PomodoroPresenter presenter = new PomodoroPresenter(model);
+
+		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
+		ToolWindow myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM);
+		ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
+		Content content = contentFactory.createContent(presenter.getContentPane(), WINDOW_TITLE, false);
+		myToolWindow.getContentManager().addContent(content);
+	}
+
+	@SuppressWarnings({"UnusedDeclaration"})
+	private void initToolWindow_old() {
+		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
 
 		final PomodoroForm pomodoroForm = new PomodoroForm();
 
@@ -88,13 +91,13 @@ public class PomodoroToolkitWindow implements ProjectComponent {
 
 		ToolWindow myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.LEFT);
 		ContentFactory contentFactory = PeerFactory.getInstance().getContentFactory();
-		Content content = contentFactory.createContent(myContentPanel, "PTimer", false);
+		Content content = contentFactory.createContent(myContentPanel, WINDOW_TITLE, false);
 		myToolWindow.getContentManager().addContent(content);
 
 	}
 
 	private void unregisterToolWindow() {
-		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
 		toolWindowManager.unregisterToolWindow(TOOL_WINDOW_ID);
 	}
 }
