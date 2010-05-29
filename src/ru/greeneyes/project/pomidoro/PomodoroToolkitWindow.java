@@ -25,9 +25,6 @@ import com.intellij.ui.content.ContentFactory;
 public class PomodoroToolkitWindow implements ProjectComponent {
 	private final Project project;
 
-	private ToolWindow myToolWindow;
-	private JPanel myContentPanel;
-
 	public static final int MAX_WORKING_TIME = 25 * 60 * 1000;
 	public static final int MAX_BREAK_TIME = 5 * 60 * 1000;
 
@@ -60,13 +57,12 @@ public class PomodoroToolkitWindow implements ProjectComponent {
 
 	}
 
-
 	private void initToolWindow() {
 		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
 
-		final PomodoroForm pomodoroForm = createContentPane();
+		final PomodoroForm pomodoroForm = new PomodoroForm();
 
-		pomodoroForm.getProgressBar1().setMaximum(MAX_WORKING_TIME);
+		pomodoroForm.getProgressBar().setMaximum(MAX_WORKING_TIME);
 		pomodoroForm.setPomodoroAmount(0);
 		pomodoroForm.getPomodorosLabel().addMouseListener(new MouseAdapter() {
 			@Override
@@ -77,7 +73,7 @@ public class PomodoroToolkitWindow implements ProjectComponent {
 			}
 		});
 
-		final PomodoroController pomodoroController = new PomodoroController(project, pomodoroForm, MAX_WORKING_TIME, MAX_BREAK_TIME);
+		final PomodoroController pomodoroController = new PomodoroController(pomodoroForm, MAX_WORKING_TIME, MAX_BREAK_TIME);
 		PomodoroControlThread t = new PomodoroControlThread(pomodoroController);
 
 		pomodoroForm.getControlButton().addActionListener(new ActionListener() {
@@ -88,17 +84,13 @@ public class PomodoroToolkitWindow implements ProjectComponent {
 
 
 		new Thread(t).start();
-		myContentPanel = pomodoroForm.getRootPanel();
+		JPanel myContentPanel = pomodoroForm.getRootPanel();
 
-		myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.LEFT);
+		ToolWindow myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.LEFT);
 		ContentFactory contentFactory = PeerFactory.getInstance().getContentFactory();
 		Content content = contentFactory.createContent(myContentPanel, "PTimer", false);
 		myToolWindow.getContentManager().addContent(content);
 
-	}
-
-	private static PomodoroForm createContentPane() {
-		return new PomodoroForm();
 	}
 
 	private void unregisterToolWindow() {

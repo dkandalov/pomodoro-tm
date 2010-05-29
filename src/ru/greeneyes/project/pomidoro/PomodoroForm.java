@@ -12,18 +12,13 @@ import java.awt.*;
  * @date 28.04.2010 18:27:28
  */
 public class PomodoroForm {
-	private JProgressBar progressBar1;
+	private JProgressBar progressBar;
 	private JButton controlButton;
 	private JPanel rootPanel;
 	private JLabel pomodoroAmount;
-	private int pomodoros;
 
 	public JLabel getPomodorosLabel() {
 		return pomodoroAmount;
-	}
-
-	public int getPomodoros() {
-		return pomodoros;
 	}
 
 	public JButton getControlButton() {
@@ -31,16 +26,11 @@ public class PomodoroForm {
 	}
 
 	public void setPomodoroAmount(int p) {
-		this.pomodoros = p;
 		pomodoroAmount.setText("Pomodoros: " + p);
 	}
 
-	public int getPomodoroAmount() {
-		return pomodoros;
-	}
-
-	public JProgressBar getProgressBar1() {
-		return progressBar1;
+	public JProgressBar getProgressBar() {
+		return progressBar;
 	}
 
 	public JPanel getRootPanel() {
@@ -62,16 +52,16 @@ public class PomodoroForm {
 	private void $$$setupUI$$$() {
 		rootPanel = new JPanel();
 		rootPanel.setLayout(new GridLayoutManager(3, 1, new Insets(0, 0, 0, 0), -1, -1));
-		progressBar1 = new JProgressBar();
-		progressBar1.setBorderPainted(true);
-		progressBar1.setEnabled(true);
-		progressBar1.setIndeterminate(false);
-		progressBar1.setMaximum(0);
-		progressBar1.setOrientation(0);
-		progressBar1.setString("0:00");
-		progressBar1.setStringPainted(true);
-		progressBar1.setValue(0);
-		rootPanel.add(progressBar1,
+		progressBar = new JProgressBar();
+		progressBar.setBorderPainted(true);
+		progressBar.setEnabled(true);
+		progressBar.setIndeterminate(false);
+		progressBar.setMaximum(0);
+		progressBar.setOrientation(0);
+		progressBar.setString("0:00");
+		progressBar.setStringPainted(true);
+		progressBar.setValue(0);
+		rootPanel.add(progressBar,
 				new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
 						GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0,
 						false));

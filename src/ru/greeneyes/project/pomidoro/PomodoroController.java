@@ -1,7 +1,5 @@
 package ru.greeneyes.project.pomidoro;
 
-import com.intellij.openapi.project.Project;
-
 import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 
@@ -20,28 +18,26 @@ public class PomodoroController {
 	private final int breakTime;
 
 	private int donePomodoroAmount = 0;
-	private Project project;
 
-	public PomodoroController(Project project, PomodoroForm form, int runTime, int breakTime) {
+	public PomodoroController(PomodoroForm form, int runTime, int breakTime) {
 		this.form = form;
 		this.runTime = runTime;
 		this.breakTime = breakTime;
-		this.project = project;
 	}
 
 	public void buttonPressed() {
 		switch (state) {
 			case RUN: {
 				moveToStop();
-				return;
+				break;
 			}
 			case STOP: {
 				moveToRun();
-				return;
+				break;
 			}
 			case BREAK: {
 				moveToStop();
-				return;
+				break;
 			}
 		}
 	}
@@ -59,7 +55,7 @@ public class PomodoroController {
 					updateProgressBarText("Working");
 				}
 
-				return;
+				break;
 			}
 			case BREAK: {
 				if (time >= (lastTimeStart + breakTime)) {
@@ -70,10 +66,10 @@ public class PomodoroController {
 					updateTimer(time);
 					updateProgressBarText("Break");
 				}
-				return;
+				break;
 			}
 			case STOP: {
-				return;
+				break;
 			}
 		}
 	}
@@ -99,8 +95,8 @@ public class PomodoroController {
 		invokeAndWait(new Runnable() {
 			public void run() {
 				makeButtonStop();
-				form.getProgressBar1().setMaximum(breakTime / 1000);
-				form.getProgressBar1().setValue(0);
+				form.getProgressBar().setMaximum(breakTime / 1000);
+				form.getProgressBar().setValue(0);
 				updateProgressBarText("Break");
 				int s = getDonePomodoroAmount() + 1;
 				createBalloon("You have done " + s + " Pomodoro" + ((s > 1)? "s":"") + ". Take break.");
@@ -136,8 +132,8 @@ public class PomodoroController {
 		invokeAndWait(new Runnable() {
 			public void run() {
 				makeButtonStop();
-				form.getProgressBar1().setMaximum(runTime / 1000);
-				form.getProgressBar1().setValue(0);
+				form.getProgressBar().setMaximum(runTime / 1000);
+				form.getProgressBar().setValue(0);
 				updateProgressBarText("Working");
 			}
 		});
@@ -158,7 +154,7 @@ public class PomodoroController {
 	}
 
 	private void updateProgressBarText(final String prefix) {
-		final JProgressBar pb = form.getProgressBar1();
+		final JProgressBar pb = form.getProgressBar();
 		int value = pb.getValue();
 		final int min = value / 60;
 		final int sec = value % 60;
@@ -174,7 +170,7 @@ public class PomodoroController {
 	private void updateTimer(final long time) {
 		invokeAndWait(new Runnable() {
 			public void run() {
-				JProgressBar pb = form.getProgressBar1();
+				JProgressBar pb = form.getProgressBar();
 				pb.setValue(pb.getMaximum() - (int) (time - lastTimeStart) / 1000);
 			}
 		});
