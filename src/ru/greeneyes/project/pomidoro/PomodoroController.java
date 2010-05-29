@@ -107,12 +107,12 @@ public class PomodoroController {
 
 	private void makeButtonStop() {
 		form.getControlButton().setText("Stop");
-		form.getControlButton().setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/stop-icon.png")));
+		form.getControlButton().setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/stop-icon.png")));
 	}
 
 	private void makeButtonStart() {
 		form.getControlButton().setText("Play");
-		form.getControlButton().setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/play-icon.png")));
+		form.getControlButton().setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/play-icon.png")));
 	}
 
 

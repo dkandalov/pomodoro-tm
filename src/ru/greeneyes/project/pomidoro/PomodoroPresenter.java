@@ -1,6 +1,8 @@
 package ru.greeneyes.project.pomidoro;
 
 import javax.swing.*;
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -13,6 +15,10 @@ import static ru.greeneyes.project.pomidoro.PomodoroModel.PomodoroState.BREAK;
  * Date: May 29, 2010
  */
 public class PomodoroPresenter {
+	private final ImageIcon playIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/play-icon.png"));
+	private final ImageIcon stopIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/stop-icon.png"));
+	private final AudioClip ringSound = Applet.newAudioClip(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/ring.wav"));
+
 	private final PomodoroForm form = new PomodoroForm();
 	private final PomodoroModel model;
 	private String progressBarPrefix = "";
@@ -64,20 +70,23 @@ public class PomodoroPresenter {
 				switch (model.getState()) {
 					case RUN:
 						form.getControlButton().setText("Stop");
-						form.getControlButton().setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/stop-icon.png")));
+						form.getControlButton().setIcon(stopIcon);
 						progressBarPrefix = "Working";
 						break;
 					case STOP:
 						form.getControlButton().setText("Start");
-						form.getControlButton().setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/play-icon.png")));
-						if (lastState == BREAK && !model.wasManuallyStopped()) {
-							playRingingSound();
+						form.getControlButton().setIcon(playIcon);
+
+						if (model.isRingEnabled() && lastState == BREAK && !model.wasManuallyStopped()) {
+							ringSound.play();
 						}
 						break;
 					case BREAK:
 						form.getControlButton().setText("Stop");
 						progressBarPrefix = "Break";
-						playRingingSound();
+						if (model.isRingEnabled() && lastState != BREAK) {
+							ringSound.play();
+						}
 						break;
 					default:
 						throw new IllegalStateException();
@@ -98,9 +107,4 @@ public class PomodoroPresenter {
 		return form.getRootPanel();
 	}
 
-	private void playRingingSound() {
-		// TODO
-//		AudioClip audioClip = Applet.newAudioClip();
-//		audioClip.play();
-	}
 }

@@ -16,4 +16,8 @@ public class Config {
 	public long getBreakLength() {
 		return TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES);
 	}
+
+	public boolean isRingEnabled() {
+		return true;
+	}
 }

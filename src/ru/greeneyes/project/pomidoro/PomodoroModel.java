@@ -11,6 +11,7 @@ public class PomodoroModel {
 		RUN,
 		BREAK
 	}
+
 	private final Config config;
 
 	private PomodoroState state;
@@ -99,6 +100,10 @@ public class PomodoroModel {
 
 	public synchronized boolean wasManuallyStopped() {
 		return wasManuallyStopped;
+	}
+
+	public synchronized boolean isRingEnabled() {
+		return config.isRingEnabled();
 	}
 
 	private void updateProgressMax() {

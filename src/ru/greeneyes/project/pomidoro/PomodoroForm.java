@@ -80,7 +80,7 @@ public class PomodoroForm {
 				new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
 						GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
 		controlButton = new JButton();
-		controlButton.setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/play-icon.png")));
+		controlButton.setIcon(new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/play-icon.png")));
 		controlButton.setText("Start");
 		panel1.add(controlButton,
 				new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
