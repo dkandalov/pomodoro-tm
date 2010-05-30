@@ -1,20 +1,13 @@
-package ru.greeneyes.project.pomidoro;
+package ru.greeneyes.project.pomidoro.toolkitwindow;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationDisplayType;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
+import ru.greeneyes.project.pomidoro.model.Config;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 
 import javax.swing.*;
-import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BREAK;
 
 /**
  * User: dima
@@ -23,15 +16,15 @@ import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BR
 public class PomodoroPresenter {
 	private final ImageIcon playIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/play-icon.png"));
 	private final ImageIcon stopIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/stop-icon.png"));
-	private final AudioClip ringSound = Applet.newAudioClip(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/ring.wav"));
 
 	private final PomodoroForm form = new PomodoroForm();
 	private final PomodoroModel model;
+	private final Config config;
 	private String progressBarPrefix = "";
-	private PomodoroModel.PomodoroState lastState;
 
-	public PomodoroPresenter(final PomodoroModel model) {
+	public PomodoroPresenter(final PomodoroModel model, Config config) {
 		this.model = model;
+		this.config = config;
 
 		form.getControlButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
@@ -71,23 +64,14 @@ public class PomodoroPresenter {
 					case STOP:
 						form.getControlButton().setText("Start");
 						form.getControlButton().setIcon(playIcon);
-
-						if (model.isRingEnabled() && lastState == BREAK && !model.wasManuallyStopped()) {
-							ringSound.play();
-						}
 						break;
 					case BREAK:
 						form.getControlButton().setText("Stop");
 						progressBarPrefix = "Break";
-						if (model.isRingEnabled() && lastState != BREAK) {
-							ringSound.play();
-//							showPopupBalloon();
-						}
 						break;
 					default:
 						throw new IllegalStateException();
 				}
-				lastState = model.getState();
 				form.getPomodorosLabel().setText("Pomodoros: " + model.getPomodorosAmount());
 
 				form.getProgressBar().setMaximum(model.getProgressMax());
@@ -95,15 +79,6 @@ public class PomodoroPresenter {
 				form.getProgressBar().setString(progressBarPrefix + ": " + formatTime(model.getProgress()));
 			}
 		});
-	}
-
-	// protected for testing
-	protected void showPopupBalloon() {
-		Notifications.Bus.notify( // TODO
-				new Notification("Pomodoro", "pomodoro", "Pomodoro is finished", NotificationType.INFORMATION),
-				NotificationDisplayType.BALLOON,
-				null
-		);
 	}
 
 	public static String formatTime(int progress) {

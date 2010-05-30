@@ -8,16 +8,20 @@ package ru.greeneyes.project.pomidoro.model;
  */
 public class Config {
 	public long getPomodoroLength() {
-		return 2000;
+		return 5000;
 //		return TimeUnit.MILLISECONDS.convert(25, TimeUnit.MINUTES);
 	}
 
 	public long getBreakLength() {
-		return 2000;
+		return 5000;
 //		return TimeUnit.MILLISECONDS.convert(5, TimeUnit.MINUTES);
 	}
 
 	public boolean isRingEnabled() {
+		return false;
+	}
+
+	public boolean isPopupEnabled() {
 		return true;
 	}
 }

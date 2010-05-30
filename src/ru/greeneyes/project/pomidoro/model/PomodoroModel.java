@@ -109,10 +109,6 @@ public class PomodoroModel {
 		return wasManuallyStopped;
 	}
 
-	public synchronized boolean isRingEnabled() {
-		return config.isRingEnabled();
-	}
-
 	public synchronized void addUpdateListener(Object key, Runnable runnable) {
 		listeners.put(key, runnable);
 	}

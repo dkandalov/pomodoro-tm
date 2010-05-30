@@ -1,4 +1,4 @@
-package ru.greeneyes.project.pomidoro;
+package ru.greeneyes.project.pomidoro.toolkitwindow;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;

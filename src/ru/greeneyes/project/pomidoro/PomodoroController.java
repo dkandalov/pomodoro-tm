@@ -1,5 +1,7 @@
 package ru.greeneyes.project.pomidoro;
 
+import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroForm;
+
 import javax.swing.*;
 import java.lang.reflect.InvocationTargetException;
 
@@ -7,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author ivanalx
  * @date 29.04.2010 13:32:06
  */
+@Deprecated
 public class PomodoroController {
 	private PomodoroForm form;
 

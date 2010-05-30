@@ -1,4 +1,4 @@
-package ru.greeneyes.project.pomidoro;
+package ru.greeneyes.project.pomidoro.toolkitwindow;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
@@ -10,6 +10,11 @@ import com.intellij.peer.PeerFactory;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
+import ru.greeneyes.project.pomidoro.PomodoroComponent;
+import ru.greeneyes.project.pomidoro.PomodoroControlThread;
+import ru.greeneyes.project.pomidoro.PomodoroController;
+import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroForm;
+import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroPresenter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -21,12 +26,11 @@ import java.awt.event.MouseEvent;
  * @author ivanalx
  * @date 28.04.2010 12:02:26
  */
-public class PomodoroToolkitWindow extends AbstractProjectComponent {  // TODO may be should be App component?
+public class PomodoroToolkitWindow extends AbstractProjectComponent {
 	private static final int MAX_WORKING_TIME = 25 * 60 * 1000;
 	private static final int MAX_BREAK_TIME = 5 * 60 * 1000;
 	private static final String TOOL_WINDOW_ID = "Pomodoro";
 	private static final String WINDOW_TITLE = "PTimer";
-
 
 	public PomodoroToolkitWindow(Project project) {
 		super(project);
@@ -50,7 +54,7 @@ public class PomodoroToolkitWindow extends AbstractProjectComponent {  // TODO m
 
 	private void initToolWindow() {
 		PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
-		PomodoroPresenter presenter = new PomodoroPresenter(pomodoroComponent.getModel());
+		PomodoroPresenter presenter = new PomodoroPresenter(pomodoroComponent.getModel(), pomodoroComponent.getConfig());
 
 		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
 		ToolWindow myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM);

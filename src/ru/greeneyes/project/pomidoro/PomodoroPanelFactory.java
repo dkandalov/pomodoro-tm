@@ -5,6 +5,7 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarCustomComponentFactory;
 import org.jetbrains.annotations.NotNull;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
+import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroPresenter;
 
 import javax.swing.*;
 
