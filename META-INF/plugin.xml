@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <name>Pomodoro-tm</name>
     <description>Pomodoro time management plugin.</description>
-    <version>0.1</version>
+    <version>0.2</version>
     <vendor url="http://github.com/dkandalov/pomodoro-tm">mq0</vendor>
     <idea-version since-build="8000"/>
     <description>
@@ -21,6 +21,18 @@
    </body></html>
    ]]>
     </description>
+    <change-notes>
+        <![CDATA[<html><body>
+        <ul>
+            <li>0.2 - added ring sound, status bar timer, popup notification, ctrl+shift+P shortcut</li>
+        </ul>
+        </body></html>
+        ]]>
+    </change-notes>
+
+    <!--This is to make plugin available to other IntelliJ platforms besides IDEA
+    (http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products)-->
+    <depends>com.intellij.modules.platform</depends>
 
     <application-components>
         <component>
@@ -30,7 +42,8 @@
 
     <project-components>
         <component>
-            <implementation-class>ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolkitWindow</implementation-class>
+            <implementation-class>ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolkitWindow
+            </implementation-class>
         </component>
     </project-components>
 
@@ -42,7 +55,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <statusBarComponent implementation="ru.greeneyes.project.pomidoro.PomodoroPanelFactory"/>
-        <applicationService serviceInterface="ru.greeneyes.project.pomidoro.model.Settings" 
-                serviceImplementation="ru.greeneyes.project.pomidoro.model.Settings"/>
+        <applicationService serviceInterface="ru.greeneyes.project.pomidoro.model.Settings"
+                            serviceImplementation="ru.greeneyes.project.pomidoro.model.Settings"/>
     </extensions>
 </idea-plugin>
