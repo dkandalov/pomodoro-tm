@@ -14,7 +14,7 @@ public class PomodoroModel {
 		BREAK
 	}
 
-	private final Config config;
+	private final Settings settings;
 
 	private PomodoroState state;
 	private int pomodorosAmount;
@@ -24,12 +24,12 @@ public class PomodoroModel {
 	private boolean wasManuallyStopped;
 	private final WeakHashMap<Object, Runnable> listeners = new WeakHashMap<Object, Runnable>();
 
-	public PomodoroModel(Config config) {
-		this(config, PomodoroState.STOP);
+	public PomodoroModel(Settings settings) {
+		this(settings, PomodoroState.STOP);
 	}
 
-	PomodoroModel(Config config, PomodoroState state) {
-		this.config = config;
+	PomodoroModel(Settings settings, PomodoroState state) {
+		this.settings = settings;
 		this.state = state;
 		pomodorosAmount = 0;
 		updateProgressMax();
@@ -116,10 +116,10 @@ public class PomodoroModel {
 	private void updateProgressMax() {
 		switch (state) {
 			case RUN:
-				progressMax = (int) config.getPomodoroLength();
+				progressMax = (int) settings.getPomodoroLength();
 				break;
 			case BREAK:
-				progressMax = (int) config.getBreakLength();
+				progressMax = (int) settings.getBreakLength();
 				break;
 			case STOP:
 				break;

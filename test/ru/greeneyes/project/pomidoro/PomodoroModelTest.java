@@ -1,7 +1,7 @@
 package ru.greeneyes.project.pomidoro;
 
 import org.junit.Test;
-import ru.greeneyes.project.pomidoro.model.Config;
+import ru.greeneyes.project.pomidoro.model.Settings;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -17,7 +17,7 @@ import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BR
 public class PomodoroModelTest {
 	@Test
 	public void trackingOnePomodoro() throws InterruptedException {
-		PomodoroModel model = new PomodoroModel(new Config() {
+		PomodoroModel model = new PomodoroModel(new Settings() {
 			@Override
 			public long getPomodoroLength() {
 				return 2000;
@@ -45,7 +45,7 @@ public class PomodoroModelTest {
 
 	@Test
 	public void stopDuringPomodoro() throws InterruptedException {
-		PomodoroModel model = new PomodoroModel(new Config() {
+		PomodoroModel model = new PomodoroModel(new Settings() {
 			@Override
 			public long getPomodoroLength() {
 				return 2000;
@@ -71,7 +71,7 @@ public class PomodoroModelTest {
 
 	@Test
 	public void autoStopAfterBreak() throws InterruptedException {
-		PomodoroModel model = new PomodoroModel(new Config() {
+		PomodoroModel model = new PomodoroModel(new Settings() {
 			@Override
 			public long getPomodoroLength() {
 				return 1000;

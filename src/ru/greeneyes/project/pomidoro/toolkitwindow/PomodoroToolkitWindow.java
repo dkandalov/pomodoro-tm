@@ -13,8 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import ru.greeneyes.project.pomidoro.PomodoroComponent;
 import ru.greeneyes.project.pomidoro.PomodoroControlThread;
 import ru.greeneyes.project.pomidoro.PomodoroController;
-import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroForm;
-import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroPresenter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -54,7 +52,7 @@ public class PomodoroToolkitWindow extends AbstractProjectComponent {
 
 	private void initToolWindow() {
 		PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
-		PomodoroPresenter presenter = new PomodoroPresenter(pomodoroComponent.getModel(), pomodoroComponent.getConfig());
+		PomodoroPresenter presenter = new PomodoroPresenter(pomodoroComponent.getModel());
 
 		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
 		ToolWindow myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM);

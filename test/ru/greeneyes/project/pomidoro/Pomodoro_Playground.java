@@ -1,6 +1,6 @@
 package ru.greeneyes.project.pomidoro;
 
-import ru.greeneyes.project.pomidoro.model.Config;
+import ru.greeneyes.project.pomidoro.model.Settings;
 import ru.greeneyes.project.pomidoro.model.ControlThread;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroPresenter;
@@ -13,9 +13,9 @@ import javax.swing.*;
  */
 public class Pomodoro_Playground {
 	public static void main(String[] args) {
-		MyConfig config = new MyConfig();
+		MySettings config = new MySettings();
 		PomodoroModel model = new PomodoroModel(config);
-		PomodoroPresenter presenter = new PomodoroPresenter(model, config);
+		PomodoroPresenter presenter = new PomodoroPresenter(model);
 		new ControlThread(model).start();
 
 		JFrame jFrame = new JFrame();
@@ -25,7 +25,7 @@ public class Pomodoro_Playground {
 		jFrame.setVisible(true);
 	}
 
-	private static class MyConfig extends Config {
+	private static class MySettings extends Settings {
 		@Override
 		public long getPomodoroLength() {
 			return 5 * 1000;

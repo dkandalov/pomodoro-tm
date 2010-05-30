@@ -6,7 +6,7 @@ package ru.greeneyes.project.pomidoro.model;
  * User: dima
  * Date: May 29, 2010
  */
-public class Config {
+public class Settings {
 	public long getPomodoroLength() {
 		return 5000;
 //		return TimeUnit.MILLISECONDS.convert(25, TimeUnit.MINUTES);

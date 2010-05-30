@@ -9,7 +9,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
-import ru.greeneyes.project.pomidoro.model.Config;
+import ru.greeneyes.project.pomidoro.model.Settings;
 import ru.greeneyes.project.pomidoro.model.ControlThread;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 
@@ -25,14 +25,14 @@ import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BR
 public class PomodoroComponent implements ApplicationComponent {
 	private ControlThread controlThread;
 	private PomodoroModel model;
-	private Config config;
+	private Settings settings;
 
 	@Override
 	public void initComponent() {
-		config = new Config();
-		model = new PomodoroModel(config);
+		settings = new Settings();
+		model = new PomodoroModel(settings);
 
-		new UserNotifier(config, model);
+		new UserNotifier(settings, model);
 
 		controlThread = new ControlThread(model);
 		controlThread.start();
@@ -53,8 +53,8 @@ public class PomodoroComponent implements ApplicationComponent {
 		return model;
 	}
 
-	public Config getConfig() {
-		return config;
+	public Settings getConfig() {
+		return settings;
 	}
 
 	private static class UserNotifier {
@@ -63,20 +63,20 @@ public class PomodoroComponent implements ApplicationComponent {
 		private final AudioClip ringSound = Applet.newAudioClip(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/ring.wav"));
 		public PomodoroModel.PomodoroState lastState;
 
-		public UserNotifier(final Config config, final PomodoroModel model) {
+		public UserNotifier(final Settings settings, final PomodoroModel model) {
 			model.addUpdateListener(this, new Runnable() {
 				@Override
 				public void run() {
 					switch (model.getState()) {
 						case STOP:
 							if (lastState == BREAK && !model.wasManuallyStopped()) {
-								if (config.isRingEnabled()) ringSound.play();
+								if (settings.isRingEnabled()) ringSound.play();
 							}
 							break;
 						case BREAK:
 							if (lastState != BREAK) {
-								if (config.isRingEnabled()) ringSound.play();
-								if (config.isPopupEnabled()) showPopupNotification();
+								if (settings.isRingEnabled()) ringSound.play();
+								if (settings.isPopupEnabled()) showPopupNotification();
 							}
 							break;
 					}

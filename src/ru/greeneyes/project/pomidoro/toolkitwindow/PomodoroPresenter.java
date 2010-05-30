@@ -1,6 +1,5 @@
 package ru.greeneyes.project.pomidoro.toolkitwindow;
 
-import ru.greeneyes.project.pomidoro.model.Config;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 
 import javax.swing.*;
@@ -19,12 +18,10 @@ public class PomodoroPresenter {
 
 	private final PomodoroForm form = new PomodoroForm();
 	private final PomodoroModel model;
-	private final Config config;
 	private String progressBarPrefix = "";
 
-	public PomodoroPresenter(final PomodoroModel model, Config config) {
+	public PomodoroPresenter(final PomodoroModel model) {
 		this.model = model;
-		this.config = config;
 
 		form.getControlButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
