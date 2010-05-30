@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+These are sample settings for pomodoro plugin.
+To change plugin configuration you can edit and save this file
+into "config/options" folder in IDEA cache folder.
+ -->
+<application>
+  <component name="PomodoroSettings">
+    <option name="pomodoroLength" value="25" />
+    <option name="breakLength" value="5" />
+    <option name="ringEnabled" value="true" />
+    <option name="popupEnabled" value="true" />
+  </component>
+</application>

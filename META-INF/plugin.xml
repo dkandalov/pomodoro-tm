@@ -42,5 +42,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <statusBarComponent implementation="ru.greeneyes.project.pomidoro.PomodoroPanelFactory"/>
+        <applicationService serviceInterface="ru.greeneyes.project.pomidoro.model.Settings" 
+                serviceImplementation="ru.greeneyes.project.pomidoro.model.Settings"/>
     </extensions>
 </idea-plugin>

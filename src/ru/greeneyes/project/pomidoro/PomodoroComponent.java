@@ -7,6 +7,7 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.components.ApplicationComponent;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 import ru.greeneyes.project.pomidoro.model.Settings;
@@ -25,11 +26,10 @@ import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BR
 public class PomodoroComponent implements ApplicationComponent {
 	private ControlThread controlThread;
 	private PomodoroModel model;
-	private Settings settings;
 
 	@Override
 	public void initComponent() {
-		settings = new Settings();
+		Settings settings = ServiceManager.getService(Settings.class);
 		model = new PomodoroModel(settings);
 
 		new UserNotifier(settings, model);
@@ -51,10 +51,6 @@ public class PomodoroComponent implements ApplicationComponent {
 
 	public PomodoroModel getModel() {
 		return model;
-	}
-
-	public Settings getConfig() {
-		return settings;
 	}
 
 	private static class UserNotifier {
