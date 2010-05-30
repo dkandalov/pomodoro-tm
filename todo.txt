@@ -1,3 +1,7 @@
- - sound volume configuration
+ - start/stop from toolbar
+ - tooltip in toolbar with pomodoro amount
+ - pomodoro icon in toolbar
+ - sound volume configuration (mq0)
  - minimize,block window on pomodoro end
  - task name and stats
+ - should be able to change pomodoro shortcut
