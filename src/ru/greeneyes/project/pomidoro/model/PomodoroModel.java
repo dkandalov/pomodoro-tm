@@ -31,8 +31,9 @@ public class PomodoroModel {
 	PomodoroModel(Settings settings, PomodoroState state) {
 		this.settings = settings;
 		this.state = state;
-		pomodorosAmount = 0;
+		this.pomodorosAmount = 0;
 		updateProgressMax();
+		this.progress = progressMax;
 	}
 
 	public synchronized void switchToNextState() {
@@ -77,7 +78,7 @@ public class PomodoroModel {
 				}
 				break;
 			case STOP:
-				break;
+				return;
 		}
 
 		for (Runnable listener : listeners.values()) {

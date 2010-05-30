@@ -73,14 +73,16 @@ public class PomodoroPresenter {
 
 				form.getProgressBar().setMaximum(model.getProgressMax());
 				form.getProgressBar().setValue(model.getProgress());
-				form.getProgressBar().setString(progressBarPrefix + ": " + formatTime(model.getProgress()));
+
+				int timeLeft = model.getProgressMax() - model.getProgress();
+				form.getProgressBar().setString(progressBarPrefix + " " + formatTime(timeLeft));
 			}
 		});
 	}
 
-	public static String formatTime(int progress) {
-		int min = progress / 60;
-		int sec = progress % 60;
+	public static String formatTime(int timeLeft) {
+		int min = timeLeft / 60;
+		int sec = timeLeft % 60;
 		return String.format("%02d", min) + ":" + String.format("%02d", sec);
 	}
 

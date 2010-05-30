@@ -30,6 +30,8 @@ public class PomodoroToolkitWindow extends AbstractProjectComponent {
 	private static final String TOOL_WINDOW_ID = "Pomodoro";
 	private static final String WINDOW_TITLE = "PTimer";
 
+	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/pomodoro.png"));
+
 	public PomodoroToolkitWindow(Project project) {
 		super(project);
 	}
@@ -56,6 +58,7 @@ public class PomodoroToolkitWindow extends AbstractProjectComponent {
 
 		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
 		ToolWindow myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM);
+		myToolWindow.setIcon(pomodoroIcon);
 		ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
 		Content content = contentFactory.createContent(presenter.getContentPane(), WINDOW_TITLE, false);
 		myToolWindow.getContentManager().addContent(content);

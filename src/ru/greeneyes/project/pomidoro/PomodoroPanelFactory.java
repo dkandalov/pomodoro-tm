@@ -20,17 +20,24 @@ public class PomodoroPanelFactory extends StatusBarCustomComponentFactory {
 
 		final PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
 		final PomodoroModel model = pomodoroComponent.getModel();
+		updateLabel(model, label);
+
 		model.addUpdateListener(label, new Runnable() {
 			@Override
 			public void run() {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						label.setText(PomodoroPresenter.formatTime(model.getProgress()));
+						updateLabel(model, label);
 					}
 				});
 			}
 		});
 		return label;
+	}
+
+	private void updateLabel(PomodoroModel model, JLabel label) {
+		int timeLeft = model.getProgressMax() - model.getProgress();
+		label.setText(PomodoroPresenter.formatTime(timeLeft));
 	}
 }
