@@ -1,5 +1,3 @@
- - sound
- - timer in panel
- - bubble
- - shortcut
- - settings persistence
+ - sound volume configuration
+ - minimize,block window on pomodoro end
+ - task name and stats
