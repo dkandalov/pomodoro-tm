@@ -27,7 +27,7 @@ public class PomodoroModelTest {
 		assertThat(model.getProgress(), equalTo(0));
 		assertThat(model.getPomodorosAmount(), equalTo(0));
 
-		model.onButtonClicked();
+		model.switchToNextState();
 
 		assertThat(model.getState(), equalTo(RUN));
 		assertThat(model.getProgressMax(), equalTo(2));
@@ -55,7 +55,7 @@ public class PomodoroModelTest {
 		assertThat(model.getProgress(), equalTo(0));
 		assertThat(model.getPomodorosAmount(), equalTo(0));
 
-		model.onButtonClicked();
+		model.switchToNextState();
 
 		assertThat(model.getState(), equalTo(RUN));
 
@@ -63,7 +63,7 @@ public class PomodoroModelTest {
 		model.updateState();
 		assertThat(model.getProgress(), equalTo(1));
 
-		model.onButtonClicked();
+		model.switchToNextState();
 
 		assertThat(model.getState(), equalTo(STOP));
 		assertThat(model.getPomodorosAmount(), equalTo(0));
@@ -84,7 +84,7 @@ public class PomodoroModelTest {
 		});
 
 		assertThat(model.getState(), equalTo(STOP));
-		model.onButtonClicked();
+		model.switchToNextState();
 
 		Thread.sleep(1100);
 		model.updateState();

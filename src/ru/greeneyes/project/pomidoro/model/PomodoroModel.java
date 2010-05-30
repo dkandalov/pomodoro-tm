@@ -35,7 +35,7 @@ public class PomodoroModel {
 		updateProgressMax();
 	}
 
-	public synchronized void onButtonClicked() {
+	public synchronized void switchToNextState() {
 		switch (state) {
 			case STOP:
 				state = PomodoroState.RUN;

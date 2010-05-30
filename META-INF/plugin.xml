@@ -35,6 +35,9 @@
     </project-components>
 
     <actions>
+        <action id="pomodoroAction" class="ru.greeneyes.project.pomidoro.PomodoroAction">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift P"/>
+        </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
