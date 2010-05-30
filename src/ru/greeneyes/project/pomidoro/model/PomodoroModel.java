@@ -1,4 +1,6 @@
-package ru.greeneyes.project.pomidoro;
+package ru.greeneyes.project.pomidoro.model;
+
+import java.util.WeakHashMap;
 
 /**
  * User: dima
@@ -20,6 +22,7 @@ public class PomodoroModel {
 	private int progressMax;
 	private int progress;
 	private boolean wasManuallyStopped;
+	private final WeakHashMap<Object, Runnable> listeners = new WeakHashMap<Object, Runnable>();
 
 	public PomodoroModel(Config config) {
 		this(config, PomodoroState.STOP);
@@ -76,6 +79,10 @@ public class PomodoroModel {
 			case STOP:
 				break;
 		}
+
+		for (Runnable listener : listeners.values()) {
+			listener.run();
+		}
 	}
 
 	public synchronized int getProgress() {
@@ -104,6 +111,10 @@ public class PomodoroModel {
 
 	public synchronized boolean isRingEnabled() {
 		return config.isRingEnabled();
+	}
+
+	public synchronized void addUpdateListener(Object key, Runnable runnable) {
+		listeners.put(key, runnable);
 	}
 
 	private void updateProgressMax() {

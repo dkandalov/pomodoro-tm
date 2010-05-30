@@ -1,5 +1,6 @@
 package ru.greeneyes.project.pomidoro;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
@@ -20,7 +21,7 @@ import java.awt.event.MouseEvent;
  * @author ivanalx
  * @date 28.04.2010 12:02:26
  */
-public class PomodoroToolkitWindow extends AbstractProjectComponent {
+public class PomodoroToolkitWindow extends AbstractProjectComponent {  // TODO may be should be App component?
 	private static final int MAX_WORKING_TIME = 25 * 60 * 1000;
 	private static final int MAX_BREAK_TIME = 5 * 60 * 1000;
 	private static final String TOOL_WINDOW_ID = "Pomodoro";
@@ -48,9 +49,8 @@ public class PomodoroToolkitWindow extends AbstractProjectComponent {
 	}
 
 	private void initToolWindow() {
-		Config config = new Config();
-		PomodoroModel model = new PomodoroModel(config);
-		PomodoroPresenter presenter = new PomodoroPresenter(model);
+		PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
+		PomodoroPresenter presenter = new PomodoroPresenter(pomodoroComponent.getModel());
 
 		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
 		ToolWindow myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM);

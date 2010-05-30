@@ -1,12 +1,14 @@
 package ru.greeneyes.project.pomidoro;
 
 import org.junit.Test;
+import ru.greeneyes.project.pomidoro.model.Config;
+import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static ru.greeneyes.project.pomidoro.PomodoroModel.PomodoroState.RUN;
-import static ru.greeneyes.project.pomidoro.PomodoroModel.PomodoroState.STOP;
-import static ru.greeneyes.project.pomidoro.PomodoroModel.PomodoroState.BREAK;
+import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.RUN;
+import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.STOP;
+import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BREAK;
 
 /**
  * User: dima

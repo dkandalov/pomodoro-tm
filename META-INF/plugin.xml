@@ -1,11 +1,11 @@
 <idea-plugin version="2">
-  <name>Pomodoro-tm</name>
-  <description>Pomodoro time management plugin.</description>
-  <version>0.1</version>
-  <vendor url="http://github.com/dkandalov/pomodoro-tm">mq0</vendor>
-  <idea-version since-build="8000"/>
-  <description>
-	  <![CDATA[
+    <name>Pomodoro-tm</name>
+    <description>Pomodoro time management plugin.</description>
+    <version>0.1</version>
+    <vendor url="http://github.com/dkandalov/pomodoro-tm">mq0</vendor>
+    <idea-version since-build="8000"/>
+    <description>
+        <![CDATA[
 	<html><body>
 	Time management helper for Pomodoro Technique. (http://www.pomodorotechnique.com)</br>
 	The Pomodoro Technique™ is a way to get the most out of time management. Turn time into a valuable ally to 
@@ -20,29 +20,24 @@
    </ol>
    </body></html>
    ]]>
-  </description>
+    </description>
 
-  <application-components>
-    <!-- Add your application components here -->
-  </application-components>
+    <application-components>
+        <component>
+            <implementation-class>ru.greeneyes.project.pomidoro.PomodoroComponent</implementation-class>
+        </component>
+    </application-components>
 
-  <project-components>
-    <!-- Add your project components here -->
-	  <component>
-	    <!-- Component's implementation class -->
-	    <implementation-class>ru.greeneyes.project.pomidoro.PomodoroToolkitWindow</implementation-class>
+    <project-components>
+        <component>
+            <implementation-class>ru.greeneyes.project.pomidoro.PomodoroToolkitWindow</implementation-class>
+        </component>
+    </project-components>
 
-	    <!-- Component's interface class -->
-	    <interface-class>ru.greeneyes.project.pomidoro.PomodoroToolkitWindow</interface-class>
-	  </component>
-  </project-components>
+    <actions>
+    </actions>
 
-  <actions>
-    <!-- Add your actions here -->
-  </actions>
-
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-
-  </extensions>
+    <extensions defaultExtensionNs="com.intellij">
+        <statusBarComponent implementation="ru.greeneyes.project.pomidoro.PomodoroPanelFactory"/>
+    </extensions>
 </idea-plugin>

@@ -1,5 +1,11 @@
 package ru.greeneyes.project.pomidoro;
 
+import com.intellij.notification.Notification;
+import com.intellij.notification.NotificationDisplayType;
+import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
+import ru.greeneyes.project.pomidoro.model.PomodoroModel;
+
 import javax.swing.*;
 import java.applet.Applet;
 import java.applet.AudioClip;
@@ -8,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import static ru.greeneyes.project.pomidoro.PomodoroModel.PomodoroState.BREAK;
+import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BREAK;
 
 /**
  * User: dima
@@ -44,23 +50,12 @@ public class PomodoroPresenter {
 		});
 		updateUI();
 
-		Thread thread = new Thread(new Runnable() {
+		model.addUpdateListener(this, new Runnable() {
 			@Override
 			public void run() {
-				//noinspection InfiniteLoopStatement
-				while (true) {
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {
-						throw new RuntimeException(e);
-					}
-					model.updateState();
-					updateUI();
-				}
+				updateUI();
 			}
 		});
-		thread.setDaemon(true);
-		thread.start();
 	}
 
 	private void updateUI() {
@@ -86,6 +81,7 @@ public class PomodoroPresenter {
 						progressBarPrefix = "Break";
 						if (model.isRingEnabled() && lastState != BREAK) {
 							ringSound.play();
+//							showPopupBalloon();
 						}
 						break;
 					default:
@@ -96,11 +92,24 @@ public class PomodoroPresenter {
 
 				form.getProgressBar().setMaximum(model.getProgressMax());
 				form.getProgressBar().setValue(model.getProgress());
-				int min = model.getProgress() / 60;
-				int sec = model.getProgress() % 60;
-				form.getProgressBar().setString(progressBarPrefix + ": " + min + ":" + ((sec < 10) ? ("0" + sec) : (sec)));
+				form.getProgressBar().setString(progressBarPrefix + ": " + formatTime(model.getProgress()));
 			}
 		});
+	}
+
+	// protected for testing
+	protected void showPopupBalloon() {
+		Notifications.Bus.notify( // TODO
+				new Notification("Pomodoro", "pomodoro", "Pomodoro is finished", NotificationType.INFORMATION),
+				NotificationDisplayType.BALLOON,
+				null
+		);
+	}
+
+	public static String formatTime(int progress) {
+		int min = progress / 60;
+		int sec = progress % 60;
+		return String.format("%02d", min) + ":" + String.format("%02d", sec);
 	}
 
 	public JComponent getContentPane() {

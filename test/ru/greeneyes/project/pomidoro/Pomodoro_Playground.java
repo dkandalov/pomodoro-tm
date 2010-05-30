@@ -1,5 +1,9 @@
 package ru.greeneyes.project.pomidoro;
 
+import ru.greeneyes.project.pomidoro.model.Config;
+import ru.greeneyes.project.pomidoro.model.ControlThread;
+import ru.greeneyes.project.pomidoro.model.PomodoroModel;
+
 import javax.swing.*;
 
 /**
@@ -9,7 +13,11 @@ import javax.swing.*;
 public class Pomodoro_Playground {
 	public static void main(String[] args) {
 		PomodoroModel model = new PomodoroModel(new MyConfig());
-		PomodoroPresenter presenter = new PomodoroPresenter(model);
+		new ControlThread(model).start();
+		PomodoroPresenter presenter = new PomodoroPresenter(model) {
+			@Override
+			protected void showPopupBalloon() {}
+		};
 
 		JFrame jFrame = new JFrame();
 		jFrame.setContentPane(presenter.getContentPane());
