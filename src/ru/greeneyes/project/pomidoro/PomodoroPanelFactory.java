@@ -21,14 +21,20 @@ import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroPresenter;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * User: dima
  * Date: May 29, 2010
  */
 public class PomodoroPanelFactory extends StatusBarCustomComponentFactory {
+	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/pomodoro.png"));
+	private final ImageIcon pomodoroStoppedIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/pomodoroStopped.png"));
+	private final ImageIcon pomodoroBreakIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/pomodoroBreak.png"));
+
 	@Override
-	public JComponent createComponent(@NotNull StatusBar statusBar) {
+	public JComponent createComponent(@NotNull final StatusBar statusBar) {
 		final JLabel label = new JLabel();
 
 		final PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
@@ -46,11 +52,58 @@ public class PomodoroPanelFactory extends StatusBarCustomComponentFactory {
 				});
 			}
 		});
+		label.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				model.switchToNextState();
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				String tooltipText = tooltipText(model);
+				statusBar.setInfo(tooltipText);
+				label.setToolTipText(tooltipText);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				statusBar.setInfo("");
+				label.setToolTipText("");
+			}
+		});
 		return label;
+	}
+
+	private String tooltipText(PomodoroModel model) {
+		String nextAction = "";
+		switch (model.getState()) {
+			case STOP:
+				nextAction = "start pomodoro";
+				break;
+			case RUN:
+				nextAction = "stop pomodoro";
+				break;
+			case BREAK:
+				nextAction = "stop break";
+				break;
+		}
+		return "Click to " + nextAction + ". Pomodoro amount: " + model.getPomodorosAmount();
 	}
 
 	private void updateLabel(PomodoroModel model, JLabel label) {
 		int timeLeft = model.getProgressMax() - model.getProgress();
 		label.setText(PomodoroPresenter.formatTime(timeLeft));
+
+		switch (model.getState()) {
+			case STOP:
+				label.setIcon(pomodoroStoppedIcon);
+				break;
+			case RUN:
+				label.setIcon(pomodoroIcon);
+				break;
+			case BREAK:
+				label.setIcon(pomodoroBreakIcon);
+				break;
+		}
 	}
 }

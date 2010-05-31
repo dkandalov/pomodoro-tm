@@ -34,7 +34,7 @@ public class PomodoroToolkitWindow extends AbstractProjectComponent {
 	private static final String TOOL_WINDOW_ID = "Pomodoro";
 	private static final String WINDOW_TITLE = "PTimer";
 
-	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/pomodoro.png"));
+	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/pomodoro_icon.png"));
 
 	public PomodoroToolkitWindow(Project project) {
 		super(project);
