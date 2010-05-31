@@ -38,10 +38,6 @@ public class PomodoroForm {
 		return controlButton;
 	}
 
-	public void setPomodoroAmount(int p) {
-		pomodoroAmount.setText("Pomodoros: " + p);
-	}
-
 	public JProgressBar getProgressBar() {
 		return progressBar;
 	}
