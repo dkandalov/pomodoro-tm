@@ -75,16 +75,17 @@ public class PomodoroModel {
 		long time = System.currentTimeMillis();
 		switch (state) {
 			case RUN:
-				progress = (int) ((time - startTime) / 1000);
+				updateProgress(time);
 				if (time >= startTime + progressMax) {
 					state = PomodoroState.BREAK;
 					startTime = time;
+					updateProgress(time);
 					updateProgressMax();
 					pomodorosAmount++;
 				}
 				break;
 			case BREAK:
-				progress = (int) ((time - startTime) / 1000);
+				updateProgress(time);
 				if (time >= startTime + progressMax) {
 					state = PomodoroState.STOP;
 					wasManuallyStopped = false;
@@ -129,6 +130,13 @@ public class PomodoroModel {
 
 	public synchronized void addUpdateListener(Object key, Runnable runnable) {
 		listeners.put(key, runnable);
+	}
+
+	private void updateProgress(long time) {
+		progress = (int) ((time - startTime) / 1000);
+		if (progress > getProgressMax()) {
+			progress = getProgressMax();
+		}
 	}
 
 	private void updateProgressMax() {
