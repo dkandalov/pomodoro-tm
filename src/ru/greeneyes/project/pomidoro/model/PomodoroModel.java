@@ -30,6 +30,7 @@ public class PomodoroModel {
 	private final Settings settings;
 
 	private PomodoroState state;
+	private PomodoroState lastState;
 	private int pomodorosAmount;
 	private long startTime;
 	private int progressMax;
@@ -80,7 +81,6 @@ public class PomodoroModel {
 					startTime = time;
 					updateProgressMax();
 					pomodorosAmount++;
-					wasManuallyStopped = false;
 				}
 				break;
 			case BREAK:
@@ -91,8 +91,12 @@ public class PomodoroModel {
 				}
 				break;
 			case STOP:
-				return;
+				if (lastState == PomodoroState.STOP) {
+					return;
+				}
+				break;
 		}
+		lastState = state;
 
 		for (Runnable listener : listeners.values()) {
 			listener.run();
@@ -134,8 +138,6 @@ public class PomodoroModel {
 				break;
 			case BREAK:
 				progressMax = (int) settings.getBreakLength();
-				break;
-			case STOP:
 				break;
 		}
 	}
