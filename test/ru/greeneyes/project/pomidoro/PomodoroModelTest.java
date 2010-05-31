@@ -52,7 +52,7 @@ public class PomodoroModelTest {
 		Thread.sleep(1100);
 		model.updateState();
 		assertThat(model.getState(), equalTo(BREAK));
-		assertThat(model.getProgress(), equalTo(2));
+		assertThat(model.getProgress(), equalTo(0));
 		assertThat(model.getPomodorosAmount(), equalTo(1));
 	}
 
