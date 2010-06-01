@@ -1,7 +1,7 @@
  + start/stop from toolbar (dima)
  + pomodoro icon in toolbar (dima)
  + tooltip in toolbar with pomodoro amount (dima)
- - configuration panel
+ - configuration panel, persist pomodoro amount
  - sound volume configuration (mq0)
  - minimize, block window on pomodoro end
  - should be able to change pomodoro shortcut

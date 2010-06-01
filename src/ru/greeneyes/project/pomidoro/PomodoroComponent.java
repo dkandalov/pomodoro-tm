@@ -69,7 +69,7 @@ public class PomodoroComponent implements ApplicationComponent {
 	private static class UserNotifier {
 		private static final String NOTIFICATION_GROUP_ID = "Pomodoro";
 		
-		private final AudioClip ringSound = Applet.newAudioClip(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/ring.wav"));
+		private final AudioClip ringSound = Applet.newAudioClip(getClass().getResource("/resources/ring.wav"));
 		public PomodoroModel.PomodoroState lastState;
 
 		public UserNotifier(final Settings settings, final PomodoroModel model) {
@@ -102,7 +102,9 @@ public class PomodoroComponent implements ApplicationComponent {
 
 			Notifications.Bus.notify(
 					new Notification(
-							NOTIFICATION_GROUP_ID, "Pomodoro is finished", "Please have a break",
+							NOTIFICATION_GROUP_ID,
+							UIBundle.message("notification.title"),
+							UIBundle.message("notification.text"),
 							NotificationType.INFORMATION
 					),
 					project

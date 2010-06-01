@@ -29,9 +29,9 @@ import java.awt.event.MouseEvent;
  * Date: May 29, 2010
  */
 public class PomodoroPanelFactory extends StatusBarCustomComponentFactory {
-	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/pomodoro.png"));
-	private final ImageIcon pomodoroStoppedIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/pomodoroStopped.png"));
-	private final ImageIcon pomodoroBreakIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/pomodoroBreak.png"));
+	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro.png"));
+	private final ImageIcon pomodoroStoppedIcon = new ImageIcon(getClass().getResource("/resources/pomodoroStopped.png"));
+	private final ImageIcon pomodoroBreakIcon = new ImageIcon(getClass().getResource("/resources/pomodoroBreak.png"));
 
 	@Override
 	public JComponent createComponent(@NotNull final StatusBar statusBar) {
@@ -78,16 +78,16 @@ public class PomodoroPanelFactory extends StatusBarCustomComponentFactory {
 		String nextAction = "";
 		switch (model.getState()) {
 			case STOP:
-				nextAction = "start pomodoro";
+				nextAction = UIBundle.message("statuspanel.start");
 				break;
 			case RUN:
-				nextAction = "stop pomodoro";
+				nextAction = UIBundle.message("statuspanel.stop");
 				break;
 			case BREAK:
-				nextAction = "stop break";
+				nextAction = UIBundle.message("statuspanel.stop_break");
 				break;
 		}
-		return "Click to " + nextAction + ". Pomodoro amount: " + model.getPomodorosAmount();
+		return UIBundle.message("statuspanel.tooltip", nextAction, model.getPomodorosAmount());
 	}
 
 	private void updateLabel(PomodoroModel model, JLabel label) {

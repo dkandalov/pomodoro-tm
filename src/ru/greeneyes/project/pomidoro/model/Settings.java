@@ -42,13 +42,13 @@ public class Settings implements PersistentStateComponent<Settings> {
 	}
 
 	public long getPomodoroLength() {
-//		return 5000;
-		return TimeUnit.MILLISECONDS.convert(pomodoroLength, TimeUnit.MINUTES);
+		return 5000;
+//		return TimeUnit.MILLISECONDS.convert(pomodoroLength, TimeUnit.MINUTES);
 	}
 
 	public long getBreakLength() {
-//		return 5000;
-		return TimeUnit.MILLISECONDS.convert(breakLength, TimeUnit.MINUTES);
+		return 5000;
+//		return TimeUnit.MILLISECONDS.convert(breakLength, TimeUnit.MINUTES);
 	}
 
 	public boolean isRingEnabled() {

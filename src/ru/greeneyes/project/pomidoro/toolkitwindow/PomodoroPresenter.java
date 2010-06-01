@@ -13,6 +13,7 @@
  */
 package ru.greeneyes.project.pomidoro.toolkitwindow;
 
+import ru.greeneyes.project.pomidoro.UIBundle;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 
 import javax.swing.*;
@@ -26,8 +27,8 @@ import java.awt.event.MouseEvent;
  * Date: May 29, 2010
  */
 public class PomodoroPresenter {
-	private final ImageIcon playIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/play-icon.png"));
-	private final ImageIcon stopIcon = new ImageIcon(getClass().getResource("/ru/greeneyes/project/pomidoro/resources/stop-icon.png"));
+	private final ImageIcon playIcon = new ImageIcon(getClass().getResource("/resources/play-icon.png"));
+	private final ImageIcon stopIcon = new ImageIcon(getClass().getResource("/resources/stop-icon.png"));
 
 	private final PomodoroForm form = new PomodoroForm();
 	private final PomodoroModel model;
@@ -67,22 +68,22 @@ public class PomodoroPresenter {
 			public void run() {
 				switch (model.getState()) {
 					case RUN:
-						form.getControlButton().setText("Stop");
+						form.getControlButton().setText(UIBundle.message("toolkitwindow.button_stop"));
 						form.getControlButton().setIcon(stopIcon);
-						progressBarPrefix = "Working";
+						progressBarPrefix = UIBundle.message("toolkitwindow.prefix_working");
 						break;
 					case STOP:
-						form.getControlButton().setText("Start");
+						form.getControlButton().setText(UIBundle.message("toolkitwindow.button_start"));
 						form.getControlButton().setIcon(playIcon);
 						break;
 					case BREAK:
-						form.getControlButton().setText("Stop");
-						progressBarPrefix = "Break";
+						form.getControlButton().setText(UIBundle.message("toolkitwindow.button_stop"));
+						progressBarPrefix = UIBundle.message("toolkitwindow.button_break");
 						break;
 					default:
 						throw new IllegalStateException();
 				}
-				form.getPomodorosLabel().setText("Pomodoros: " + model.getPomodorosAmount());
+				form.getPomodorosLabel().setText(String.valueOf(model.getPomodorosAmount()));
 
 				form.getProgressBar().setMaximum(model.getProgressMax());
 				form.getProgressBar().setValue(model.getProgress());
