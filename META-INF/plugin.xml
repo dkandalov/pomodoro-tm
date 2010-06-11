@@ -48,7 +48,8 @@
     </project-components>
 
     <actions>
-        <action id="pomodoroAction" class="ru.greeneyes.project.pomidoro.PomodoroAction">
+        <action id="Start/stop pomodoro" class="ru.greeneyes.project.pomidoro.PomodoroAction"
+                description="Start or stop pomodoro timer">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift P"/>
         </action>
     </actions>
