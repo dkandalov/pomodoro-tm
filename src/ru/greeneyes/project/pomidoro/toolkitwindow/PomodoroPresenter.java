@@ -86,12 +86,17 @@ public class PomodoroPresenter {
 				form.getPomodorosLabel().setText(String.valueOf(model.getPomodorosAmount()));
 
 				form.getProgressBar().setMaximum(model.getProgressMax());
-				form.getProgressBar().setValue(model.getProgress());
+				form.getProgressBar().setValue(hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(model.getProgress()));
 
 				int timeLeft = model.getProgressMax() - model.getProgress();
 				form.getProgressBar().setString(progressBarPrefix + " " + formatTime(timeLeft));
 			}
 		});
+	}
+
+	private static int hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(int progress) {
+		// for some reason JProgressBar doesn't display text when progress is too small to be displayed
+		return progress < 10 ? 10 : progress;
 	}
 
 	public static String formatTime(int timeLeft) {
