@@ -31,7 +31,6 @@ public class PomodoroModel {
 
 	private PomodoroState state;
 	private PomodoroState lastState;
-	private int pomodorosAmount;
 	private long startTime;
 	private int progressMax;
 	private int progress;
@@ -45,7 +44,6 @@ public class PomodoroModel {
 	PomodoroModel(Settings settings, PomodoroState state) {
 		this.settings = settings;
 		this.state = state;
-		this.pomodorosAmount = 0;
 		updateProgressMax();
 		this.progress = progressMax;
 	}
@@ -81,7 +79,7 @@ public class PomodoroModel {
 					startTime = time;
 					updateProgress(time);
 					updateProgressMax();
-					pomodorosAmount++;
+					settings.setPomodorosAmount(settings.getPomodorosAmount() + 1);
 				}
 				break;
 			case BREAK:
@@ -113,11 +111,11 @@ public class PomodoroModel {
 	}
 
 	public synchronized int getPomodorosAmount() {
-		return pomodorosAmount;
+		return settings.getPomodorosAmount();
 	}
 
 	public synchronized void resetPomodoros() {
-		pomodorosAmount = 0;
+		settings.setPomodorosAmount(0);
 	}
 
 	public synchronized PomodoroState getState() {

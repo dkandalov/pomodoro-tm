@@ -30,6 +30,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 	public int breakLength = 5;
 	public boolean ringEnabled = true;
 	public boolean popupEnabled = true;
+	public int pomodorosAmount = 0;
 
 	@Override
 	public void loadState(Settings settings) {
@@ -57,5 +58,13 @@ public class Settings implements PersistentStateComponent<Settings> {
 
 	public boolean isPopupEnabled() {
 		return popupEnabled;
+	}
+
+	public int getPomodorosAmount() {
+		return pomodorosAmount;
+	}
+
+	public void setPomodorosAmount(int pomodorosAmount) {
+		this.pomodorosAmount = pomodorosAmount;
 	}
 }
