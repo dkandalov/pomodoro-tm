@@ -95,11 +95,12 @@ public class PomodoroModel {
 				}
 				break;
 		}
-		lastState = state;
 
 		for (Runnable listener : listeners.values()) {
 			listener.run();
 		}
+
+		lastState = state;
 	}
 
 	public synchronized int getProgress() {
@@ -120,6 +121,10 @@ public class PomodoroModel {
 
 	public synchronized PomodoroState getState() {
 		return state;
+	}
+
+	public synchronized PomodoroState getLastState() {
+		return lastState;
 	}
 
 	public synchronized boolean wasManuallyStopped() {

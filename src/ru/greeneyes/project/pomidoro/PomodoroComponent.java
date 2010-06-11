@@ -70,7 +70,6 @@ public class PomodoroComponent implements ApplicationComponent {
 		private static final String NOTIFICATION_GROUP_ID = "Pomodoro";
 		
 		private final AudioClip ringSound = Applet.newAudioClip(getClass().getResource("/resources/ring.wav"));
-		public PomodoroModel.PomodoroState lastState;
 
 		public UserNotifier(final Settings settings, final PomodoroModel model) {
 			model.addUpdateListener(this, new Runnable() {
@@ -78,18 +77,17 @@ public class PomodoroComponent implements ApplicationComponent {
 				public void run() {
 					switch (model.getState()) {
 						case STOP:
-							if (lastState == BREAK && !model.wasManuallyStopped()) {
+							if (model.getLastState() == BREAK && !model.wasManuallyStopped()) {
 								if (settings.isRingEnabled()) ringSound.play();
 							}
 							break;
 						case BREAK:
-							if (lastState != BREAK) {
+							if (model.getLastState() != BREAK) {
 								if (settings.isRingEnabled()) ringSound.play();
 								if (settings.isPopupEnabled()) showPopupNotification();
 							}
 							break;
 					}
-					lastState = model.getState();
 				}
 			});
 		}
