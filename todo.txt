@@ -1,14 +1,15 @@
  + start/stop from toolbar (dima)
  + pomodoro icon in toolbar (dima)
  + tooltip in toolbar with pomodoro amount (dima)
+ - persist pomodoro time (in case IDEA is restarted during pomdoro) (dima)
  - configuration panel, persist pomodoro amount
  - sound volume configuration (mq0)
  - minimize, block window on pomodoro end
  - should be able to change pomodoro shortcut
- - better pomodoro icon.. or copy one from pomodoro app
+ + better pomodoro icon.. or copy one from pomodoro app
  - "Better" popup.. search for "Compilation completed with xxx warnings", "Loaded classes are up-to-date nothing to
 reload"?
  - task name and stats
 
 bugs:
- - 3 seconds delay after clicking "Start" before timer update
+ + 3 seconds delay after clicking "Start" before timer update

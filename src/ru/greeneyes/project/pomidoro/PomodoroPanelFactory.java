@@ -62,13 +62,11 @@ public class PomodoroPanelFactory extends StatusBarCustomComponentFactory {
 			public void mouseEntered(MouseEvent e) {
 				String tooltipText = tooltipText(model);
 				statusBar.setInfo(tooltipText);
-				label.setToolTipText(tooltipText);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 				statusBar.setInfo("");
-				label.setToolTipText("");
 			}
 		});
 		return label;
