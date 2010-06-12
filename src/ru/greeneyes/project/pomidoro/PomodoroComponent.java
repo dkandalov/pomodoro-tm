@@ -98,6 +98,7 @@ public class PomodoroComponent implements ApplicationComponent {
 				public void run() {
 					DataContext dataContext = DataManager.getInstance().getDataContext();
 					Project project = (Project) dataContext.getData(PlatformDataKeys.PROJECT.getName());
+					if (project == null) return;
 
 					String statusMessage = UIBundle.message("notification.text");
 					ToolWindowManager.getInstance(project).
