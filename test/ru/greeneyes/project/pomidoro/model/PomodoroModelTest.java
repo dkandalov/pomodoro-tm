@@ -132,8 +132,8 @@ public class PomodoroModelTest {
 		Thread.sleep(UPDATE_INTERVAL);
 		model.updateState();
 
-		assertThat(modelState.state, equalTo(BREAK));
-		assertTrue(modelState.startTime > pomodoroStartTime);
+		assertThat(modelState.getPomodoroState(), equalTo(BREAK));
+		assertTrue(modelState.getStartTime() > pomodoroStartTime);
 	}
 
 	private static Settings settings(final long testPomodoroLength) {

@@ -33,7 +33,6 @@ public class Settings implements PersistentStateComponent<Settings> {
 	public int breakLength = 5;
 	public boolean ringEnabled = true;
 	public boolean popupEnabled = true;
-	public int pomodorosAmount = 0;
 	private long timeoutToContinuePomodoro = MILLISECONDS.convert(5, MINUTES);
 
 	public long getPomodoroLength() {
@@ -52,14 +51,6 @@ public class Settings implements PersistentStateComponent<Settings> {
 
 	public boolean isPopupEnabled() {
 		return popupEnabled;
-	}
-
-	public int getPomodorosAmount() {
-		return pomodorosAmount;
-	}
-
-	public void setPomodorosAmount(int pomodorosAmount) {
-		this.pomodorosAmount = pomodorosAmount;
 	}
 
 	/**

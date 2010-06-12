@@ -7,27 +7,34 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.TestOnly;
 
 /**
+ * Class for persisting pomodoro state. This is different from {@link ru.greeneyes.project.pomidoro.model.Settings}
+ * because its state cannot be directly changed by user.
+ *
+ * Thread-safe because it's accessed by {@link ru.greeneyes.project.pomidoro.model.ControlThread} and
+ * some other thread from IntelliJ platform which persists it.
+ *
  * User: dima
  * Date: Jun 12, 2010
  */
 @State(name = "PomodoroState", storages = {@Storage(id = "other", file = "$APP_CONFIG$/pomodoro.state.xml")})
 public class PomodoroModelState implements PersistentStateComponent<PomodoroModelState> {
-	public PomodoroModel.PomodoroState state;
-	public PomodoroModel.PomodoroState lastState;
-	public long startTime;
-	// TODO pomodoro amount
+	private PomodoroModel.PomodoroState pomodoroState;
+	private PomodoroModel.PomodoroState lastState;
+	private long startTime;
+	private int pomodorosAmount;
 
 	public PomodoroModelState() {
-		state = PomodoroModel.PomodoroState.STOP;
-		lastState = null;
-		startTime = 0;
+		setPomodoroState(PomodoroModel.PomodoroState.STOP);
+		setLastState(null);
+		setStartTime(0);
+		setPomodorosAmount(0);
 	}
 
 	@TestOnly
-	PomodoroModelState(PomodoroModel.PomodoroState state, PomodoroModel.PomodoroState lastState, long startTime) {
-		this.state = state;
-		this.lastState = lastState;
-		this.startTime = startTime;
+	PomodoroModelState(PomodoroModel.PomodoroState pomodoroState, PomodoroModel.PomodoroState lastState, long startTime) {
+		this.setPomodoroState(pomodoroState);
+		this.setLastState(lastState);
+		this.setStartTime(startTime);
 	}
 
 	@Override
@@ -36,7 +43,39 @@ public class PomodoroModelState implements PersistentStateComponent<PomodoroMode
 	}
 
 	@Override
-	public void loadState(PomodoroModelState state) {
+	public synchronized void loadState(PomodoroModelState state) {
 		XmlSerializerUtil.copyBean(state, this);
+	}
+
+	public synchronized PomodoroModel.PomodoroState getPomodoroState() {
+		return pomodoroState;
+	}
+
+	public synchronized void setPomodoroState(PomodoroModel.PomodoroState pomodoroState) {
+		this.pomodoroState = pomodoroState;
+	}
+
+	public synchronized PomodoroModel.PomodoroState getLastState() {
+		return lastState;
+	}
+
+	public synchronized void setLastState(PomodoroModel.PomodoroState lastState) {
+		this.lastState = lastState;
+	}
+
+	public synchronized long getStartTime() {
+		return startTime;
+	}
+
+	public synchronized void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
+
+	public synchronized int getPomodorosAmount() {
+		return pomodorosAmount;
+	}
+
+	public synchronized void setPomodorosAmount(int pomodorosAmount) {
+		this.pomodorosAmount = pomodorosAmount;
 	}
 }

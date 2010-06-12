@@ -14,7 +14,6 @@
 package ru.greeneyes.project.pomidoro.model;
 
 import java.util.WeakHashMap;
-import java.util.concurrent.TimeUnit;
 
 import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BREAK;
 import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.RUN;
@@ -40,6 +39,7 @@ public class PomodoroModel {
 	private long startTime;
 	private int progressMax;
 	private int progress;
+	private int pomodorosAmount;
 	private boolean wasManuallyStopped;
 	private final WeakHashMap<Object, Runnable> listeners = new WeakHashMap<Object, Runnable>();
 
@@ -49,19 +49,7 @@ public class PomodoroModel {
 		this.settings = settings;
 		this.pomodoroModelState = pomodoroModelState;
 
-		state = pomodoroModelState.state;
-		lastState = pomodoroModelState.lastState;
-		startTime = pomodoroModelState.startTime;
-
-		if (pomodoroModelState.state == RUN) {
-			long timeSincePomodoroStart = System.currentTimeMillis() - pomodoroModelState.startTime;
-			boolean shouldNotContinuePomodoro = (timeSincePomodoroStart > settings.getTimeoutToContinuePomodoro());
-			if (shouldNotContinuePomodoro) {
-				state = STOP;
-				lastState = null;
-				startTime = -1;
-			}
-		}
+		loadModelState();
 
 		updateProgressMax();
 		progress = progressMax;
@@ -98,7 +86,7 @@ public class PomodoroModel {
 					startTime = time;
 					updateProgress(time);
 					updateProgressMax();
-					settings.setPomodorosAmount(settings.getPomodorosAmount() + 1);
+					pomodorosAmount++;
 				}
 				break;
 			case BREAK:
@@ -125,12 +113,6 @@ public class PomodoroModel {
 		lastState = state;
 	}
 
-	private void saveModelState() {
-		pomodoroModelState.state = state;
-		pomodoroModelState.lastState = lastState;
-		pomodoroModelState.startTime = startTime;
-	}
-
 	public synchronized int getProgress() {
 		return progress;
 	}
@@ -140,11 +122,12 @@ public class PomodoroModel {
 	}
 
 	public synchronized int getPomodorosAmount() {
-		return settings.getPomodorosAmount();
+		return pomodorosAmount;
 	}
 
 	public synchronized void resetPomodoros() {
-		settings.setPomodorosAmount(0);
+		pomodorosAmount = 0;
+		saveModelState();
 	}
 
 	public synchronized PomodoroState getState() {
@@ -161,6 +144,30 @@ public class PomodoroModel {
 
 	public synchronized void addUpdateListener(Object key, Runnable runnable) {
 		listeners.put(key, runnable);
+	}
+
+	private void loadModelState() {
+		state = pomodoroModelState.getPomodoroState();
+		lastState = pomodoroModelState.getLastState();
+		startTime = pomodoroModelState.getStartTime();
+		pomodorosAmount = pomodoroModelState.getPomodorosAmount();
+
+		if (pomodoroModelState.getPomodoroState() == RUN) {
+			long timeSincePomodoroStart = System.currentTimeMillis() - pomodoroModelState.getStartTime();
+			boolean shouldNotContinuePomodoro = (timeSincePomodoroStart > settings.getTimeoutToContinuePomodoro());
+			if (shouldNotContinuePomodoro) {
+				state = STOP;
+				lastState = null;
+				startTime = -1;
+			}
+		}
+	}
+
+	private void saveModelState() {
+		pomodoroModelState.setPomodoroState(state);
+		pomodoroModelState.setLastState(lastState);
+		pomodoroModelState.setStartTime(startTime);
+		pomodoroModelState.setPomodorosAmount(pomodorosAmount);
 	}
 
 	private void updateProgress(long time) {
