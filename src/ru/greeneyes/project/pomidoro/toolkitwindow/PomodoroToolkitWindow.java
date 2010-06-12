@@ -33,7 +33,7 @@ import javax.swing.*;
  * @date 28.04.2010 12:02:26
  */
 public class PomodoroToolkitWindow extends AbstractProjectComponent {
-	private static final String TOOL_WINDOW_ID = "Pomodoro";
+	public static final String TOOL_WINDOW_ID = "Pomodoro";
 
 	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro.png"));
 

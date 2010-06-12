@@ -14,20 +14,21 @@
 package ru.greeneyes.project.pomidoro;
 
 import com.intellij.ide.DataManager;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
-import com.intellij.notification.Notifications;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.wm.ToolWindowManager;
 import org.jetbrains.annotations.NotNull;
-import ru.greeneyes.project.pomidoro.model.PomodoroModelState;
-import ru.greeneyes.project.pomidoro.model.Settings;
 import ru.greeneyes.project.pomidoro.model.ControlThread;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
+import ru.greeneyes.project.pomidoro.model.PomodoroModelState;
+import ru.greeneyes.project.pomidoro.model.Settings;
+import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolkitWindow;
 
+import javax.swing.*;
 import java.applet.Applet;
 import java.applet.AudioClip;
 
@@ -68,8 +69,6 @@ public class PomodoroComponent implements ApplicationComponent {
 	}
 
 	private static class UserNotifier {
-		private static final String NOTIFICATION_GROUP_ID = "Pomodoro";
-		
 		private final AudioClip ringSound = Applet.newAudioClip(getClass().getResource("/resources/ring.wav"));
 
 		public UserNotifier(final Settings settings, final PomodoroModel model) {
@@ -94,20 +93,17 @@ public class PomodoroComponent implements ApplicationComponent {
 		}
 
 		private void showPopupNotification() {
-			// we get project as a workaround for this issue http://youtrack.jetbrains.net/issue/IDEA-53248
-			// (posting notification without specifying a project results in showing two balloons)
-			DataContext dataContext = DataManager.getInstance().getDataContext();
-			Project project = (Project) dataContext.getData(PlatformDataKeys.PROJECT.getName());
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					DataContext dataContext = DataManager.getInstance().getDataContext();
+					Project project = (Project) dataContext.getData(PlatformDataKeys.PROJECT.getName());
 
-			Notifications.Bus.notify(
-					new Notification(
-							NOTIFICATION_GROUP_ID,
-							UIBundle.message("notification.title"),
-							UIBundle.message("notification.text"),
-							NotificationType.INFORMATION
-					),
-					project
-			);
+					String statusMessage = UIBundle.message("notification.text");
+					ToolWindowManager.getInstance(project).
+							notifyByBalloon(PomodoroToolkitWindow.TOOL_WINDOW_ID, MessageType.INFO, statusMessage);
+				}
+			});
 		}
 	}
 }
