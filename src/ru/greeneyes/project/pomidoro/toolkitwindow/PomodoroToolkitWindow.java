@@ -35,7 +35,7 @@ import javax.swing.*;
 public class PomodoroToolkitWindow extends AbstractProjectComponent {
 	public static final String TOOL_WINDOW_ID = "Pomodoro";
 
-	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro.png"));
+	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro-icon.png"));
 
 	public PomodoroToolkitWindow(Project project) {
 		super(project);

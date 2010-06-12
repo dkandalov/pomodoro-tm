@@ -36,13 +36,13 @@ public class Settings implements PersistentStateComponent<Settings> {
 	private long timeoutToContinuePomodoro = MILLISECONDS.convert(5, MINUTES);
 
 	public long getPomodoroLength() {
-		return 5000;
-//		return MILLISECONDS.convert(pomodoroLength, MINUTES);
+//		return 5000;
+		return MILLISECONDS.convert(pomodoroLength, MINUTES);
 	}
 
 	public long getBreakLength() {
-		return 5000;
-//		return MILLISECONDS.convert(breakLength, MINUTES);
+//		return 5000;
+		return MILLISECONDS.convert(breakLength, MINUTES);
 	}
 
 	public boolean isRingEnabled() {
