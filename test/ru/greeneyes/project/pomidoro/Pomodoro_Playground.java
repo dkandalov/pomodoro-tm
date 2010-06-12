@@ -13,6 +13,7 @@
  */
 package ru.greeneyes.project.pomidoro;
 
+import ru.greeneyes.project.pomidoro.model.PomodoroModelState;
 import ru.greeneyes.project.pomidoro.model.Settings;
 import ru.greeneyes.project.pomidoro.model.ControlThread;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
@@ -27,7 +28,7 @@ import javax.swing.*;
 public class Pomodoro_Playground {
 	public static void main(String[] args) {
 		MySettings config = new MySettings();
-		PomodoroModel model = new PomodoroModel(config);
+		PomodoroModel model = new PomodoroModel(config, new PomodoroModelState());
 		PomodoroPresenter presenter = new PomodoroPresenter(model);
 		new ControlThread(model).start();
 

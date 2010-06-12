@@ -14,12 +14,18 @@
 package ru.greeneyes.project.pomidoro.model;
 
 import java.util.WeakHashMap;
+import java.util.concurrent.TimeUnit;
+
+import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BREAK;
+import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.RUN;
+import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.STOP;
 
 /**
  * User: dima
  * Date: May 29, 2010
  */
 public class PomodoroModel {
+	private static final int PROGRESS_INTERVAL_MILLIS = 1000;
 
 	public enum PomodoroState {
 		STOP,
@@ -37,30 +43,43 @@ public class PomodoroModel {
 	private boolean wasManuallyStopped;
 	private final WeakHashMap<Object, Runnable> listeners = new WeakHashMap<Object, Runnable>();
 
-	public PomodoroModel(Settings settings) {
-		this(settings, PomodoroState.STOP);
-	}
+	private final PomodoroModelState pomodoroModelState;
 
-	PomodoroModel(Settings settings, PomodoroState state) {
+	public PomodoroModel(Settings settings, PomodoroModelState pomodoroModelState) {
 		this.settings = settings;
-		this.state = state;
+		this.pomodoroModelState = pomodoroModelState;
+
+		state = pomodoroModelState.state;
+		lastState = pomodoroModelState.lastState;
+		startTime = pomodoroModelState.startTime;
+
+		if (pomodoroModelState.state == RUN) {
+			long timeSincePomodoroStart = System.currentTimeMillis() - pomodoroModelState.startTime;
+			boolean shouldNotContinuePomodoro = (timeSincePomodoroStart > settings.getTimeoutToContinuePomodoro());
+			if (shouldNotContinuePomodoro) {
+				state = STOP;
+				lastState = null;
+				startTime = -1;
+			}
+		}
+
 		updateProgressMax();
-		this.progress = progressMax;
+		progress = progressMax;
 	}
 
 	public synchronized void switchToNextState() {
 		switch (state) {
 			case STOP:
-				state = PomodoroState.RUN;
+				state = RUN;
 				startTime = System.currentTimeMillis();
 				updateProgressMax();
 				break;
 			case RUN:
-				state = PomodoroState.STOP;
+				state = STOP;
 				wasManuallyStopped = true;
 				break;
 			case BREAK:
-				state = PomodoroState.STOP;
+				state = STOP;
 				wasManuallyStopped = true;
 				break;
 			default:
@@ -75,7 +94,7 @@ public class PomodoroModel {
 			case RUN:
 				updateProgress(time);
 				if (time >= startTime + progressMax) {
-					state = PomodoroState.BREAK;
+					state = BREAK;
 					startTime = time;
 					updateProgress(time);
 					updateProgressMax();
@@ -85,12 +104,12 @@ public class PomodoroModel {
 			case BREAK:
 				updateProgress(time);
 				if (time >= startTime + progressMax) {
-					state = PomodoroState.STOP;
+					state = STOP;
 					wasManuallyStopped = false;
 				}
 				break;
 			case STOP:
-				if (lastState == PomodoroState.STOP) {
+				if (lastState == STOP) {
 					return;
 				}
 				break;
@@ -100,7 +119,16 @@ public class PomodoroModel {
 			listener.run();
 		}
 
+		if (lastState != state) {
+			saveModelState();
+		}
 		lastState = state;
+	}
+
+	private void saveModelState() {
+		pomodoroModelState.state = state;
+		pomodoroModelState.lastState = lastState;
+		pomodoroModelState.startTime = startTime;
 	}
 
 	public synchronized int getProgress() {
@@ -108,7 +136,7 @@ public class PomodoroModel {
 	}
 
 	public synchronized int getProgressMax() {
-		return progressMax / 1000;
+		return progressMax / PROGRESS_INTERVAL_MILLIS;
 	}
 
 	public synchronized int getPomodorosAmount() {
@@ -136,7 +164,7 @@ public class PomodoroModel {
 	}
 
 	private void updateProgress(long time) {
-		progress = (int) ((time - startTime) / 1000);
+		progress = (int) ((time - startTime) / PROGRESS_INTERVAL_MILLIS);
 		if (progress > getProgressMax()) {
 			progress = getProgressMax();
 		}

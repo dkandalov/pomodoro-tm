@@ -23,6 +23,7 @@ import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
+import ru.greeneyes.project.pomidoro.model.PomodoroModelState;
 import ru.greeneyes.project.pomidoro.model.Settings;
 import ru.greeneyes.project.pomidoro.model.ControlThread;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
@@ -43,7 +44,7 @@ public class PomodoroComponent implements ApplicationComponent {
 	@Override
 	public void initComponent() {
 		Settings settings = ServiceManager.getService(Settings.class);
-		model = new PomodoroModel(settings);
+		model = new PomodoroModel(settings, ServiceManager.getService(PomodoroModelState.class));
 
 		new UserNotifier(settings, model);
 

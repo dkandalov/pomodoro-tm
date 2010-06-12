@@ -20,6 +20,9 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 
 import java.util.concurrent.TimeUnit;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
+
 /**
  * User: dima
  * Date: May 29, 2010
@@ -31,25 +34,16 @@ public class Settings implements PersistentStateComponent<Settings> {
 	public boolean ringEnabled = true;
 	public boolean popupEnabled = true;
 	public int pomodorosAmount = 0;
-
-	@Override
-	public void loadState(Settings settings) {
-		XmlSerializerUtil.copyBean(settings, this);
-	}
-
-	@Override
-	public Settings getState() {
-		return this;
-	}
+	private long timeoutToContinuePomodoro = MILLISECONDS.convert(5, MINUTES);
 
 	public long getPomodoroLength() {
 //		return 5000;
-		return TimeUnit.MILLISECONDS.convert(pomodoroLength, TimeUnit.MINUTES);
+		return MILLISECONDS.convert(pomodoroLength, MINUTES);
 	}
 
 	public long getBreakLength() {
 //		return 5000;
-		return TimeUnit.MILLISECONDS.convert(breakLength, TimeUnit.MINUTES);
+		return MILLISECONDS.convert(breakLength, MINUTES);
 	}
 
 	public boolean isRingEnabled() {
@@ -66,5 +60,25 @@ public class Settings implements PersistentStateComponent<Settings> {
 
 	public void setPomodorosAmount(int pomodorosAmount) {
 		this.pomodorosAmount = pomodorosAmount;
+	}
+
+	/**
+	 * If IntelliJ is shutdown during pomodoro and then restarted, pomodoro can be continued.
+	 * This property determines how much time can pass before we consider pomodoro to be abandoned.
+	 *
+	 * @return timeout in milliseconds
+	 */
+	public long getTimeoutToContinuePomodoro() {
+		return timeoutToContinuePomodoro;
+	}
+
+	@Override
+	public void loadState(Settings settings) {
+		XmlSerializerUtil.copyBean(settings, this);
+	}
+
+	@Override
+	public Settings getState() {
+		return this;
 	}
 }
