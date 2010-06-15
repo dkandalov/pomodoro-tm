@@ -159,6 +159,7 @@ public class PomodoroModel {
 				state = STOP;
 				lastState = null;
 				startTime = -1;
+				saveModelState();
 			}
 		}
 	}
