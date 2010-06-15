@@ -108,6 +108,7 @@ public class PomodoroModel {
 		}
 
 		if (lastState != state) {
+			lastState = state;
 			saveModelState();
 		}
 		lastState = state;
