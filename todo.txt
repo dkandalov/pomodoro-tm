@@ -14,11 +14,13 @@ reload"?
 
 
 UI tweaks:
- - pomodoro label shouldn't shift on pomodoro start/stop (only happens in IntelliJ)
+ - pomodoro label shouldn't shift on pomodoro start/stop (only happens in IntelliJ... and not all the time)
+
+bugs:
+ + 3 seconds delay after clicking "Start" before timer update
+ - Pomodoro toolkit window is disabled when project is being indexed (for example, maven and IDE talk windows are not disabled)
 
 Would be nice to have:
  - jira integration
  - integration with IDEA talk plugin (show pomodoro status there) ?
 
-bugs:
- + 3 seconds delay after clicking "Start" before timer update
