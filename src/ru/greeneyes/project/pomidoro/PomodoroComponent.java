@@ -18,14 +18,18 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.options.Configurable;
+import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.wm.ToolWindowManager;
+import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import ru.greeneyes.project.pomidoro.model.ControlThread;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 import ru.greeneyes.project.pomidoro.model.PomodoroModelState;
 import ru.greeneyes.project.pomidoro.model.Settings;
+import ru.greeneyes.project.pomidoro.settings.SettingsPresenter;
 import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolkitWindow;
 
 import javax.swing.*;
@@ -38,13 +42,17 @@ import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BR
  * User: dima
  * Date: May 30, 2010
  */
-public class PomodoroComponent implements ApplicationComponent {
+public class PomodoroComponent implements ApplicationComponent, Configurable {
+	private static final String POMODORO = "Pomodoro";
+
 	private ControlThread controlThread;
 	private PomodoroModel model;
+	private Settings settings;
+	private SettingsPresenter settingsPresenter;
 
 	@Override
 	public void initComponent() {
-		Settings settings = ServiceManager.getService(Settings.class);
+		settings = ServiceManager.getService(Settings.class);
 		model = new PomodoroModel(settings, ServiceManager.getService(PomodoroModelState.class));
 
 		new UserNotifier(settings, model);
@@ -61,11 +69,53 @@ public class PomodoroComponent implements ApplicationComponent {
 	@NotNull
 	@Override
 	public String getComponentName() {
-		return "Pomodoro";
+		return POMODORO;
 	}
 
 	public PomodoroModel getModel() {
 		return model;
+	}
+
+	@Nls
+	@Override
+	public String getDisplayName() {
+		return POMODORO;
+	}
+
+	@Override
+	public Icon getIcon() {
+		return null;
+	}
+
+	@Override
+	public String getHelpTopic() {
+		return null;
+	}
+
+	@Override
+	public JComponent createComponent() {
+		settingsPresenter = new SettingsPresenter(settings);
+		return settingsPresenter.getContentPane();
+	}
+
+	@Override
+	public boolean isModified() {
+		return settingsPresenter.isModified();
+	}
+
+	@Override
+	public void apply() throws ConfigurationException {
+		settingsPresenter.applyChanges();
+	}
+
+	@Override
+	public void reset() {
+		settingsPresenter.reset();
+	}
+
+	@Override
+	public void disposeUIResources() {
+		settingsPresenter.disposeUIResources();
 	}
 
 	private static class UserNotifier {

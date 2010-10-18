@@ -15,10 +15,10 @@ package ru.greeneyes.project.pomidoro.model;
 
 import org.junit.Test;
 
-import static com.yourkit.util.Asserts.assertTrue;
 import static java.util.concurrent.TimeUnit.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.*;
 
 /**
@@ -123,9 +123,9 @@ public class PomodoroModelTest {
 
 	@Test
 	public void savePomodoroModelState() throws InterruptedException {
-		long pomodoroStartTime = System.currentTimeMillis() - MILLISECONDS.convert(24, SECONDS);
+		long pomodoroStartTime = System.currentTimeMillis() - SECONDS.toMillis(24);
 		PomodoroModelState modelState = new PomodoroModelState(RUN, RUN, pomodoroStartTime);
-		PomodoroModel model = new PomodoroModel(settings(MILLISECONDS.convert(25, SECONDS)), modelState);
+		PomodoroModel model = new PomodoroModel(settings(SECONDS.toMillis(24)), modelState);
 
 		assertThat(model.getState(), equalTo(RUN));
 
@@ -133,7 +133,7 @@ public class PomodoroModelTest {
 		model.updateState();
 
 		assertThat(modelState.getPomodoroState(), equalTo(BREAK));
-		assertTrue(modelState.getStartTime() > pomodoroStartTime);
+		assertTrue("model state was updated", modelState.getStartTime() > pomodoroStartTime);
 	}
 
 	private static Settings settings(final long testPomodoroLength) {

@@ -7,11 +7,12 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import org.jetbrains.annotations.TestOnly;
 
 /**
- * Class for persisting pomodoro state. This is different from {@link ru.greeneyes.project.pomidoro.model.Settings}
- * because its state cannot be directly changed by user.
+ * Class for persisting pomodoro state.
+ * It was not implemented as part of {@link ru.greeneyes.project.pomidoro.model.Settings} class
+ * because instances of this class cannot be directly changed by user.
  *
- * Thread-safe because it's accessed by {@link ru.greeneyes.project.pomidoro.model.ControlThread} and
- * some other thread from IntelliJ platform which persists it.
+ * Thread-safe because it's accessed from {@link ru.greeneyes.project.pomidoro.model.ControlThread} and
+ * IntelliJ platform thread which persists it.
  *
  * User: dima
  * Date: Jun 12, 2010

@@ -18,8 +18,6 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
-import java.util.concurrent.TimeUnit;
-
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -36,7 +34,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 	private long timeoutToContinuePomodoro = MILLISECONDS.convert(5, MINUTES);
 
 	public long getPomodoroLength() {
-//		return 5000;
+//		return 10000;
 		return MILLISECONDS.convert(pomodoroLength, MINUTES);
 	}
 
@@ -55,7 +53,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 
 	/**
 	 * If IntelliJ is shutdown during pomodoro and then restarted, pomodoro can be continued.
-	 * This property determines how much time can pass before we consider pomodoro to be abandoned.
+	 * This property determines how much time can pass before we consider pomodoro to be expired.
 	 *
 	 * @return timeout in milliseconds
 	 */
