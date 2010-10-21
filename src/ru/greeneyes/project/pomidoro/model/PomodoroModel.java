@@ -41,7 +41,7 @@ public class PomodoroModel {
 	private int progress;
 	private int pomodorosAmount;
 	private boolean wasManuallyStopped;
-	private final WeakHashMap<Object, Runnable> listeners = new WeakHashMap<Object, Runnable>();
+	private final WeakHashMap<Object, Runnable> listeners = new WeakHashMap<Object, Runnable>(); // TODO why weak hashmap?
 
 	private final PomodoroModelState pomodoroModelState;
 

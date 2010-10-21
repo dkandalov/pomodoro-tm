@@ -47,12 +47,13 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 
 	private ControlThread controlThread;
 	private PomodoroModel model;
-	private Settings settings;
 	private SettingsPresenter settingsPresenter;
 
 	@Override
 	public void initComponent() {
-		settings = ServiceManager.getService(Settings.class);
+		Settings settings = ServiceManager.getService(Settings.class);
+		settingsPresenter = new SettingsPresenter(settings);
+
 		model = new PomodoroModel(settings, ServiceManager.getService(PomodoroModelState.class));
 
 		new UserNotifier(settings, model);
@@ -79,23 +80,22 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 	@Nls
 	@Override
 	public String getDisplayName() {
-		return POMODORO;
+		return settingsPresenter.getDisplayName();
 	}
 
 	@Override
 	public Icon getIcon() {
-		return null;
+		return settingsPresenter.getIcon();
 	}
 
 	@Override
 	public String getHelpTopic() {
-		return null;
+		return settingsPresenter.getHelpTopic();
 	}
 
 	@Override
 	public JComponent createComponent() {
-		settingsPresenter = new SettingsPresenter(settings);
-		return settingsPresenter.getContentPane();
+		return settingsPresenter.createComponent();
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 
 	@Override
 	public void apply() throws ConfigurationException {
-		settingsPresenter.applyChanges();
+		settingsPresenter.apply();
 	}
 
 	@Override
