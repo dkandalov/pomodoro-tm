@@ -12,10 +12,10 @@ import java.awt.*;
  * Date: Oct 18, 2010
  */
 public class SettingsForm {
-	public JSlider pomodoroLengthSlider;
-	private JSlider slider2;
-	private JSlider slider3;
-	private JCheckBox popupEnabledCheckBox;
+	public JComboBox pomodoroLengthComboBox;
+	public JComboBox breakLengthComboBox;
+	public JSlider ringVolumeSlider;
+	public JCheckBox popupCheckBox;
 	private JPanel rootPanel;
 
 	public JPanel getRootPanel() {
@@ -38,36 +38,66 @@ public class SettingsForm {
 	 */
 	private void $$$setupUI$$$() {
 		rootPanel = new JPanel();
-		rootPanel.setLayout(new GridLayoutManager(5, 3, new Insets(0, 0, 0, 0), -1, -1));
-		rootPanel.setBorder(BorderFactory.createTitledBorder(""));
+		rootPanel.setLayout(new GridLayoutManager(2, 2, new Insets(10, 10, 0, 0), -1, -1));
+		final Spacer spacer1 = new Spacer();
+		rootPanel.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
+		final Spacer spacer2 = new Spacer();
+		rootPanel.add(spacer2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		final JPanel panel1 = new JPanel();
+		panel1.setLayout(new GridLayoutManager(5, 3, new Insets(0, 0, 0, 0), -1, -1));
+		rootPanel.add(panel1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
 		final JLabel label1 = new JLabel();
 		label1.setText("Pomodoro length:");
-		rootPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		label1.setDisplayedMnemonic('P');
+		label1.setDisplayedMnemonicIndex(0);
+		panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		final Spacer spacer3 = new Spacer();
+		panel1.add(spacer3, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+		pomodoroLengthComboBox = new JComboBox();
+		pomodoroLengthComboBox.setEditable(true);
+		final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
+		defaultComboBoxModel1.addElement("25");
+		defaultComboBoxModel1.addElement("30");
+		defaultComboBoxModel1.addElement("35");
+		defaultComboBoxModel1.addElement("40");
+		defaultComboBoxModel1.addElement("45");
+		pomodoroLengthComboBox.setModel(defaultComboBoxModel1);
+		panel1.add(pomodoroLengthComboBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label2 = new JLabel();
-		label2.setText("Break length:");
-		rootPanel.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		label2.setText("minutes");
+		panel1.add(label2, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label3 = new JLabel();
-		label3.setText("Ring volume:");
-		rootPanel.add(label3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		final Spacer spacer1 = new Spacer();
-		rootPanel.add(spacer1, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-		final Spacer spacer2 = new Spacer();
-		rootPanel.add(spacer2, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-		pomodoroLengthSlider = new JSlider();
-		pomodoroLengthSlider.setMaximum(120);
-		pomodoroLengthSlider.setValue(25);
-		rootPanel.add(pomodoroLengthSlider, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		slider2 = new JSlider();
-		slider2.setMaximum(30);
-		slider2.setValue(5);
-		rootPanel.add(slider2, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		slider3 = new JSlider();
-		slider3.setMaximum(3);
-		slider3.setValue(1);
-		rootPanel.add(slider3, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		popupEnabledCheckBox = new JCheckBox();
-		popupEnabledCheckBox.setText("Popup enabled");
-		rootPanel.add(popupEnabledCheckBox, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		label3.setText("Break length:");
+		label3.setDisplayedMnemonic('B');
+		label3.setDisplayedMnemonicIndex(0);
+		panel1.add(label3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		breakLengthComboBox = new JComboBox();
+		breakLengthComboBox.setEditable(true);
+		final DefaultComboBoxModel defaultComboBoxModel2 = new DefaultComboBoxModel();
+		defaultComboBoxModel2.addElement("5");
+		defaultComboBoxModel2.addElement("10");
+		defaultComboBoxModel2.addElement("15");
+		breakLengthComboBox.setModel(defaultComboBoxModel2);
+		panel1.add(breakLengthComboBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		final JLabel label4 = new JLabel();
+		label4.setText("minutes");
+		panel1.add(label4, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		final JLabel label5 = new JLabel();
+		label5.setText("Ring volume:");
+		panel1.add(label5, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		ringVolumeSlider = new JSlider();
+		ringVolumeSlider.setMaximum(3);
+		ringVolumeSlider.setSnapToTicks(true);
+		ringVolumeSlider.setValue(1);
+		panel1.add(ringVolumeSlider, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		final JLabel label6 = new JLabel();
+		label6.setText("Popup:");
+		panel1.add(label6, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		popupCheckBox = new JCheckBox();
+		popupCheckBox.setText("disabled");
+		panel1.add(popupCheckBox, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		label1.setLabelFor(pomodoroLengthComboBox);
+		label3.setLabelFor(breakLengthComboBox);
 	}
 
 	/**

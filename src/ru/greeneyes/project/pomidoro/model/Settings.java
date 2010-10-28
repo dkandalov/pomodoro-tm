@@ -22,6 +22,10 @@ import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
+ * Stores pomodoro plugin settings (see fields for details).
+ * The state of this class is persisted by IntelliJ.
+ * This is class must be registered in plugin.xml.
+ * <p/><p/>
  * User: dima
  * Date: May 29, 2010
  */
@@ -29,7 +33,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 public class Settings implements PersistentStateComponent<Settings> {
 	public int pomodoroLength = 25;
 	public int breakLength = 5;
-	public boolean ringEnabled = true;
+	public int ringVolume = 1;
 	public boolean popupEnabled = true;
 	private long timeoutToContinuePomodoro = MILLISECONDS.convert(5, MINUTES);
 
@@ -44,7 +48,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 	}
 
 	public boolean isRingEnabled() {
-		return ringEnabled;
+		return ringVolume > 0;
 	}
 
 	public boolean isPopupEnabled() {
@@ -69,5 +73,29 @@ public class Settings implements PersistentStateComponent<Settings> {
 	@Override
 	public Settings getState() {
 		return this;
+	}
+
+	public void loadFrom(Settings settings) {
+		pomodoroLength = settings.pomodoroLength;
+		breakLength = settings.breakLength;
+		ringVolume = settings.ringVolume;
+		popupEnabled = settings.popupEnabled;
+	}
+
+	public void saveTo(Settings settings) {
+		settings.pomodoroLength = pomodoroLength;
+		settings.breakLength = breakLength;
+		settings.ringVolume = ringVolume;
+		settings.popupEnabled = popupEnabled;
+	}
+
+	@SuppressWarnings({"RedundantIfStatement"})
+	public boolean isDifferentFrom(Settings settings) {
+		if (pomodoroLength != settings.pomodoroLength) return true;
+		if (breakLength != settings.breakLength) return true;
+		if (ringVolume != settings.ringVolume) return true;
+		if (popupEnabled != settings.popupEnabled) return true;
+
+		return false;
 	}
 }
