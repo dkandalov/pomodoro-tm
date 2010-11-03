@@ -11,13 +11,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package ru.greeneyes.project.pomidoro;
+package ru.greeneyes.project.pomidoro.toolkitwindow;
 
-import ru.greeneyes.project.pomidoro.model.PomodoroModelState;
-import ru.greeneyes.project.pomidoro.model.Settings;
 import ru.greeneyes.project.pomidoro.model.ControlThread;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
-import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroPresenter;
+import ru.greeneyes.project.pomidoro.model.PomodoroModelState;
+import ru.greeneyes.project.pomidoro.model.Settings;
 
 import javax.swing.*;
 
@@ -25,7 +24,7 @@ import javax.swing.*;
  * User: dima
  * Date: May 29, 2010
  */
-public class Pomodoro_Playground {
+public class PomodoroForm_Playground {
 	public static void main(String[] args) {
 		MySettings config = new MySettings();
 		PomodoroModel model = new PomodoroModel(config, new PomodoroModelState());
@@ -42,12 +41,14 @@ public class Pomodoro_Playground {
 	private static class MySettings extends Settings {
 		@Override
 		public long getPomodoroLength() {
-			return 5 * 1000;
+			// timeout should be > 10 to progress in UI
+			// because of PomodoroPresenter.hack_for_jdk1_6_u06__IDEA_9_0_2__winXP()
+			return 15 * 1000;
 		}
 
 		@Override
 		public long getBreakLength() {
-			return 5 * 1000;
+			return 15 * 1000;
 		}
 	}
 }

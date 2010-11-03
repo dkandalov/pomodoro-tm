@@ -5,7 +5,7 @@
  + better pomodoro icon.. or copy one from pomodoro app
  + persist pomodoro amount
  + persist pomodoro time (in case IDEA is restarted during pomodoro) (dima)
- - configuration panel
+ + configuration panel
  - sound volume configuration (mq0)
  - minimize, block window on pomodoro end
  + "Better" popup.. search for "Compilation completed with xxx warnings", "Loaded classes are up-to-date nothing to

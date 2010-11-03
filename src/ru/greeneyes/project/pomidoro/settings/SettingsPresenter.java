@@ -13,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * // TODO
- * <p/>
  * User: dima
  * Date: Oct 18, 2010
  */
@@ -81,23 +79,26 @@ public class SettingsPresenter implements Configurable {
 	private void updateUIModel() {
 		if (updatingUI) return;
 
-		Object selectedItem = settingsForm.pomodoroLengthComboBox.getSelectedItem();
 		try {
-			uiModel.pomodoroLength = Integer.valueOf((String) selectedItem);
+			uiModel.pomodoroLength = selectedItemAsInteger(settingsForm.pomodoroLengthComboBox);
 		} catch (NumberFormatException e) {
-			e.printStackTrace(); // TODO
+			uiModel.pomodoroLength = new Settings().pomodoroLength;
 		}
 
-		selectedItem = settingsForm.breakLengthComboBox.getSelectedItem();
 		try {
-			uiModel.breakLength = Integer.valueOf((String) selectedItem);
+			uiModel.breakLength = selectedItemAsInteger(settingsForm.breakLengthComboBox);
 		} catch (NumberFormatException e) {
-			e.printStackTrace(); // TODO
+			uiModel.breakLength = new Settings().breakLength;
 		}
 
 		uiModel.ringVolume = settingsForm.ringVolumeSlider.getValue();
 
 		uiModel.popupEnabled = settingsForm.popupCheckBox.isSelected();
+	}
+
+	private static Integer selectedItemAsInteger(JComboBox comboBox) {
+		String s = ((String) comboBox.getSelectedItem()).trim();
+		return Integer.valueOf(s);
 	}
 
 	private void updateUI() {
@@ -110,7 +111,6 @@ public class SettingsPresenter implements Configurable {
 		settingsForm.ringVolumeSlider.setValue(uiModel.ringVolume);
 
 		settingsForm.popupCheckBox.setSelected(uiModel.popupEnabled);
-		settingsForm.popupCheckBox.setText(uiModel.popupEnabled ? "enabled" : "disabled"); // TODO
 
 		updatingUI = false;
 	}

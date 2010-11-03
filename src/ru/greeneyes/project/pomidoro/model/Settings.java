@@ -98,4 +98,15 @@ public class Settings implements PersistentStateComponent<Settings> {
 
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "Settings{" +
+				"pomodoroLength=" + pomodoroLength +
+				", breakLength=" + breakLength +
+				", ringVolume=" + ringVolume +
+				", popupEnabled=" + popupEnabled +
+				", timeoutToContinuePomodoro=" + timeoutToContinuePomodoro +
+				'}';
+	}
 }

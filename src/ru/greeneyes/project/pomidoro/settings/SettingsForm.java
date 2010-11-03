@@ -92,9 +92,11 @@ public class SettingsForm {
 		panel1.add(ringVolumeSlider, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label6 = new JLabel();
 		label6.setText("Popup:");
+		label6.setToolTipText("");
 		panel1.add(label6, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		popupCheckBox = new JCheckBox();
-		popupCheckBox.setText("disabled");
+		popupCheckBox.setText("");
+		popupCheckBox.setToolTipText("Show popup when pomodoro is finished");
 		panel1.add(popupCheckBox, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		label1.setLabelFor(pomodoroLengthComboBox);
 		label3.setLabelFor(breakLengthComboBox);
