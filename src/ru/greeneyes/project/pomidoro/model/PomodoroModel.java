@@ -27,6 +27,7 @@ public class PomodoroModel {
 	private static final int PROGRESS_INTERVAL_MILLIS = 1000;
 
 	public enum PomodoroState {
+		// TODO document states
 		STOP,
 		RUN,
 		BREAK

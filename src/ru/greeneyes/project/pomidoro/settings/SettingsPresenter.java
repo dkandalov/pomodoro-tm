@@ -98,7 +98,9 @@ public class SettingsPresenter implements Configurable {
 
 	private static Integer selectedItemAsInteger(JComboBox comboBox) {
 		String s = ((String) comboBox.getSelectedItem()).trim();
-		return Integer.valueOf(s);
+		Integer value = Integer.valueOf(s);
+		if (value < 5) return 5;
+		return value;
 	}
 
 	private void updateUI() {

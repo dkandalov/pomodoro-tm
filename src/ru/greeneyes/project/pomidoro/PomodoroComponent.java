@@ -119,7 +119,9 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 	}
 
 	private static class UserNotifier {
-		private final AudioClip ringSound = Applet.newAudioClip(getClass().getResource("/resources/ring.wav"));
+		private final AudioClip ringSound1 = Applet.newAudioClip(getClass().getResource("/resources/ring.wav"));
+		private final AudioClip ringSound2 = Applet.newAudioClip(getClass().getResource("/resources/ring2.wav"));
+		private final AudioClip ringSound3 = Applet.newAudioClip(getClass().getResource("/resources/ring3.wav"));
 
 		public UserNotifier(final Settings settings, final PomodoroModel model) {
 			model.addUpdateListener(this, new Runnable() {
@@ -128,12 +130,12 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 					switch (model.getState()) {
 						case STOP:
 							if (model.getLastState() == BREAK && !model.wasManuallyStopped()) {
-								if (settings.isRingEnabled()) ringSound.play();
+								if (settings.isRingEnabled()) playRingSound(settings.ringVolume);
 							}
 							break;
 						case BREAK:
 							if (model.getLastState() != BREAK) {
-								if (settings.isRingEnabled()) ringSound.play();
+								if (settings.isRingEnabled()) playRingSound(settings.ringVolume);
 								if (settings.isPopupEnabled()) showPopupNotification();
 							}
 							break;
@@ -142,12 +144,30 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 			});
 		}
 
+		private void playRingSound(int ringVolume) {
+			switch (ringVolume) {
+				case 0:
+					break;
+				case 1:
+					ringSound1.play();
+					break;
+				case 2:
+					ringSound2.play();
+					break;
+				case 3:
+					ringSound3.play();
+					break;
+				default:
+					throw new IllegalStateException();
+			}
+		}
+
 		private void showPopupNotification() {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
 					DataContext dataContext = DataManager.getInstance().getDataContext();
-					Project project = (Project) dataContext.getData(PlatformDataKeys.PROJECT.getName());
+					Project project = PlatformDataKeys.PROJECT.getData(dataContext);
 					if (project == null) return;
 
 					String statusMessage = UIBundle.message("notification.text");
