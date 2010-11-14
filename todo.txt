@@ -1,3 +1,5 @@
+ - minimize, block window on pomodoro end
+ - task name and stats
  + start/stop from toolbar (dima)
  + pomodoro icon in toolbar (dima)
  + tooltip in toolbar with pomodoro amount (dima)
@@ -6,11 +8,9 @@
  + persist pomodoro amount
  + persist pomodoro time (in case IDEA is restarted during pomodoro) (dima)
  + configuration panel
- - sound volume configuration (mq0)
- - minimize, block window on pomodoro end
+ + sound volume configuration
  + "Better" popup.. search for "Compilation completed with xxx warnings", "Loaded classes are up-to-date nothing to
 reload"?
- - task name and stats
 
 
 UI tweaks:

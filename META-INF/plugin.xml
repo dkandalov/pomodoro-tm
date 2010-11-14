@@ -1,15 +1,14 @@
 <idea-plugin version="2">
     <name>Pomodoro-tm</name>
-    <description>Pomodoro time management plugin.</description>
-    <version>0.2</version>
+    <description>Pomodoro timer</description>
+    <version>0.3</version>
     <vendor url="http://github.com/dkandalov/pomodoro-tm">mq0</vendor>
     <idea-version since-build="8000"/>
     <description>
         <![CDATA[
 	<html><body>
-	Time management helper for Pomodoro Technique. (http://www.pomodorotechnique.com)</br>
-	The Pomodoro Technique™ is a way to get the most out of time management. Turn time into a valuable ally to 
-	accomplish what we want to do and chart continuous improvement in the way we do it.</br>
+	Time management timer for Pomodoro Technique. (http://www.pomodorotechnique.com)</br>
+	The Pomodoro Technique™ is a way to get the most out of time management.</br>
 	The basic unit of work in the Pomodoro Technique™ can be split in five simple steps:
    <ol>
    <li>Choose a task to be accomplished</li>
@@ -25,6 +24,7 @@
         <![CDATA[<html><body>
         <ul>
             <li>0.2 - added ring sound, status bar timer, popup notification, ctrl+shift+P shortcut</li>
+            <li>0.3 - added settings UI, ring volume</li>
         </ul>
         </body></html>
         ]]>
