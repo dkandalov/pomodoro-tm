@@ -14,9 +14,12 @@
 package ru.greeneyes.project.pomidoro.model;
 
 /**
-* User: dima
-* Date: May 30, 2010
-*/
+ * (Note that {@link com.intellij.openapi.actionSystem.ActionManager#addTimerListener(int, com.intellij.openapi.actionSystem.TimerListener)} 
+ * won't work as a timer callback)
+ *
+ * User: dima
+ * Date: May 30, 2010
+ */
 public class ControlThread extends Thread {
 	private final PomodoroModel model;
 	private volatile boolean shouldStop;

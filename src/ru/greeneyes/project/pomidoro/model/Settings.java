@@ -35,6 +35,8 @@ public class Settings implements PersistentStateComponent<Settings> {
 	public int breakLength = 5;
 	public int ringVolume = 1;
 	public boolean popupEnabled = true;
+	public boolean blockDuringBreak = false; // TODO don't access fields directly from other classes
+
 	private long timeoutToContinuePomodoro = MILLISECONDS.convert(5, MINUTES);
 
 	public long getPomodoroLength() {
@@ -47,12 +49,16 @@ public class Settings implements PersistentStateComponent<Settings> {
 		return MILLISECONDS.convert(breakLength, MINUTES);
 	}
 
-	public boolean isRingEnabled() {
+	public boolean isRingEnabled() { // TODO remove
 		return ringVolume > 0;
 	}
 
 	public boolean isPopupEnabled() {
 		return popupEnabled;
+	}
+
+	public boolean isBlockDuringBreak() {
+		return blockDuringBreak;
 	}
 
 	/**
@@ -80,6 +86,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 		breakLength = settings.breakLength;
 		ringVolume = settings.ringVolume;
 		popupEnabled = settings.popupEnabled;
+		blockDuringBreak = settings.blockDuringBreak;
 	}
 
 	public void saveTo(Settings settings) {
@@ -87,6 +94,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 		settings.breakLength = breakLength;
 		settings.ringVolume = ringVolume;
 		settings.popupEnabled = popupEnabled;
+		settings.blockDuringBreak = blockDuringBreak;
 	}
 
 	@SuppressWarnings({"RedundantIfStatement"})
@@ -95,6 +103,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 		if (breakLength != settings.breakLength) return true;
 		if (ringVolume != settings.ringVolume) return true;
 		if (popupEnabled != settings.popupEnabled) return true;
+		if (blockDuringBreak != settings.blockDuringBreak) return true;
 
 		return false;
 	}
@@ -102,10 +111,11 @@ public class Settings implements PersistentStateComponent<Settings> {
 	@Override
 	public String toString() {
 		return "Settings{" +
-				"pomodoroLength=" + pomodoroLength +
+				"popupEnabled=" + popupEnabled +
+				", pomodoroLength=" + pomodoroLength +
 				", breakLength=" + breakLength +
 				", ringVolume=" + ringVolume +
-				", popupEnabled=" + popupEnabled +
+				", blockDuringBreak=" + blockDuringBreak +
 				", timeoutToContinuePomodoro=" + timeoutToContinuePomodoro +
 				'}';
 	}

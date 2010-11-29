@@ -23,8 +23,10 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.MessageType;
 import com.intellij.openapi.wm.ToolWindowManager;
+import com.intellij.openapi.wm.WindowManager;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
+import ru.greeneyes.project.pomidoro.modalwindow.ModalDialog;
 import ru.greeneyes.project.pomidoro.model.ControlThread;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 import ru.greeneyes.project.pomidoro.model.PomodoroModelState;
@@ -35,6 +37,7 @@ import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolkitWindow;
 import javax.swing.*;
 import java.applet.Applet;
 import java.applet.AudioClip;
+import java.awt.*;
 
 import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BREAK;
 
@@ -119,9 +122,11 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 	}
 
 	private static class UserNotifier {
+		// TODO sound play is very slow the first time
 		private final AudioClip ringSound1 = Applet.newAudioClip(getClass().getResource("/resources/ring.wav"));
 		private final AudioClip ringSound2 = Applet.newAudioClip(getClass().getResource("/resources/ring2.wav"));
 		private final AudioClip ringSound3 = Applet.newAudioClip(getClass().getResource("/resources/ring3.wav"));
+		private ModalDialog modalDialog;
 
 		public UserNotifier(final Settings settings, final PomodoroModel model) {
 			model.addUpdateListener(this, new Runnable() {
@@ -131,12 +136,14 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 						case STOP:
 							if (model.getLastState() == BREAK && !model.wasManuallyStopped()) {
 								if (settings.isRingEnabled()) playRingSound(settings.ringVolume);
+								if (settings.isBlockDuringBreak()) unblockIntelliJ();
 							}
 							break;
 						case BREAK:
 							if (model.getLastState() != BREAK) {
 								if (settings.isRingEnabled()) playRingSound(settings.ringVolume);
 								if (settings.isPopupEnabled()) showPopupNotification();
+								if (settings.isBlockDuringBreak()) blockIntelliJ();
 							}
 							break;
 					}
@@ -144,9 +151,22 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 			});
 		}
 
+		private void blockIntelliJ() {
+			Window window = WindowManager.getInstance().getFrame(
+			        PlatformDataKeys.PROJECT.getData(DataManager.getInstance().getDataContext()));
+
+			modalDialog = new ModalDialog(window);
+			modalDialog.show();
+		}
+
+		private void unblockIntelliJ() {
+			modalDialog.hide();
+		}
+
 		private void playRingSound(int ringVolume) {
 			switch (ringVolume) {
 				case 0:
+					// ring is disabled
 					break;
 				case 1:
 					ringSound1.play();

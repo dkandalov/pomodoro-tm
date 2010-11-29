@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
  * @author ivanalx
  * @date 28.04.2010 18:27:28
  */
-public class PomodoroForm {
+class PomodoroForm {
 	private JProgressBar progressBar;
 	private JButton controlButton;
 	private JPanel rootPanel;

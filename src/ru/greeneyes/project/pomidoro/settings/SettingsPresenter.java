@@ -107,6 +107,7 @@ public class SettingsPresenter implements Configurable {
 		uiModel.ringVolume = settingsForm.ringVolumeSlider.getValue();
 
 		uiModel.popupEnabled = settingsForm.popupCheckBox.isSelected();
+		uiModel.blockDuringBreak = settingsForm.blockDuringBreak.isSelected();
 	}
 
 	private static Integer selectedItemAsInteger(JComboBox comboBox) {
@@ -125,7 +126,8 @@ public class SettingsPresenter implements Configurable {
 
 		settingsForm.ringVolumeSlider.setValue(uiModel.ringVolume);
 
-		settingsForm.popupCheckBox.setSelected(uiModel.popupEnabled);
+		settingsForm.popupCheckBox.setSelected(uiModel.isPopupEnabled());
+		settingsForm.blockDuringBreak.setSelected(uiModel.isBlockDuringBreak());
 
 		updatingUI = false;
 	}

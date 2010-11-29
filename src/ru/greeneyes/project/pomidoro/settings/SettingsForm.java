@@ -24,13 +24,13 @@ import java.awt.*;
  * User: dima
  * Date: Oct 18, 2010
  */
-public class SettingsForm {
+class SettingsForm {
 	public JComboBox pomodoroLengthComboBox;
 	public JComboBox breakLengthComboBox;
-	public JSlider ringVolumeSlider;
+	public JSlider ringVolumeSlider; // TODO use tooltip?
 	public JCheckBox popupCheckBox;
+	public JCheckBox blockDuringBreak;
 	private JPanel rootPanel;
-	private JCheckBox underDevelopmentComingSoonCheckBox;
 
 	public JPanel getRootPanel() {
 		return rootPanel;
@@ -115,10 +115,11 @@ public class SettingsForm {
 		final JLabel label7 = new JLabel();
 		label7.setText("Block IntelliJ during break:");
 		panel1.add(label7, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		underDevelopmentComingSoonCheckBox = new JCheckBox();
-		underDevelopmentComingSoonCheckBox.setEnabled(false);
-		underDevelopmentComingSoonCheckBox.setText("Under development. Coming soon.");
-		panel1.add(underDevelopmentComingSoonCheckBox, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		blockDuringBreak = new JCheckBox();
+		blockDuringBreak.setActionCommand("");
+		blockDuringBreak.setDoubleBuffered(true);
+		blockDuringBreak.setToolTipText("Use it if you tend to skip breaks between pomodoros.");
+		panel1.add(blockDuringBreak, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		label1.setLabelFor(pomodoroLengthComboBox);
 		label3.setLabelFor(breakLengthComboBox);
 	}
