@@ -31,13 +31,16 @@ import static java.util.concurrent.TimeUnit.MINUTES;
  */
 @State(name = "PomodoroSettings", storages = {@Storage(id = "other", file = "$APP_CONFIG$/pomodoro.settings.xml")})
 public class Settings implements PersistentStateComponent<Settings> {
-	public int pomodoroLength = 25;
-	public int breakLength = 5;
+	public static final int DEFAULT_POMODORO_LENGTH = 25;
+	public static final int DEFAULT_BREAK_LENGTH = 5;
+
+	public int pomodoroLength = DEFAULT_POMODORO_LENGTH;
+	public int breakLength = DEFAULT_BREAK_LENGTH;
 	public int ringVolume = 1;
 	public boolean popupEnabled = true;
-	public boolean blockDuringBreak = false; // TODO don't access fields directly from other classes
-
-	private long timeoutToContinuePomodoro = MILLISECONDS.convert(5, MINUTES);
+	public boolean blockDuringBreak = false;
+	
+	private long timeoutToContinuePomodoro = MILLISECONDS.convert(DEFAULT_BREAK_LENGTH, MINUTES);
 
 	public long getPomodoroLength() {
 //		return 10000;
@@ -49,8 +52,8 @@ public class Settings implements PersistentStateComponent<Settings> {
 		return MILLISECONDS.convert(breakLength, MINUTES);
 	}
 
-	public boolean isRingEnabled() { // TODO remove
-		return ringVolume > 0;
+	public int getRingVolume() {
+		return ringVolume;
 	}
 
 	public boolean isPopupEnabled() {
@@ -59,6 +62,26 @@ public class Settings implements PersistentStateComponent<Settings> {
 
 	public boolean isBlockDuringBreak() {
 		return blockDuringBreak;
+	}
+
+	public void setPomodoroLength(int pomodoroLength) {
+		this.pomodoroLength = pomodoroLength;
+	}
+
+	public void setBreakLength(int breakLength) {
+		this.breakLength = breakLength;
+	}
+
+	public void setRingVolume(int ringVolume) {
+		this.ringVolume = ringVolume;
+	}
+
+	public void setPopupEnabled(boolean popupEnabled) {
+		this.popupEnabled = popupEnabled;
+	}
+
+	public void setBlockDuringBreak(boolean blockDuringBreak) {
+		this.blockDuringBreak = blockDuringBreak;
 	}
 
 	/**

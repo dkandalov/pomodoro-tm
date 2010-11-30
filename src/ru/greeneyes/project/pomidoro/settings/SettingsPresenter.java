@@ -30,6 +30,8 @@ import java.awt.event.ActionListener;
  * Date: Oct 18, 2010
  */
 public class SettingsPresenter implements Configurable {
+	private static final int MIN_TIME_INTERVAL = 5;
+
 	private final Settings settings;
 	private SettingsForm settingsForm;
 	private Settings uiModel;
@@ -93,27 +95,27 @@ public class SettingsPresenter implements Configurable {
 		if (updatingUI) return;
 
 		try {
-			uiModel.pomodoroLength = selectedItemAsInteger(settingsForm.pomodoroLengthComboBox);
+			uiModel.setPomodoroLength(selectedItemAsInteger(settingsForm.pomodoroLengthComboBox));
 		} catch (NumberFormatException e) {
-			uiModel.pomodoroLength = new Settings().pomodoroLength;
+			uiModel.setPomodoroLength(Settings.DEFAULT_POMODORO_LENGTH);
 		}
 
 		try {
-			uiModel.breakLength = selectedItemAsInteger(settingsForm.breakLengthComboBox);
+			uiModel.setBreakLength(selectedItemAsInteger(settingsForm.breakLengthComboBox));
 		} catch (NumberFormatException e) {
-			uiModel.breakLength = new Settings().breakLength;
+			uiModel.setBreakLength(Settings.DEFAULT_BREAK_LENGTH);
 		}
 
-		uiModel.ringVolume = settingsForm.ringVolumeSlider.getValue();
+		uiModel.setRingVolume(settingsForm.ringVolumeSlider.getValue());
 
-		uiModel.popupEnabled = settingsForm.popupCheckBox.isSelected();
-		uiModel.blockDuringBreak = settingsForm.blockDuringBreak.isSelected();
+		uiModel.setPopupEnabled(settingsForm.popupCheckBox.isSelected());
+		uiModel.setBlockDuringBreak(settingsForm.blockDuringBreak.isSelected());
 	}
 
 	private static Integer selectedItemAsInteger(JComboBox comboBox) {
 		String s = ((String) comboBox.getSelectedItem()).trim();
 		Integer value = Integer.valueOf(s);
-		if (value < 5) return 5;
+		if (value < MIN_TIME_INTERVAL) return MIN_TIME_INTERVAL;
 		return value;
 	}
 
@@ -121,10 +123,10 @@ public class SettingsPresenter implements Configurable {
 		if (updatingUI) return;
 		updatingUI = true;
 
-		settingsForm.pomodoroLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.pomodoroLength));
-		settingsForm.breakLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.breakLength));
+		settingsForm.pomodoroLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.getPomodoroLength()));
+		settingsForm.breakLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.getBreakLength()));
 
-		settingsForm.ringVolumeSlider.setValue(uiModel.ringVolume);
+		settingsForm.ringVolumeSlider.setValue(uiModel.getRingVolume());
 
 		settingsForm.popupCheckBox.setSelected(uiModel.isPopupEnabled());
 		settingsForm.blockDuringBreak.setSelected(uiModel.isBlockDuringBreak());

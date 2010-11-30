@@ -135,13 +135,13 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 					switch (model.getState()) {
 						case STOP:
 							if (model.getLastState() == BREAK && !model.wasManuallyStopped()) {
-								if (settings.isRingEnabled()) playRingSound(settings.ringVolume);
+								playRingSound(settings.getRingVolume());
 								if (settings.isBlockDuringBreak()) unblockIntelliJ();
 							}
 							break;
 						case BREAK:
 							if (model.getLastState() != BREAK) {
-								if (settings.isRingEnabled()) playRingSound(settings.ringVolume);
+								playRingSound(settings.getRingVolume());
 								if (settings.isPopupEnabled()) showPopupNotification();
 								if (settings.isBlockDuringBreak()) blockIntelliJ();
 							}
