@@ -167,7 +167,7 @@ public class PomodoroModel {
 		startTime = pomodoroModelState.getStartTime();
 		pomodorosAmount = pomodoroModelState.getPomodorosAmount();
 
-		if (pomodoroModelState.getPomodoroState() == RUN) {
+		if (pomodoroModelState.getPomodoroState() != STOP) {
 			long timeSincePomodoroStart = System.currentTimeMillis() - pomodoroModelState.getStartTime();
 			boolean shouldNotContinuePomodoro = (timeSincePomodoroStart > settings.getTimeoutToContinuePomodoro());
 			if (shouldNotContinuePomodoro) {
