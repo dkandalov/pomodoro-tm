@@ -47,7 +47,7 @@
             </constraints>
             <properties>
               <icon value="resources/play-icon.png"/>
-              <text resource-bundle="resources/messages" key="toolkitwindow.button_start"/>
+              <text resource-bundle="resources/messages" key="toolwindow.button_start"/>
             </properties>
           </component>
           <hspacer id="57135">
@@ -74,7 +74,7 @@
               <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text resource-bundle="resources/messages" key="toolkitwindow.pomodoro_amount"/>
+              <text resource-bundle="resources/messages" key="toolwindow.pomodoro_amount"/>
             </properties>
           </component>
         </children>

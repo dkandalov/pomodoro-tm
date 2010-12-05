@@ -27,9 +27,17 @@ public class PomodoroModel {
 	private static final int PROGRESS_INTERVAL_MILLIS = 1000;
 
 	public enum PomodoroState {
-		// TODO document states
+		/**
+		 * Pomodoro timer was not started or was stopped during pomodoro or break.
+		 */
 		STOP,
+		/**
+		 * Pomodoro in progress.
+		 */
 		RUN,
+		/**
+		 * Pomodoro during break. Can only happen after completing a pomodoro.
+		 */
 		BREAK
 	}
 
@@ -42,7 +50,12 @@ public class PomodoroModel {
 	private int progress;
 	private int pomodorosAmount;
 	private boolean wasManuallyStopped;
-	private final WeakHashMap<Object, Runnable> listeners = new WeakHashMap<Object, Runnable>(); // TODO why weak hashmap?
+	/**
+	 * It's a WeakHashMap to make it simpler to automatically remove listeners.
+	 * The most common usage is when there are several IntelliJ windows, UI components subscribe to model and
+	 * then window is being closed.
+	 */
+	private final WeakHashMap<Object, Runnable> listeners = new WeakHashMap<Object, Runnable>();
 
 	private final PomodoroModelState pomodoroModelState;
 

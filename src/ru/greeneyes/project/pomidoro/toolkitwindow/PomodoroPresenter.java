@@ -68,17 +68,17 @@ public class PomodoroPresenter {
 			public void run() {
 				switch (model.getState()) {
 					case RUN:
-						form.getControlButton().setText(UIBundle.message("toolkitwindow.button_stop"));
+						form.getControlButton().setText(UIBundle.message("toolwindow.button_stop"));
 						form.getControlButton().setIcon(stopIcon);
-						progressBarPrefix = UIBundle.message("toolkitwindow.prefix_working");
+						progressBarPrefix = UIBundle.message("toolwindow.prefix_working");
 						break;
 					case STOP:
-						form.getControlButton().setText(UIBundle.message("toolkitwindow.button_start"));
+						form.getControlButton().setText(UIBundle.message("toolwindow.button_start"));
 						form.getControlButton().setIcon(playIcon);
 						break;
 					case BREAK:
-						form.getControlButton().setText(UIBundle.message("toolkitwindow.button_stop"));
-						progressBarPrefix = UIBundle.message("toolkitwindow.button_break");
+						form.getControlButton().setText(UIBundle.message("toolwindow.button_stop"));
+						progressBarPrefix = UIBundle.message("toolwindow.button_break");
 						break;
 					default:
 						throw new IllegalStateException();

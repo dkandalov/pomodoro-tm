@@ -32,7 +32,7 @@ import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 import ru.greeneyes.project.pomidoro.model.PomodoroModelState;
 import ru.greeneyes.project.pomidoro.model.Settings;
 import ru.greeneyes.project.pomidoro.settings.SettingsPresenter;
-import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolkitWindow;
+import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolWindow;
 
 import javax.swing.*;
 import java.applet.Applet;
@@ -191,7 +191,7 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 
 					String statusMessage = UIBundle.message("notification.text");
 					ToolWindowManager.getInstance(project).
-							notifyByBalloon(PomodoroToolkitWindow.TOOL_WINDOW_ID, MessageType.INFO, statusMessage);
+							notifyByBalloon(PomodoroToolWindow.TOOL_WINDOW_ID, MessageType.INFO, statusMessage);
 				}
 			});
 		}

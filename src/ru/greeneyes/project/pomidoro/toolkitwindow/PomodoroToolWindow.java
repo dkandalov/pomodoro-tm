@@ -19,7 +19,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.ui.UI;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
@@ -32,12 +31,12 @@ import javax.swing.*;
  * @author ivanalx
  * @date 28.04.2010 12:02:26
  */
-public class PomodoroToolkitWindow extends AbstractProjectComponent {
+public class PomodoroToolWindow extends AbstractProjectComponent {
 	public static final String TOOL_WINDOW_ID = "Pomodoro";
 
 	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro-icon.png"));
 
-	public PomodoroToolkitWindow(Project project) {
+	public PomodoroToolWindow(Project project) {
 		super(project);
 	}
 
@@ -54,7 +53,7 @@ public class PomodoroToolkitWindow extends AbstractProjectComponent {
 	@Override
 	@NotNull
 	public String getComponentName() {
-		return UIBundle.message("toolkitwindow.component_name");
+		return UIBundle.message("toolwindow.component_name");
 	}
 
 	private void initToolWindow() {
@@ -65,7 +64,7 @@ public class PomodoroToolkitWindow extends AbstractProjectComponent {
 		ToolWindow myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM);
 		myToolWindow.setIcon(pomodoroIcon);
 		ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-		Content content = contentFactory.createContent(presenter.getContentPane(), UIBundle.message("toolkitwindow.title"), false);
+		Content content = contentFactory.createContent(presenter.getContentPane(), UIBundle.message("toolwindow.title"), false);
 		myToolWindow.getContentManager().addContent(content);
 	}
 

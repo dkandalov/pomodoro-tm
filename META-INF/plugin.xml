@@ -42,7 +42,7 @@
 
     <project-components>
         <component>
-            <implementation-class>ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolkitWindow
+            <implementation-class>ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolWindow
             </implementation-class>
         </component>
     </project-components>
