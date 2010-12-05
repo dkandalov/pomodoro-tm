@@ -1,21 +1,19 @@
 <idea-plugin version="2">
     <name>Pomodoro-tm</name>
     <description>Pomodoro timer</description>
-    <version>0.3</version>
+    <version>0.4</version>
     <vendor url="http://github.com/dkandalov/pomodoro-tm">mq0</vendor>
     <idea-version since-build="8000"/>
     <description>
         <![CDATA[
 	<html><body>
 	Time management timer for Pomodoro Technique. (http://www.pomodorotechnique.com)</br>
-	The Pomodoro Technique™ is a way to get the most out of time management.</br>
-	The basic unit of work in the Pomodoro Technique™ can be split in five simple steps:
+	How to use it:</br>
    <ol>
-   <li>Choose a task to be accomplished</li>
-   <li>Set the Pomodoro to 25 minutes (the Pomodoro is the timer)</li>
-   <li>Work on the task until the Pomodoro rings, then put a check on your sheet of paper</li>
-   <li>Take a short break (5 minutes is OK)</li>
-   <li>Every 4 Pomodoros take a longer break</li>
+   <li>Choose a task to be accomplished and start pomodoro timer.</li>
+   <li>Work on the task until the timer rings. If distracted during pomodoro, restart timer.</li>
+   <li>Take a short break.</li>
+   <li>Every 4 Pomodoros take a longer break.</li>
    </ol>
    </body></html>
    ]]>
@@ -25,12 +23,13 @@
         <ul>
             <li>0.2 - added ring sound, status bar timer, popup notification, ctrl+shift+P shortcut</li>
             <li>0.3 - added settings UI, ring volume</li>
+            <li>0.4 - modal window to block IntelliJ during break, option to hide tool window</li>
         </ul>
         </body></html>
         ]]>
     </change-notes>
 
-    <!--This is to make plugin available to other IntelliJ platforms besides IDEA
+    <!--This is to make plugin available to all IntelliJ, not just IDEA
     (http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products)-->
     <depends>com.intellij.modules.platform</depends>
 
@@ -39,13 +38,6 @@
             <implementation-class>ru.greeneyes.project.pomidoro.PomodoroComponent</implementation-class>
         </component>
     </application-components>
-
-    <project-components>
-        <component>
-            <implementation-class>ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolWindow
-            </implementation-class>
-        </component>
-    </project-components>
 
     <actions>
         <action id="Start/stop pomodoro" class="ru.greeneyes.project.pomidoro.PomodoroAction"

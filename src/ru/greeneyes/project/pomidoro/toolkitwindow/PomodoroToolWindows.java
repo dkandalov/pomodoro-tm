@@ -62,7 +62,6 @@ public class PomodoroToolWindows implements ChangeListener {
 			public void projectClosing(Project project) {
 			}
 		});
-
 	}
 
 	@Override
