@@ -46,8 +46,6 @@ import static ru.greeneyes.project.pomidoro.model.PomodoroModel.PomodoroState.BR
  * Date: May 30, 2010
  */
 public class PomodoroComponent implements ApplicationComponent, Configurable {
-	private static final String POMODORO = "Pomodoro";
-
 	private ControlThread controlThread;
 	private PomodoroModel model;
 	private SettingsPresenter settingsPresenter;
@@ -73,7 +71,7 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 	@NotNull
 	@Override
 	public String getComponentName() {
-		return POMODORO;
+		return "Pomodoro";
 	}
 
 	public PomodoroModel getModel() {
@@ -122,7 +120,7 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 	}
 
 	private static class UserNotifier {
-		// TODO sound play is very slow the first time
+		// TODO sound playback seems to be slow for the first time
 		private final AudioClip ringSound1 = Applet.newAudioClip(getClass().getResource("/resources/ring.wav"));
 		private final AudioClip ringSound2 = Applet.newAudioClip(getClass().getResource("/resources/ring2.wav"));
 		private final AudioClip ringSound3 = Applet.newAudioClip(getClass().getResource("/resources/ring3.wav"));
@@ -160,6 +158,7 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 		}
 
 		private void unblockIntelliJ() {
+			if (modalDialog == null) return;
 			modalDialog.hide();
 		}
 

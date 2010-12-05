@@ -32,11 +32,16 @@ public class ControlThread extends Thread {
 	@Override
 	public void run() {
 		while (!shouldStop) {
-			model.updateState();
 			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+				model.updateState();
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			} catch (RuntimeException e) {
+				// this thread shouldn't be destroyed in case there are coding errors
+				e.printStackTrace(); // TODO report exception
 			}
 		}
 	}

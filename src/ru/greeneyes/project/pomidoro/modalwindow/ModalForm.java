@@ -1,35 +1,43 @@
+/*
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package ru.greeneyes.project.pomidoro.modalwindow;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import ru.greeneyes.project.pomidoro.UIBundle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import static java.awt.event.KeyEvent.VK_ESCAPE;
+import java.util.ResourceBundle;
 
 /**
  * User: dima
  * Date: Nov 29, 2010
  */
 class ModalForm {
-	// TODO move to resources
-	private static final String TEXT = "To unlock, click on pomodoro picture % times and press ESC. (Double-clicks don't count.)";
-
 	public JPanel rootPanel;
-	private JLabel pomodoroPicture;
 	private JLabel messageLabel;
 	private final FormModel model;
 
-	public ModalForm(final FormModel model, final Window jDialog) {
+	public ModalForm(final FormModel model) {
 		this.model = model;
 
 		$$$setupUI$$$();
-		pomodoroPicture.addMouseListener(new MouseAdapter() {
+
+		MouseAdapter mouseAdapter = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent mouseEvent) {
 				if (mouseEvent.getClickCount() == 1) {
@@ -37,25 +45,17 @@ class ModalForm {
 					updateUI();
 				}
 			}
-		});
-		pomodoroPicture.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent keyEvent) {
-				boolean pressedEscape = (keyEvent.getKeyCode() == VK_ESCAPE) && (keyEvent.getModifiers() == 0);
-				if (pressedEscape && model.dialogIsAllowedToBeClosed()) {
-					jDialog.dispose();
-				}
-			}
-		});
-	}
+		};
+		rootPanel.addMouseListener(mouseAdapter);
+		messageLabel.addMouseListener(mouseAdapter);
 
-	private void createUIComponents() {
-		messageLabel = new JLabel();
 		updateUI();
 	}
 
 	private void updateUI() {
-		messageLabel.setToolTipText(TEXT.replace("%", String.valueOf(model.clicksLeft())));
+		String text = UIBundle.message("modalwindow.tooltip", String.valueOf(model.clicksLeft()));
+		rootPanel.setToolTipText(text);
+		messageLabel.setToolTipText(text);
 	}
 
 	/**
@@ -66,21 +66,45 @@ class ModalForm {
 	 * @noinspection ALL
 	 */
 	private void $$$setupUI$$$() {
-		createUIComponents();
 		rootPanel = new JPanel();
-		rootPanel.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
-		pomodoroPicture = new JLabel();
-		pomodoroPicture.setEnabled(true);
-		pomodoroPicture.setFocusable(true);
-		pomodoroPicture.setIcon(new ImageIcon(getClass().getResource("/resources/1.png")));
-		pomodoroPicture.setText("");
-		rootPanel.add(pomodoroPicture, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		final JPanel panel1 = new JPanel();
-		panel1.setLayout(new GridLayoutManager(1, 1, new Insets(5, 0, 10, 0), -1, -1));
-		rootPanel.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		rootPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+		rootPanel.setBackground(new Color(-16777216));
+		rootPanel.setMinimumSize(new Dimension(460, 360));
+		rootPanel.setPreferredSize(new Dimension(460, 360));
+		messageLabel = new JLabel();
+		messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.BOLD, messageLabel.getFont().getSize()));
+		messageLabel.setForeground(new Color(-3355444));
 		messageLabel.setHorizontalTextPosition(11);
-		messageLabel.setText("IntelliJ is blocked until the end of break.");
-		panel1.add(messageLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+		messageLabel.setInheritsPopupMenu(false);
+		this.$$$loadLabelText$$$(messageLabel, ResourceBundle.getBundle("resources/messages").getString("modalwindow.text"));
+		rootPanel.add(messageLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(0, 0), null, null, 0, false));
+	}
+
+	/**
+	 * @noinspection ALL
+	 */
+	private void $$$loadLabelText$$$(JLabel component, String text) {
+		StringBuffer result = new StringBuffer();
+		boolean haveMnemonic = false;
+		char mnemonic = '\0';
+		int mnemonicIndex = -1;
+		for (int i = 0; i < text.length(); i++) {
+			if (text.charAt(i) == '&') {
+				i++;
+				if (i == text.length()) break;
+				if (!haveMnemonic && text.charAt(i) != '&') {
+					haveMnemonic = true;
+					mnemonic = text.charAt(i);
+					mnemonicIndex = result.length();
+				}
+			}
+			result.append(text.charAt(i));
+		}
+		component.setText(result.toString());
+		if (haveMnemonic) {
+			component.setDisplayedMnemonic(mnemonic);
+			component.setDisplayedMnemonicIndex(mnemonicIndex);
+		}
 	}
 
 	/**

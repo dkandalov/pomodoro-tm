@@ -1,26 +1,17 @@
- - minimize, block window on pomodoro end
  - task name and stats
- + start/stop from toolbar (dima)
- + pomodoro icon in toolbar (dima)
- + tooltip in toolbar with pomodoro amount (dima)
- + should be able to change pomodoro shortcut
- + better pomodoro icon.. or copy one from pomodoro app
- + persist pomodoro amount
- + persist pomodoro time (in case IDEA is restarted during pomodoro) (dima)
- + configuration panel
- + sound volume configuration
- + "Better" popup.. search for "Compilation completed with xxx warnings", "Loaded classes are up-to-date nothing to
-reload"?
-
+ + block window on pomodoro end
 
 UI tweaks:
  - pomodoro label shouldn't shift on pomodoro start/stop (only happens in IntelliJ... and not all the time)
 
 bugs:
- + 3 seconds delay after clicking "Start" before timer update
  - Pomodoro toolkit window is disabled when project is being indexed (for example, maven and IDE talk windows are not disabled)
+ - after restart pomodoro rings without a good reason
+ + 3 seconds delay after clicking "Start" before timer update
 
 Would be nice to have:
- - jira integration
+ - statistics, task name (with auto-completion)
+ - integration with tasks
+ - jira integration?
  - integration with IDEA talk plugin (show pomodoro status there) ?
 
