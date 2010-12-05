@@ -14,53 +14,77 @@
 package ru.greeneyes.project.pomidoro.toolkitwindow;
 
 import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.AbstractProjectComponent;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.project.ProjectManagerListener;
 import com.intellij.openapi.wm.ToolWindow;
 import com.intellij.openapi.wm.ToolWindowAnchor;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import org.jetbrains.annotations.NotNull;
 import ru.greeneyes.project.pomidoro.PomodoroComponent;
 import ru.greeneyes.project.pomidoro.UIBundle;
+import ru.greeneyes.project.pomidoro.model.ChangeListener;
+import ru.greeneyes.project.pomidoro.model.Settings;
 
 import javax.swing.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author ivanalx
  * @date 28.04.2010 12:02:26
  */
-public class PomodoroToolWindow extends AbstractProjectComponent {
+public class PomodoroToolWindows implements ChangeListener {
 	public static final String TOOL_WINDOW_ID = "Pomodoro";
 
-	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro-icon.png"));
+	private static final ImageIcon pomodoroIcon = new ImageIcon(PomodoroToolWindows.class.getResource("/resources/pomodoro-icon.png"));
+	private final Set<Project> hasRegisteredWindow = new HashSet<Project>();
 
-	public PomodoroToolWindow(Project project) {
-		super(project);
+	public PomodoroToolWindows() {
+		ProjectManager.getInstance().addProjectManagerListener(new ProjectManagerListener() {
+			@Override
+			public void projectOpened(Project project) {
+				registerWindowFor(project);
+			}
+
+			@Override
+			public void projectClosed(Project project) {
+				unregisterWindowFrom(project);
+			}
+
+			@Override
+			public boolean canCloseProject(Project project) {
+				return true;
+			}
+
+			@Override
+			public void projectClosing(Project project) {
+			}
+		});
+
 	}
 
 	@Override
-	public void projectOpened() {
-		initToolWindow();
+	public void onChange(Settings settings) {
+		Project[] projects = ProjectManager.getInstance().getOpenProjects();
+		for (Project project : projects) {
+			if (settings.isShowToolWindow()) {
+				registerWindowFor(project);
+			} else {
+				unregisterWindowFrom(project);
+			}
+		}
 	}
 
-	@Override
-	public void projectClosed() {
-		unregisterToolWindow();
-	}
+	public void registerWindowFor(Project project) {
+		if (hasRegisteredWindow.contains(project)) return;
+		hasRegisteredWindow.add(project);
 
-	@Override
-	@NotNull
-	public String getComponentName() {
-		return UIBundle.message("toolwindow.component_name");
-	}
-
-	private void initToolWindow() {
 		PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
 		PomodoroPresenter presenter = new PomodoroPresenter(pomodoroComponent.getModel());
 
-		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
+		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
 		ToolWindow myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM);
 		myToolWindow.setIcon(pomodoroIcon);
 		ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
@@ -68,8 +92,10 @@ public class PomodoroToolWindow extends AbstractProjectComponent {
 		myToolWindow.getContentManager().addContent(content);
 	}
 
-	private void unregisterToolWindow() {
-		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(myProject);
-		toolWindowManager.unregisterToolWindow(TOOL_WINDOW_ID);
+	public void unregisterWindowFrom(Project project) {
+		if (hasRegisteredWindow.contains(project)) {
+			hasRegisteredWindow.remove(project);
+			ToolWindowManager.getInstance(project).unregisterToolWindow(TOOL_WINDOW_ID);
+		}
 	}
 }

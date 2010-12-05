@@ -32,7 +32,7 @@ import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 import ru.greeneyes.project.pomidoro.model.PomodoroModelState;
 import ru.greeneyes.project.pomidoro.model.Settings;
 import ru.greeneyes.project.pomidoro.settings.SettingsPresenter;
-import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolWindow;
+import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroToolWindows;
 
 import javax.swing.*;
 import java.applet.Applet;
@@ -56,6 +56,9 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 		settingsPresenter = new SettingsPresenter(settings);
 
 		model = new PomodoroModel(settings, ServiceManager.getService(PomodoroModelState.class));
+
+		PomodoroToolWindows toolWindows = new PomodoroToolWindows();
+		settings.setChangeListener(toolWindows);
 
 		new UserNotifier(settings, model);
 
@@ -190,8 +193,22 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 					if (project == null) return;
 
 					String statusMessage = UIBundle.message("notification.text");
-					ToolWindowManager.getInstance(project).
-							notifyByBalloon(PomodoroToolWindow.TOOL_WINDOW_ID, MessageType.INFO, statusMessage);
+
+					ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+					if (hasPomodoroToolWindow(toolWindowManager)) {
+						toolWindowManager.notifyByBalloon(PomodoroToolWindows.TOOL_WINDOW_ID, MessageType.INFO, statusMessage);
+					} else {
+						toolWindowManager.notifyByBalloon("Project", MessageType.INFO, statusMessage);
+					}
+				}
+
+				private boolean hasPomodoroToolWindow(ToolWindowManager toolWindowManager) {
+					for (String id : toolWindowManager.getToolWindowIds()) {
+						if (PomodoroToolWindows.TOOL_WINDOW_ID.equals(id)) {
+							return true;
+						}
+					}
+					return false;
 				}
 			});
 		}

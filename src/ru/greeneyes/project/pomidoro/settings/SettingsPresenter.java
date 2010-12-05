@@ -71,6 +71,7 @@ public class SettingsPresenter implements Configurable {
 		settingsForm.popupCheckBox.addChangeListener(changeListener);
 		settingsForm.blockDuringBreak.addChangeListener(changeListener);
 		settingsForm.ringVolumeSlider.addChangeListener(changeListener);
+		settingsForm.showToolWindowCheckbox.addChangeListener(changeListener);
 	}
 
 	@Override
@@ -79,17 +80,17 @@ public class SettingsPresenter implements Configurable {
 	}
 
 	public boolean isModified() {
-		return uiModel.isDifferentFrom(settings);
+		return !uiModel.equals(settings);
 	}
 
 	@Override
 	public void apply() throws ConfigurationException {
-		uiModel.saveTo(settings);
+		settings.loadState(uiModel);
 	}
 
 	@Override
 	public void reset() {
-		uiModel.loadFrom(settings);
+		uiModel.loadState(settings);
 		updateUI();
 	}
 
@@ -113,6 +114,7 @@ public class SettingsPresenter implements Configurable {
 
 		uiModel.setPopupEnabled(settingsForm.popupCheckBox.isSelected());
 		uiModel.setBlockDuringBreak(settingsForm.blockDuringBreak.isSelected());
+		uiModel.setShowToolWindow(settingsForm.showToolWindowCheckbox.isSelected());
 	}
 
 	private static Integer selectedItemAsInteger(JComboBox comboBox) {
@@ -136,6 +138,7 @@ public class SettingsPresenter implements Configurable {
 
 		settingsForm.popupCheckBox.setSelected(uiModel.isPopupEnabled());
 		settingsForm.blockDuringBreak.setSelected(uiModel.isBlockDuringBreak());
+		settingsForm.showToolWindowCheckbox.setSelected(uiModel.isShowToolWindow());
 
 		updatingUI = false;
 	}

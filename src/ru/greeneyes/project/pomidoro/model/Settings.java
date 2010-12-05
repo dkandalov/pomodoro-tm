@@ -39,8 +39,10 @@ public class Settings implements PersistentStateComponent<Settings> {
 	public int ringVolume = 1;
 	public boolean popupEnabled = true;
 	public boolean blockDuringBreak = false;
-	
+	public boolean showToolWindow = true;
+
 	private long timeoutToContinuePomodoro = MILLISECONDS.convert(DEFAULT_BREAK_LENGTH, MINUTES);
+	private ChangeListener changeListener;
 
 	public long getPomodoroLengthInMillis() {
 //		return 10000;
@@ -62,6 +64,10 @@ public class Settings implements PersistentStateComponent<Settings> {
 
 	public int getRingVolume() {
 		return ringVolume;
+	}
+
+	public boolean isShowToolWindow() {
+		return showToolWindow;
 	}
 
 	public boolean isPopupEnabled() {
@@ -92,6 +98,10 @@ public class Settings implements PersistentStateComponent<Settings> {
 		this.blockDuringBreak = blockDuringBreak;
 	}
 
+	public void setShowToolWindow(boolean showToolWindow) {
+		this.showToolWindow = showToolWindow;
+	}
+
 	/**
 	 * If IntelliJ is shutdown during pomodoro and then restarted, pomodoro can be continued.
 	 * This property determines how much time can pass before we consider pomodoro to be expired.
@@ -102,9 +112,8 @@ public class Settings implements PersistentStateComponent<Settings> {
 		return timeoutToContinuePomodoro;
 	}
 
-	@Override
-	public void loadState(Settings settings) {
-		XmlSerializerUtil.copyBean(settings, this);
+	public void setChangeListener(ChangeListener changeListener) {
+		this.changeListener = changeListener;
 	}
 
 	@Override
@@ -112,41 +121,52 @@ public class Settings implements PersistentStateComponent<Settings> {
 		return this;
 	}
 
-	public void loadFrom(Settings settings) {
-		pomodoroLength = settings.pomodoroLength;
-		breakLength = settings.breakLength;
-		ringVolume = settings.ringVolume;
-		popupEnabled = settings.popupEnabled;
-		blockDuringBreak = settings.blockDuringBreak;
-	}
-
-	public void saveTo(Settings settings) {
-		settings.pomodoroLength = pomodoroLength;
-		settings.breakLength = breakLength;
-		settings.ringVolume = ringVolume;
-		settings.popupEnabled = popupEnabled;
-		settings.blockDuringBreak = blockDuringBreak;
+	@Override
+	public void loadState(Settings settings) {
+		XmlSerializerUtil.copyBean(settings, this);
+		if (changeListener != null) changeListener.onChange(this);
 	}
 
 	@SuppressWarnings({"RedundantIfStatement"})
-	public boolean isDifferentFrom(Settings settings) {
-		if (pomodoroLength != settings.pomodoroLength) return true;
-		if (breakLength != settings.breakLength) return true;
-		if (ringVolume != settings.ringVolume) return true;
-		if (popupEnabled != settings.popupEnabled) return true;
-		if (blockDuringBreak != settings.blockDuringBreak) return true;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
 
-		return false;
+		Settings settings = (Settings) o;
+
+		if (blockDuringBreak != settings.blockDuringBreak) return false;
+		if (breakLength != settings.breakLength) return false;
+		if (pomodoroLength != settings.pomodoroLength) return false;
+		if (popupEnabled != settings.popupEnabled) return false;
+		if (ringVolume != settings.ringVolume) return false;
+		if (showToolWindow != settings.showToolWindow) return false;
+		if (timeoutToContinuePomodoro != settings.timeoutToContinuePomodoro) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = pomodoroLength;
+		result = 31 * result + breakLength;
+		result = 31 * result + ringVolume;
+		result = 31 * result + (popupEnabled ? 1 : 0);
+		result = 31 * result + (blockDuringBreak ? 1 : 0);
+		result = 31 * result + (showToolWindow ? 1 : 0);
+		result = 31 * result + (int) (timeoutToContinuePomodoro ^ (timeoutToContinuePomodoro >>> 32));
+		return result;
 	}
 
 	@Override
 	public String toString() {
 		return "Settings{" +
-				"popupEnabled=" + popupEnabled +
-				", pomodoroLength=" + pomodoroLength +
+				"pomodoroLength=" + pomodoroLength +
 				", breakLength=" + breakLength +
 				", ringVolume=" + ringVolume +
+				", popupEnabled=" + popupEnabled +
 				", blockDuringBreak=" + blockDuringBreak +
+				", showToolWindow=" + showToolWindow +
 				", timeoutToContinuePomodoro=" + timeoutToContinuePomodoro +
 				'}';
 	}
