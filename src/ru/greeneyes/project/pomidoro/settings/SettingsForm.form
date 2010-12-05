@@ -117,7 +117,7 @@
             </constraints>
             <properties>
               <text value="Show popup:"/>
-              <toolTipText value=""/>
+              <toolTipText resource-bundle="resources/messages" key="settings.popup.tooltip"/>
             </properties>
           </component>
           <component id="9fdf8" class="javax.swing.JCheckBox" binding="popupCheckBox">
@@ -126,7 +126,7 @@
             </constraints>
             <properties>
               <text value=""/>
-              <toolTipText value="Show popup when pomodoro is finished"/>
+              <toolTipText resource-bundle="resources/messages" key="settings.popup.tooltip"/>
             </properties>
           </component>
           <component id="29825" class="javax.swing.JLabel">
@@ -135,6 +135,7 @@
             </constraints>
             <properties>
               <text value="Block IntelliJ during break:"/>
+              <toolTipText resource-bundle="resources/messages" key="settings.blockCheckbox.tooltip"/>
             </properties>
           </component>
           <component id="21abe" class="javax.swing.JCheckBox" binding="blockDuringBreak">
@@ -144,7 +145,7 @@
             <properties>
               <actionCommand value=""/>
               <doubleBuffered value="true"/>
-              <toolTipText value="Use it if you tend to skip breaks between pomodoros."/>
+              <toolTipText resource-bundle="resources/messages" key="settings.blockCheckbox.tooltip"/>
             </properties>
           </component>
         </children>

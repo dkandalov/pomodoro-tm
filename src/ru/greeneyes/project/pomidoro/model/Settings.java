@@ -42,14 +42,22 @@ public class Settings implements PersistentStateComponent<Settings> {
 	
 	private long timeoutToContinuePomodoro = MILLISECONDS.convert(DEFAULT_BREAK_LENGTH, MINUTES);
 
-	public long getPomodoroLength() {
+	public long getPomodoroLengthInMillis() {
 //		return 10000;
-		return MILLISECONDS.convert(pomodoroLength, MINUTES);
+		return MINUTES.toMillis(pomodoroLength);
 	}
 
-	public long getBreakLength() {
+	public long getBreakLengthInMillis() {
 //		return 5000;
-		return MILLISECONDS.convert(breakLength, MINUTES);
+		return MINUTES.toMillis(breakLength);
+	}
+
+	public int getPomodoroLengthInMinutes() {
+		return pomodoroLength;
+	}
+
+	public int getBreakLengthInMinutes() {
+		return breakLength;
 	}
 
 	public int getRingVolume() {
@@ -64,11 +72,11 @@ public class Settings implements PersistentStateComponent<Settings> {
 		return blockDuringBreak;
 	}
 
-	public void setPomodoroLength(int pomodoroLength) {
+	public void setPomodoroLengthInMinutes(int pomodoroLength) {
 		this.pomodoroLength = pomodoroLength;
 	}
 
-	public void setBreakLength(int breakLength) {
+	public void setBreakLengthInMinutes(int breakLength) {
 		this.breakLength = breakLength;
 	}
 

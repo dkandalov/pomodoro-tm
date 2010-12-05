@@ -183,10 +183,10 @@ public class PomodoroModel {
 	private void updateProgressMax() {
 		switch (state) {
 			case RUN:
-				progressMax = (int) settings.getPomodoroLength();
+				progressMax = (int) settings.getPomodoroLengthInMillis();
 				break;
 			case BREAK:
-				progressMax = (int) settings.getBreakLength();
+				progressMax = (int) settings.getBreakLengthInMillis();
 				break;
 		}
 	}

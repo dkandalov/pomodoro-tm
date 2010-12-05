@@ -31,6 +31,7 @@ import java.awt.event.ActionListener;
  */
 public class SettingsPresenter implements Configurable {
 	private static final int MIN_TIME_INTERVAL = 5;
+	private static final int MAX_TIME_INTERVAL = 240;
 
 	private final Settings settings;
 	private SettingsForm settingsForm;
@@ -68,6 +69,7 @@ public class SettingsPresenter implements Configurable {
 		settingsForm.pomodoroLengthComboBox.addActionListener(actionListener);
 		settingsForm.breakLengthComboBox.addActionListener(actionListener);
 		settingsForm.popupCheckBox.addChangeListener(changeListener);
+		settingsForm.blockDuringBreak.addChangeListener(changeListener);
 		settingsForm.ringVolumeSlider.addChangeListener(changeListener);
 	}
 
@@ -92,18 +94,19 @@ public class SettingsPresenter implements Configurable {
 	}
 
 	private void updateUIModel() {
+		if (uiResourcesDisposed()) return;
 		if (updatingUI) return;
 
 		try {
-			uiModel.setPomodoroLength(selectedItemAsInteger(settingsForm.pomodoroLengthComboBox));
+			uiModel.setPomodoroLengthInMinutes(selectedItemAsInteger(settingsForm.pomodoroLengthComboBox));
 		} catch (NumberFormatException e) {
-			uiModel.setPomodoroLength(Settings.DEFAULT_POMODORO_LENGTH);
+			uiModel.setPomodoroLengthInMinutes(Settings.DEFAULT_POMODORO_LENGTH);
 		}
 
 		try {
-			uiModel.setBreakLength(selectedItemAsInteger(settingsForm.breakLengthComboBox));
+			uiModel.setBreakLengthInMinutes(selectedItemAsInteger(settingsForm.breakLengthComboBox));
 		} catch (NumberFormatException e) {
-			uiModel.setBreakLength(Settings.DEFAULT_BREAK_LENGTH);
+			uiModel.setBreakLengthInMinutes(Settings.DEFAULT_BREAK_LENGTH);
 		}
 
 		uiModel.setRingVolume(settingsForm.ringVolumeSlider.getValue());
@@ -116,22 +119,39 @@ public class SettingsPresenter implements Configurable {
 		String s = ((String) comboBox.getSelectedItem()).trim();
 		Integer value = Integer.valueOf(s);
 		if (value < MIN_TIME_INTERVAL) return MIN_TIME_INTERVAL;
+		if (value > MAX_TIME_INTERVAL) return MAX_TIME_INTERVAL;
 		return value;
 	}
 
 	private void updateUI() {
+		if (uiResourcesDisposed()) return;
 		if (updatingUI) return;
 		updatingUI = true;
 
-		settingsForm.pomodoroLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.getPomodoroLength()));
-		settingsForm.breakLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.getBreakLength()));
+		settingsForm.pomodoroLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.getPomodoroLengthInMinutes()));
+		settingsForm.breakLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.getBreakLengthInMinutes()));
 
 		settingsForm.ringVolumeSlider.setValue(uiModel.getRingVolume());
+		settingsForm.ringVolumeSlider.setToolTipText(ringVolumeTooltip(uiModel));
 
 		settingsForm.popupCheckBox.setSelected(uiModel.isPopupEnabled());
 		settingsForm.blockDuringBreak.setSelected(uiModel.isBlockDuringBreak());
 
 		updatingUI = false;
+	}
+
+	private boolean uiResourcesDisposed() {
+		// ActionEvent might occur after disposeUIResources() was invoked
+		return (settingsForm == null);
+	}
+
+	@Nls
+	private String ringVolumeTooltip(Settings uiModel) {
+		if (uiModel.getRingVolume() == 0) {
+			return UIBundle.message("settings.ringSlider.noSoundTooltip");
+		} else {
+			return UIBundle.message("settings.ringSlider.volumeTooltip", uiModel.getRingVolume());
+		}
 	}
 
 	@Nls

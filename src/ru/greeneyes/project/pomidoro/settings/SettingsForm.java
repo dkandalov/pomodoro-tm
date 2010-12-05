@@ -19,6 +19,7 @@ import com.intellij.uiDesigner.core.Spacer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 /**
  * User: dima
@@ -27,7 +28,7 @@ import java.awt.*;
 class SettingsForm {
 	public JComboBox pomodoroLengthComboBox;
 	public JComboBox breakLengthComboBox;
-	public JSlider ringVolumeSlider; // TODO use tooltip?
+	public JSlider ringVolumeSlider;
 	public JCheckBox popupCheckBox;
 	public JCheckBox blockDuringBreak;
 	private JPanel rootPanel;
@@ -106,19 +107,20 @@ class SettingsForm {
 		panel1.add(ringVolumeSlider, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label6 = new JLabel();
 		label6.setText("Show popup:");
-		label6.setToolTipText("");
+		label6.setToolTipText(ResourceBundle.getBundle("resources/messages").getString("settings.popup.tooltip"));
 		panel1.add(label6, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		popupCheckBox = new JCheckBox();
 		popupCheckBox.setText("");
-		popupCheckBox.setToolTipText("Show popup when pomodoro is finished");
+		popupCheckBox.setToolTipText(ResourceBundle.getBundle("resources/messages").getString("settings.popup.tooltip"));
 		panel1.add(popupCheckBox, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label7 = new JLabel();
 		label7.setText("Block IntelliJ during break:");
+		label7.setToolTipText(ResourceBundle.getBundle("resources/messages").getString("settings.blockCheckbox.tooltip"));
 		panel1.add(label7, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		blockDuringBreak = new JCheckBox();
 		blockDuringBreak.setActionCommand("");
 		blockDuringBreak.setDoubleBuffered(true);
-		blockDuringBreak.setToolTipText("Use it if you tend to skip breaks between pomodoros.");
+		blockDuringBreak.setToolTipText(ResourceBundle.getBundle("resources/messages").getString("settings.blockCheckbox.tooltip"));
 		panel1.add(blockDuringBreak, new GridConstraints(4, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		label1.setLabelFor(pomodoroLengthComboBox);
 		label3.setLabelFor(breakLengthComboBox);

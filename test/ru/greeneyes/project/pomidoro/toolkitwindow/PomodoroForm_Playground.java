@@ -40,14 +40,14 @@ public class PomodoroForm_Playground {
 
 	private static class MySettings extends Settings {
 		@Override
-		public long getPomodoroLength() {
+		public long getPomodoroLengthInMillis() {
 			// timeout should be > 10 to progress in UI
 			// because of PomodoroPresenter.hack_for_jdk1_6_u06__IDEA_9_0_2__winXP()
 			return 15 * 1000;
 		}
 
 		@Override
-		public long getBreakLength() {
+		public long getBreakLengthInMillis() {
 			return 15 * 1000;
 		}
 	}

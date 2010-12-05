@@ -143,12 +143,12 @@ public class PomodoroModelTest {
 	private static Settings settings(final long testPomodoroLength, final long testBreakLength) {
 		return new Settings() {
 			@Override
-			public long getPomodoroLength() {
+			public long getPomodoroLengthInMillis() {
 				return testPomodoroLength;
 			}
 
 			@Override
-			public long getBreakLength() {
+			public long getBreakLengthInMillis() {
 				return testBreakLength;
 			}
 		};

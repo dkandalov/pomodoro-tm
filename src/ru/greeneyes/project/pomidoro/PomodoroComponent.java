@@ -158,7 +158,7 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 		}
 
 		private void unblockIntelliJ() {
-			if (modalDialog == null) return;
+			if (modalDialog == null) return; // can happen if user turns on this option during break
 			modalDialog.hide();
 		}
 

@@ -68,7 +68,7 @@ public class SettingsForm_Playground {
 
 	private static Settings createSettings() {
 		final Settings settings = new Settings();
-		settings.setPomodoroLength(123);
+		settings.setPomodoroLengthInMinutes(123);
 		return settings;
 	}
 
