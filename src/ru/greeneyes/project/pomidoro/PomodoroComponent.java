@@ -52,7 +52,7 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 
 	@Override
 	public void initComponent() {
-		Settings settings = ServiceManager.getService(Settings.class);
+		Settings settings = getSettings();
 		settingsPresenter = new SettingsPresenter(settings);
 
 		model = new PomodoroModel(settings, ServiceManager.getService(PomodoroModelState.class));
@@ -64,6 +64,10 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 
 		controlThread = new ControlThread(model);
 		controlThread.start();
+	}
+
+	public static Settings getSettings() {
+		return ServiceManager.getService(Settings.class);
 	}
 
 	@Override

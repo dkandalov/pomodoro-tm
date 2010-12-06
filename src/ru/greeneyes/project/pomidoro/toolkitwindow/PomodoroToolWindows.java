@@ -45,11 +45,14 @@ public class PomodoroToolWindows implements ChangeListener {
 		ProjectManager.getInstance().addProjectManagerListener(new ProjectManagerListener() {
 			@Override
 			public void projectOpened(Project project) {
-				registerWindowFor(project);
+				if (PomodoroComponent.getSettings().isShowToolWindow()) {
+					registerWindowFor(project);
+				}
 			}
 
 			@Override
 			public void projectClosed(Project project) {
+				// unregister window in any case
 				unregisterWindowFrom(project);
 			}
 

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <name>Pomodoro-tm</name>
     <description>Pomodoro timer</description>
-    <version>0.4</version>
+    <version>0.41</version>
     <vendor url="http://github.com/dkandalov/pomodoro-tm">mq0</vendor>
     <idea-version since-build="8000"/>
     <description>
@@ -29,7 +29,7 @@
         ]]>
     </change-notes>
 
-    <!--This is to make plugin available to all IntelliJ, not just IDEA
+    <!--This is to make plugin available to all IntelliJ IDEs, not just IDEA
     (http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products)-->
     <depends>com.intellij.modules.platform</depends>
 
