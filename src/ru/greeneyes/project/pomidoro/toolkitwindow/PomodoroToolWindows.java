@@ -28,8 +28,6 @@ import ru.greeneyes.project.pomidoro.model.ChangeListener;
 import ru.greeneyes.project.pomidoro.model.Settings;
 
 import javax.swing.*;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author ivanalx
@@ -39,7 +37,6 @@ public class PomodoroToolWindows implements ChangeListener {
 	public static final String TOOL_WINDOW_ID = "Pomodoro";
 
 	private static final ImageIcon pomodoroIcon = new ImageIcon(PomodoroToolWindows.class.getResource("/resources/pomodoro-icon.png"));
-	private final Set<Project> hasRegisteredWindow = new HashSet<Project>();
 
 	public PomodoroToolWindows() {
 		ProjectManager.getInstance().addProjectManagerListener(new ProjectManagerListener() {
@@ -80,13 +77,14 @@ public class PomodoroToolWindows implements ChangeListener {
 	}
 
 	public void registerWindowFor(Project project) {
-		if (hasRegisteredWindow.contains(project)) return;
-		hasRegisteredWindow.add(project);
+		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+		if (toolWindowManager.getToolWindow(TOOL_WINDOW_ID) != null) {
+			return;
+		}
 
 		PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
 		PomodoroPresenter presenter = new PomodoroPresenter(pomodoroComponent.getModel());
 
-		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
 		ToolWindow myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM);
 		myToolWindow.setIcon(pomodoroIcon);
 		ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
@@ -95,9 +93,9 @@ public class PomodoroToolWindows implements ChangeListener {
 	}
 
 	public void unregisterWindowFrom(Project project) {
-		if (hasRegisteredWindow.contains(project)) {
-			hasRegisteredWindow.remove(project);
-			ToolWindowManager.getInstance(project).unregisterToolWindow(TOOL_WINDOW_ID);
+		final ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+		if (toolWindowManager.getToolWindow(TOOL_WINDOW_ID) != null) {
+			toolWindowManager.unregisterToolWindow(TOOL_WINDOW_ID);
 		}
 	}
 }
