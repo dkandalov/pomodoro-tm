@@ -66,51 +66,16 @@ class ModalForm {
 	 * @noinspection ALL
 	 */
 	private void $$$setupUI$$$() {
-		rootPanel = new JPanel();
-		rootPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
-		rootPanel.setBackground(new Color(-16777216));
-		rootPanel.setMinimumSize(new Dimension(460, 360));
-		rootPanel.setPreferredSize(new Dimension(460, 360));
-		messageLabel = new JLabel();
-		messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.BOLD, messageLabel.getFont().getSize()));
-		messageLabel.setForeground(new Color(-3355444));
-		messageLabel.setHorizontalTextPosition(11);
-		messageLabel.setInheritsPopupMenu(false);
-		this.$$$loadLabelText$$$(messageLabel, ResourceBundle.getBundle("resources/messages").getString("modalwindow.text"));
-		rootPanel.add(messageLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(0, 0), null, null, 0, false));
+		rootPanel = new javax.swing.JPanel();
+		rootPanel.setLayout(new GridLayoutManager(1, 1, new java.awt.Insets(0, 0, 0, 0), -1, -1));
+		messageLabel = new javax.swing.JLabel();
+		rootPanel.add(messageLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new java.awt.Dimension(0, 0), null, null, 0, false));
 	}
 
 	/**
 	 * @noinspection ALL
 	 */
-	private void $$$loadLabelText$$$(JLabel component, String text) {
-		StringBuffer result = new StringBuffer();
-		boolean haveMnemonic = false;
-		char mnemonic = '\0';
-		int mnemonicIndex = -1;
-		for (int i = 0; i < text.length(); i++) {
-			if (text.charAt(i) == '&') {
-				i++;
-				if (i == text.length()) break;
-				if (!haveMnemonic && text.charAt(i) != '&') {
-					haveMnemonic = true;
-					mnemonic = text.charAt(i);
-					mnemonicIndex = result.length();
-				}
-			}
-			result.append(text.charAt(i));
-		}
-		component.setText(result.toString());
-		if (haveMnemonic) {
-			component.setDisplayedMnemonic(mnemonic);
-			component.setDisplayedMnemonicIndex(mnemonicIndex);
-		}
-	}
-
-	/**
-	 * @noinspection ALL
-	 */
-	public JComponent $$$getRootComponent$$$() {
+	public javax.swing.JComponent $$$getRootComponent$$$() {
 		return rootPanel;
 	}
 }

@@ -93,7 +93,7 @@ public class PomodoroToolWindows implements ChangeListener {
 	}
 
 	public void unregisterWindowFrom(Project project) {
-		final ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
+		ToolWindowManager toolWindowManager = ToolWindowManager.getInstance(project);
 		if (toolWindowManager.getToolWindow(TOOL_WINDOW_ID) != null) {
 			toolWindowManager.unregisterToolWindow(TOOL_WINDOW_ID);
 		}
