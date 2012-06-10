@@ -16,6 +16,7 @@ package ru.greeneyes.project.pomidoro;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarCustomComponentFactory;
+import com.intellij.openapi.wm.StatusBarWidget;
 import org.jetbrains.annotations.NotNull;
 import ru.greeneyes.project.pomidoro.model.PomodoroModel;
 import ru.greeneyes.project.pomidoro.toolkitwindow.PomodoroPresenter;
@@ -28,7 +29,7 @@ import java.awt.event.MouseEvent;
  * User: dima
  * Date: May 29, 2010
  */
-public class PomodoroPanelFactory extends StatusBarCustomComponentFactory {
+public class PomodoroPanelFactory extends StatusBarCustomComponentFactory implements StatusBarWidget {
 	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro.png"));
 	private final ImageIcon pomodoroStoppedIcon = new ImageIcon(getClass().getResource("/resources/pomodoroStopped.png"));
 	private final ImageIcon pomodoroBreakIcon = new ImageIcon(getClass().getResource("/resources/pomodoroBreak.png"));
@@ -103,5 +104,24 @@ public class PomodoroPanelFactory extends StatusBarCustomComponentFactory {
 				label.setIcon(pomodoroBreakIcon);
 				break;
 		}
+	}
+
+	@Override
+	public WidgetPresentation getPresentation(@NotNull PlatformType type) {
+		return null; // TODO migrate from StatusBarCustomComponentFactory
+	}
+
+	@Override
+	public void install(@NotNull StatusBar statusBar) {
+	}
+
+	@Override
+	public void dispose() {
+	}
+
+	@NotNull
+	@Override
+	public String ID() {
+		return "Pomodoro";
 	}
 }

@@ -158,7 +158,7 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 
 		private void blockIntelliJ() {
 			Window window = WindowManager.getInstance().getFrame(
-			        PlatformDataKeys.PROJECT.getData(DataManager.getInstance().getDataContext()));
+			        PlatformDataKeys.PROJECT.getData(DataManager.getInstance().getDataContextFromFocus().getResult()));
 
 			modalDialog = new ModalDialog(window);
 			modalDialog.show();
@@ -192,7 +192,7 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					DataContext dataContext = DataManager.getInstance().getDataContext();
+					DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResult();
 					Project project = PlatformDataKeys.PROJECT.getData(dataContext);
 					if (project == null) return;
 

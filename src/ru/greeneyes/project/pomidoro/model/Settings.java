@@ -24,7 +24,7 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 /**
  * Stores pomodoro plugin settings (see fields for details).
  * The state of this class is persisted by IntelliJ.
- * This is class must be registered in plugin.xml.
+ * This class must be registered in plugin.xml.
  * <p/><p/>
  * User: dima
  * Date: May 29, 2010
@@ -103,7 +103,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 	}
 
 	/**
-	 * If IntelliJ is shutdown during pomodoro and then restarted, pomodoro can be continued.
+	 * If IntelliJ shuts down during pomodoro and then restarts, pomodoro can be continued.
 	 * This property determines how much time can pass before we consider pomodoro to be expired.
 	 *
 	 * @return timeout in milliseconds
