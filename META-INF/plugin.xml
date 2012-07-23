@@ -25,6 +25,7 @@
             <li>0.3 - added settings UI, ring volume</li>
             <li>0.4 - modal window to block IntelliJ during break, option to hide tool window</li>
             <li>0.42 - memory leak fix</li>
+            <li>0.43 - fixed missing resources</li>
         </ul>
         </body></html>
         ]]>
