@@ -21,7 +21,10 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.project.ProjectManagerAdapter;
 import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.openapi.wm.WindowManager;
 import org.jetbrains.annotations.Nls;
@@ -59,6 +62,14 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 		settings.setChangeListener(toolWindows);
 
 		new UserNotifier(settings, model);
+
+		ProjectManager.getInstance().addProjectManagerListener(new ProjectManagerAdapter() {
+			@Override
+			public void projectOpened(Project project) {
+				StatusBar statusBar = statusBarFor(project);
+				statusBar.addWidget(new PomodoroWidget(), "before Position", project);
+			}
+		});
 
 		controlThread = new ControlThread(model);
 		controlThread.start();
@@ -119,6 +130,11 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 		settingsPresenter.disposeUIResources();
 	}
 
+	private static StatusBar statusBarFor(Project project) {
+		return WindowManager.getInstance().getStatusBar(project);
+	}
+
+
 	private static class UserNotifier {
 		// TODO sound playback seems to be slow for the first time
 		private final AudioClip ringSound1 = Applet.newAudioClip(getClass().getResource("/resources/ring.wav"));
@@ -150,8 +166,9 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 		}
 
 		private void blockIntelliJ() {
-			Window window = WindowManager.getInstance().getFrame(
-			        PlatformDataKeys.PROJECT.getData(DataManager.getInstance().getDataContextFromFocus().getResult()));
+			DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResultSync();
+			Project project = PlatformDataKeys.PROJECT.getData(dataContext);
+			Window window = WindowManager.getInstance().getFrame(project);
 
 			modalDialog = new ModalDialog(window);
 			modalDialog.show();

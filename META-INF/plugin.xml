@@ -49,7 +49,6 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <statusBarComponent implementation="pomodoro.PomodoroPanelFactory"/>
         <applicationService serviceInterface="pomodoro.model.Settings"
                             serviceImplementation="pomodoro.model.Settings"/>
         <applicationService serviceInterface="pomodoro.model.PomodoroModelState"

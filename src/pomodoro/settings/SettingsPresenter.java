@@ -30,7 +30,7 @@ import java.awt.event.ActionListener;
  * Date: Oct 18, 2010
  */
 public class SettingsPresenter implements Configurable {
-	private static final int MIN_TIME_INTERVAL = 5;
+	private static final int MIN_TIME_INTERVAL = 1;
 	private static final int MAX_TIME_INTERVAL = 240;
 
 	private final Settings settings;

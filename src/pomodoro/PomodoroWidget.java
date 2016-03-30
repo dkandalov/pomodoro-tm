@@ -14,9 +14,11 @@
 package pomodoro;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.wm.CustomStatusBarWidget;
 import com.intellij.openapi.wm.StatusBar;
-import com.intellij.openapi.wm.StatusBarCustomComponentFactory;
 import com.intellij.openapi.wm.StatusBarWidget;
+import com.intellij.ui.components.JBLabel;
+import com.intellij.util.ui.JBUI;
 import org.jetbrains.annotations.NotNull;
 import pomodoro.model.PomodoroModel;
 import pomodoro.toolkitwindow.PomodoroPresenter;
@@ -29,14 +31,21 @@ import java.awt.event.MouseEvent;
  * User: dima
  * Date: May 29, 2010
  */
-public class PomodoroPanelFactory extends StatusBarCustomComponentFactory implements StatusBarWidget {
+public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Multiframe {
 	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro.png"));
 	private final ImageIcon pomodoroStoppedIcon = new ImageIcon(getClass().getResource("/resources/pomodoroStopped.png"));
 	private final ImageIcon pomodoroBreakIcon = new ImageIcon(getClass().getResource("/resources/pomodoroBreak.png"));
+	private StatusBar statusBar;
 
 	@Override
-	public JComponent createComponent(@NotNull final StatusBar statusBar) {
-		final JLabel label = new JLabel();
+	public void install(@NotNull StatusBar statusBar) {
+		this.statusBar = statusBar;
+	}
+
+	@Override
+	public JComponent getComponent() {
+		final JLabel label = new JBLabel();
+		label.setFont(JBUI.Fonts.label(11));
 
 		final PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
 		final PomodoroModel model = pomodoroComponent.getModel();
@@ -70,7 +79,14 @@ public class PomodoroPanelFactory extends StatusBarCustomComponentFactory implem
 				statusBar.setInfo("");
 			}
 		});
+
+		label.setBorder(StatusBarWidget.WidgetBorder.WIDE);
 		return label;
+	}
+
+	@Override
+	public StatusBarWidget copy() {
+		return new PomodoroWidget();
 	}
 
 	private String tooltipText(PomodoroModel model) {
@@ -92,27 +108,22 @@ public class PomodoroPanelFactory extends StatusBarCustomComponentFactory implem
 	private void updateLabel(PomodoroModel model, JLabel label) {
 		int timeLeft = model.getProgressMax() - model.getProgress();
 		label.setText(PomodoroPresenter.formatTime(timeLeft));
+		label.setIcon(getIcon(model));
+	}
 
+	@NotNull
+	private ImageIcon getIcon(PomodoroModel model) {
 		switch (model.getState()) {
-			case STOP:
-				label.setIcon(pomodoroStoppedIcon);
-				break;
-			case RUN:
-				label.setIcon(pomodoroIcon);
-				break;
-			case BREAK:
-				label.setIcon(pomodoroBreakIcon);
-				break;
+			case STOP: return pomodoroStoppedIcon;
+			case RUN: return pomodoroIcon;
+			case BREAK: return pomodoroBreakIcon;
+			default: throw new IllegalStateException();
 		}
 	}
 
 	@Override
 	public WidgetPresentation getPresentation(@NotNull PlatformType type) {
-		return null; // TODO migrate from StatusBarCustomComponentFactory
-	}
-
-	@Override
-	public void install(@NotNull StatusBar statusBar) {
+		return null;
 	}
 
 	@Override
