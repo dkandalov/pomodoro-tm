@@ -37,22 +37,22 @@
 
     <application-components>
         <component>
-            <implementation-class>ru.greeneyes.project.pomidoro.PomodoroComponent</implementation-class>
+            <implementation-class>pomodoro.PomodoroComponent</implementation-class>
         </component>
     </application-components>
 
     <actions>
-        <action id="Start/stop pomodoro" class="ru.greeneyes.project.pomidoro.PomodoroAction"
+        <action id="Start/stop pomodoro" class="pomodoro.PomodoroAction"
                 description="Start or stop pomodoro timer">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift P"/>
         </action>
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <statusBarComponent implementation="ru.greeneyes.project.pomidoro.PomodoroPanelFactory"/>
-        <applicationService serviceInterface="ru.greeneyes.project.pomidoro.model.Settings"
-                            serviceImplementation="ru.greeneyes.project.pomidoro.model.Settings"/>
-        <applicationService serviceInterface="ru.greeneyes.project.pomidoro.model.PomodoroModelState"
-                            serviceImplementation="ru.greeneyes.project.pomidoro.model.PomodoroModelState"/>
+        <statusBarComponent implementation="pomodoro.PomodoroPanelFactory"/>
+        <applicationService serviceInterface="pomodoro.model.Settings"
+                            serviceImplementation="pomodoro.model.Settings"/>
+        <applicationService serviceInterface="pomodoro.model.PomodoroModelState"
+                            serviceImplementation="pomodoro.model.PomodoroModelState"/>
     </extensions>
 </idea-plugin>
