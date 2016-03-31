@@ -15,6 +15,7 @@ package pomodoro.modalwindow;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.util.ui.UIUtil;
 import pomodoro.UIBundle;
 
 import javax.swing.*;
@@ -36,6 +37,8 @@ class ModalForm {
 		this.model = model;
 
 		$$$setupUI$$$();
+
+		rootPanel.setBackground(UIUtil.getPanelBackground());
 
 		MouseAdapter mouseAdapter = new MouseAdapter() {
 			@Override

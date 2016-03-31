@@ -35,19 +35,21 @@ public class ModalDialog {
 		} else {
 			jDialog = new JDialog((Frame) window);
 		}
+
+		KeyAdapter keyAdapter = new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent keyEvent) {
+				if (keyEvent.getKeyCode() == VK_ESCAPE && model.intellijIsAllowedToBeUnlocked()) {
+					jDialog.dispose();
+				}
+			}
+		};
+
 		ModalForm form = new ModalForm(model);
 		jDialog.setModal(true);
 		jDialog.setUndecorated(true);
 		jDialog.setContentPane(form.rootPanel);
-		jDialog.addKeyListener(new KeyAdapter() {
-			@Override
-			public void keyPressed(KeyEvent keyEvent) {
-				boolean pressedEscape = (keyEvent.getKeyCode() == VK_ESCAPE) && (keyEvent.getModifiers() == 0);
-				if (pressedEscape && model.intellijIsAllowedToBeUnlocked()) {
-					jDialog.dispose();
-				}
-			}
-		});
+		jDialog.addKeyListener(keyAdapter);
 		jDialog.pack();
 		jDialog.setLocationRelativeTo(window);
 	}
