@@ -107,7 +107,7 @@ class SettingsForm {
 		ringVolumeSlider.setValue(1);
 		panel1.add(ringVolumeSlider, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label6 = new JLabel();
-		label6.setText("Show popup:");
+		label6.setText("Show popup notification:");
 		label6.setToolTipText(ResourceBundle.getBundle("resources/messages").getString("settings.popup.tooltip"));
 		panel1.add(label6, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		popupCheckBox = new JCheckBox();
@@ -115,7 +115,7 @@ class SettingsForm {
 		popupCheckBox.setToolTipText(ResourceBundle.getBundle("resources/messages").getString("settings.popup.tooltip"));
 		panel1.add(popupCheckBox, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label7 = new JLabel();
-		label7.setText("Block IntelliJ during break:");
+		label7.setText("Block IDE during break:");
 		label7.setToolTipText(ResourceBundle.getBundle("resources/messages").getString("settings.blockCheckbox.tooltip"));
 		panel1.add(label7, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		blockDuringBreak = new JCheckBox();
@@ -124,7 +124,7 @@ class SettingsForm {
 		blockDuringBreak.setToolTipText(ResourceBundle.getBundle("resources/messages").getString("settings.blockCheckbox.tooltip"));
 		panel1.add(blockDuringBreak, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label8 = new JLabel();
-		label8.setText("Show timer tool window:");
+		label8.setText("Show tool window:");
 		panel1.add(label8, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		showToolWindowCheckbox = new JCheckBox();
 		showToolWindowCheckbox.setText("");
