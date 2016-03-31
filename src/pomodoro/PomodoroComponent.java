@@ -16,6 +16,7 @@ package pomodoro;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.Configurable;
@@ -24,6 +25,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerAdapter;
 import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.openapi.wm.WindowManager;
@@ -166,12 +168,17 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 		}
 
 		private void blockIntelliJ() {
-			DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResultSync();
-			Project project = PlatformDataKeys.PROJECT.getData(dataContext);
-			Window window = WindowManager.getInstance().getFrame(project);
+			ApplicationManager.getApplication().invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					DataContext dataContext = DataManager.getInstance().getDataContext(IdeFocusManager.getGlobalInstance().getFocusOwner());
+					Project project = PlatformDataKeys.PROJECT.getData(dataContext);
+					Window window = WindowManager.getInstance().getFrame(project);
 
-			modalDialog = new ModalDialog(window);
-			modalDialog.show();
+					modalDialog = new ModalDialog(window);
+					modalDialog.show();
+				}
+			});
 		}
 
 		private void unblockIntelliJ() {
