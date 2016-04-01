@@ -19,8 +19,8 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerAdapter;
@@ -31,6 +31,7 @@ import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.openapi.wm.WindowManager;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pomodoro.modalwindow.ModalDialog;
 import pomodoro.model.ControlThread;
 import pomodoro.model.PomodoroModel;
@@ -48,7 +49,7 @@ import java.awt.*;
  * User: dima
  * Date: May 30, 2010
  */
-public class PomodoroComponent implements ApplicationComponent, Configurable {
+public class PomodoroComponent implements ApplicationComponent, SearchableConfigurable {
 	private ControlThread controlThread;
 	private PomodoroModel model;
 	private SettingsPresenter settingsPresenter;
@@ -130,6 +131,18 @@ public class PomodoroComponent implements ApplicationComponent, Configurable {
 	@Override
 	public void disposeUIResources() {
 		settingsPresenter.disposeUIResources();
+	}
+
+	@NotNull
+	@Override
+	public String getId() {
+		return settingsPresenter.getId();
+	}
+
+	@Nullable
+	@Override
+	public Runnable enableSearch(String option) {
+		return settingsPresenter.enableSearch(option);
 	}
 
 	private static StatusBar statusBarFor(Project project) {

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
     <name>Pomodoro-tm</name>
     <description>Pomodoro timer</description>
-    <version>0.43</version>
+    <version>0.44</version>
     <vendor url="http://github.com/dkandalov/pomodoro-tm">mq0</vendor>
     <idea-version since-build="8000"/>
     <description>
@@ -18,18 +18,6 @@
    </body></html>
    ]]>
     </description>
-    <change-notes>
-        <![CDATA[<html><body>
-        <ul>
-            <li>0.2 - added ring sound, status bar timer, popup notification, ctrl+shift+P shortcut</li>
-            <li>0.3 - added settings UI, ring volume</li>
-            <li>0.4 - modal window to block IntelliJ during break, option to hide tool window</li>
-            <li>0.42 - memory leak fix</li>
-            <li>0.43 - fixed missing resources</li>
-        </ul>
-        </body></html>
-        ]]>
-    </change-notes>
 
     <!--This is to make plugin available to all IntelliJ IDEs, not just IDEA
     (http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products)-->
@@ -49,9 +37,8 @@
     </actions>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceInterface="pomodoro.model.Settings"
-                            serviceImplementation="pomodoro.model.Settings"/>
-        <applicationService serviceInterface="pomodoro.model.PomodoroModelState"
-                            serviceImplementation="pomodoro.model.PomodoroModelState"/>
+        <applicationService serviceInterface="pomodoro.model.Settings" serviceImplementation="pomodoro.model.Settings"/>
+        <applicationService serviceInterface="pomodoro.model.PomodoroModelState" serviceImplementation="pomodoro.model.PomodoroModelState"/>
+        <applicationConfigurable instance="pomodoro.PomodoroComponent"/>
     </extensions>
 </idea-plugin>

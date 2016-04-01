@@ -13,6 +13,8 @@
  */
 package pomodoro.modalwindow;
 
+import com.intellij.util.ui.UIUtil;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -44,6 +46,8 @@ public class ModalDialog {
 				}
 			}
 		};
+
+		UIUtil.suppressFocusStealing(window);
 
 		ModalForm form = new ModalForm(model);
 		jDialog.setModal(true);
