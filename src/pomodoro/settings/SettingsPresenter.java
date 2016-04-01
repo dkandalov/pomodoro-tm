@@ -13,9 +13,11 @@
  */
 package pomodoro.settings;
 
-import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.options.SearchableConfigurable;
 import org.jetbrains.annotations.Nls;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pomodoro.UIBundle;
 import pomodoro.model.Settings;
 
@@ -29,7 +31,7 @@ import java.awt.event.ActionListener;
  * User: dima
  * Date: Oct 18, 2010
  */
-public class SettingsPresenter implements Configurable {
+public class SettingsPresenter implements SearchableConfigurable {
 	private static final int MIN_TIME_INTERVAL = 1;
 	private static final int MAX_TIME_INTERVAL = 240;
 
@@ -165,6 +167,18 @@ public class SettingsPresenter implements Configurable {
 
 	@Override
 	public String getHelpTopic() {
+		return null;
+	}
+
+	@NotNull
+	@Override
+	public String getId() {
+		return "Pomodoro";
+	}
+
+	@Nullable
+	@Override
+	public Runnable enableSearch(String option) {
 		return null;
 	}
 }
