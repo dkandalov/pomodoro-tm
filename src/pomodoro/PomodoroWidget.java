@@ -19,6 +19,7 @@ import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
 import com.intellij.ui.components.JBLabel;
 import com.intellij.util.ui.JBUI;
+import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 import pomodoro.model.PomodoroModel;
 import pomodoro.toolkitwindow.PomodoroPresenter;
@@ -31,6 +32,9 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro.png"));
 	private final ImageIcon pomodoroStoppedIcon = new ImageIcon(getClass().getResource("/resources/pomodoroStopped.png"));
 	private final ImageIcon pomodoroBreakIcon = new ImageIcon(getClass().getResource("/resources/pomodoroBreak.png"));
+	private final ImageIcon pomodoroDarkulaIcon = new ImageIcon(getClass().getResource("/resources/pomodoro-inverted.png"));
+	private final ImageIcon pomodoroStoppedDarkulaIcon = new ImageIcon(getClass().getResource("/resources/pomodoroStopped-inverted.png"));
+	private final ImageIcon pomodoroBreakDarkulaIcon = new ImageIcon(getClass().getResource("/resources/pomodoroBreak-inverted.png"));
 	private StatusBar statusBar;
 
 	@Override
@@ -86,19 +90,19 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 	}
 
 	private String tooltipText(PomodoroModel model) {
-		String nextAction = "";
+		String nextAction = nextActionName(model);
+		int pomodorosAmount = model.getPomodorosAmount();
+		return UIBundle.message("statuspanel.tooltip", nextAction, pomodorosAmount);
+	}
+
+	@NotNull
+	private static String nextActionName(PomodoroModel model) {
 		switch (model.getState()) {
-			case STOP:
-				nextAction = UIBundle.message("statuspanel.start");
-				break;
-			case RUN:
-				nextAction = UIBundle.message("statuspanel.stop");
-				break;
-			case BREAK:
-				nextAction = UIBundle.message("statuspanel.stop_break");
-				break;
+			case STOP: return UIBundle.message("statuspanel.start");
+			case RUN: return UIBundle.message("statuspanel.stop");
+			case BREAK: return UIBundle.message("statuspanel.stop_break");
+			default: return "";
 		}
-		return UIBundle.message("statuspanel.tooltip", nextAction, model.getPomodorosAmount());
 	}
 
 	private void updateLabel(PomodoroModel model, JLabel label) {
@@ -109,10 +113,11 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 
 	@NotNull
 	private ImageIcon getIcon(PomodoroModel model) {
+		boolean underDarcula = UIUtil.isUnderDarcula();
 		switch (model.getState()) {
-			case STOP: return pomodoroStoppedIcon;
-			case RUN: return pomodoroIcon;
-			case BREAK: return pomodoroBreakIcon;
+			case STOP: return underDarcula ? pomodoroStoppedDarkulaIcon : pomodoroStoppedIcon;
+			case RUN: return underDarcula ? pomodoroDarkulaIcon : pomodoroIcon;
+			case BREAK: return underDarcula ? pomodoroBreakDarkulaIcon : pomodoroBreakIcon;
 			default: throw new IllegalStateException();
 		}
 	}
