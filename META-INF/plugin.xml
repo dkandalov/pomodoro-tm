@@ -7,8 +7,9 @@
     <description>
         <![CDATA[
 	<html><body>
-	Time management timer for Pomodoro Technique. (http://www.pomodorotechnique.com)</br>
-	How to use it:</br>
+	Time management plugin for Pomodoro Technique. See http://pomodorotechnique.com
+    </br>
+	How to use it:
    <ol>
    <li>Choose a task to be accomplished and start pomodoro timer.</li>
    <li>Work on the task until the timer rings. If distracted during pomodoro, restart timer.</li>
@@ -19,8 +20,12 @@
    ]]>
     </description>
 
-    <!--This is to make plugin available to all IntelliJ IDEs, not just IDEA
-    (http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products)-->
+    <!-- http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
+    <!-- since IJ 15 -->
+    <idea-version since-build="143"/>
+
+    <!-- Make plugin available to all IntelliJ IDEs
+         http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
     <application-components>
