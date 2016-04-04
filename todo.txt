@@ -1,17 +1,10 @@
  - task name and stats
- + block window on pomodoro end
-
-UI tweaks:
- - pomodoro label shouldn't shift on pomodoro start/stop (only happens in IntelliJ... and not all the time)
+ - fix block window on pomodoro end
 
 bugs:
  - Pomodoro toolkit window is disabled when project is being indexed (for example, maven and IDE talk windows are not disabled)
  - after restart pomodoro rings without a good reason
- + 3 seconds delay after clicking "Start" before timer update
 
 Would be nice to have:
- - statistics, task name (with auto-completion)
  - integration with tasks
- - jira integration?
- - integration with IDEA talk plugin (show pomodoro status there) ?
-
+ - statistics, task name (with auto-completion)
