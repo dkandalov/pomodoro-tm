@@ -18,6 +18,7 @@ import com.intellij.openapi.options.SearchableConfigurable;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pomodoro.PomodoroComponent;
 import pomodoro.UIBundle;
 import pomodoro.model.Settings;
 
@@ -39,6 +40,11 @@ public class SettingsPresenter implements SearchableConfigurable {
 	private SettingsForm settingsForm;
 	private Settings uiModel;
 	private boolean updatingUI;
+
+
+	public SettingsPresenter() {
+		this(PomodoroComponent.getSettings());
+	}
 
 	public SettingsPresenter(Settings settings) {
 		this.settings = settings;

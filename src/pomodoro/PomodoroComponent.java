@@ -19,8 +19,6 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.ApplicationComponent;
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerAdapter;
@@ -29,15 +27,12 @@ import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.openapi.wm.WindowManager;
-import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import pomodoro.modalwindow.ModalDialog;
 import pomodoro.model.ControlThread;
 import pomodoro.model.PomodoroModel;
 import pomodoro.model.PomodoroModelState;
 import pomodoro.model.Settings;
-import pomodoro.settings.SettingsPresenter;
 import pomodoro.toolkitwindow.PomodoroToolWindows;
 
 import javax.swing.*;
@@ -49,15 +44,13 @@ import java.awt.*;
  * User: dima
  * Date: May 30, 2010
  */
-public class PomodoroComponent implements ApplicationComponent, SearchableConfigurable {
+public class PomodoroComponent implements ApplicationComponent {
 	private ControlThread controlThread;
 	private PomodoroModel model;
-	private SettingsPresenter settingsPresenter;
 
 	@Override
 	public void initComponent() {
-		Settings settings = getSettings();
-		settingsPresenter = new SettingsPresenter(settings);
+		Settings settings =  getSettings();
 
 		model = new PomodoroModel(settings, ServiceManager.getService(PomodoroModelState.class));
 
@@ -95,54 +88,6 @@ public class PomodoroComponent implements ApplicationComponent, SearchableConfig
 
 	public PomodoroModel getModel() {
 		return model;
-	}
-
-	@Nls
-	@Override
-	public String getDisplayName() {
-		return settingsPresenter.getDisplayName();
-	}
-
-	@Override
-	public String getHelpTopic() {
-		return settingsPresenter.getHelpTopic();
-	}
-
-	@Override
-	public JComponent createComponent() {
-		return settingsPresenter.createComponent();
-	}
-
-	@Override
-	public boolean isModified() {
-		return settingsPresenter.isModified();
-	}
-
-	@Override
-	public void apply() throws ConfigurationException {
-		settingsPresenter.apply();
-	}
-
-	@Override
-	public void reset() {
-		settingsPresenter.reset();
-	}
-
-	@Override
-	public void disposeUIResources() {
-		settingsPresenter.disposeUIResources();
-	}
-
-	@NotNull
-	@Override
-	public String getId() {
-		return settingsPresenter.getId();
-	}
-
-	@Nullable
-	@Override
-	public Runnable enableSearch(String option) {
-		return settingsPresenter.enableSearch(option);
 	}
 
 	private static StatusBar statusBarFor(Project project) {
