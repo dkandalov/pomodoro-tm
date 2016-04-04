@@ -19,10 +19,6 @@ import static pomodoro.model.PomodoroModel.PomodoroState.BREAK;
 import static pomodoro.model.PomodoroModel.PomodoroState.RUN;
 import static pomodoro.model.PomodoroModel.PomodoroState.STOP;
 
-/**
- * User: dima
- * Date: May 29, 2010
- */
 public class PomodoroModel {
 	private static final int PROGRESS_INTERVAL_MILLIS = 1000;
 

@@ -22,10 +22,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * User: dima
- * Date: May 29, 2010
- */
 public class PomodoroPresenter {
 	private final ImageIcon playIcon = new ImageIcon(getClass().getResource("/resources/play-icon.png"));
 	private final ImageIcon stopIcon = new ImageIcon(getClass().getResource("/resources/stop-icon.png"));

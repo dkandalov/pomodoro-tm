@@ -21,10 +21,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ResourceBundle;
 
-/**
- * User: dima
- * Date: Oct 18, 2010
- */
 class SettingsForm {
 	public JComboBox pomodoroLengthComboBox;
 	public JComboBox breakLengthComboBox;
@@ -80,7 +76,7 @@ class SettingsForm {
 		pomodoroLengthComboBox.setModel(defaultComboBoxModel1);
 		panel1.add(pomodoroLengthComboBox, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label2 = new JLabel();
-		label2.setText("minutes");
+		label2.setText("minute(s)");
 		panel1.add(label2, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label3 = new JLabel();
 		label3.setText("Break length:");
@@ -96,7 +92,7 @@ class SettingsForm {
 		breakLengthComboBox.setModel(defaultComboBoxModel2);
 		panel1.add(breakLengthComboBox, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label4 = new JLabel();
-		label4.setText("minutes");
+		label4.setText("minute(s)");
 		panel1.add(label4, new GridConstraints(1, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label5 = new JLabel();
 		label5.setText("Ring volume:");

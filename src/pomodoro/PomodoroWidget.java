@@ -27,10 +27,6 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-/**
- * User: dima
- * Date: May 29, 2010
- */
 public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Multiframe {
 	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro.png"));
 	private final ImageIcon pomodoroStoppedIcon = new ImageIcon(getClass().getResource("/resources/pomodoroStopped.png"));

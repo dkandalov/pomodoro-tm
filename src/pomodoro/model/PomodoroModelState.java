@@ -26,9 +26,6 @@ import org.jetbrains.annotations.TestOnly;
  *
  * Thread-safe because it's accessed from {@link ControlThread} and
  * IntelliJ platform thread which persists it.
- *
- * User: dima
- * Date: Jun 12, 2010
  */
 @State(name = "PomodoroState", storages = {@Storage(id = "other", file = "$APP_CONFIG$/pomodoro.state.xml")})
 public class PomodoroModelState implements PersistentStateComponent<PomodoroModelState> {

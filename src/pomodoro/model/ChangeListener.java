@@ -13,10 +13,6 @@
  */
 package pomodoro.model;
 
-/**
- * User: dima
- * Date: Dec 5, 2010
- */
 public interface ChangeListener {
 	void onChange(Settings settings);
 }

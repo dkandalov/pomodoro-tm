@@ -24,10 +24,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ResourceBundle;
 
-/**
- * User: dima
- * Date: Nov 29, 2010
- */
 class ModalForm {
 	public JPanel rootPanel;
 	private JLabel messageLabel;

@@ -21,10 +21,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * User: dima
- * Date: Nov 3, 2010
- */
 public class SettingsForm_Playground {
 	public static void main(String[] args) {
 		final Settings settings = createSettings();
