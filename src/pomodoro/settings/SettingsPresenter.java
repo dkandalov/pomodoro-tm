@@ -54,7 +54,6 @@ public class SettingsPresenter implements SearchableConfigurable {
 	public JComponent createComponent() {
 		settingsForm = new SettingsForm();
 		uiModel = new Settings();
-		lastUIRingVolume = uiModel.getRingVolume();
 
 		setupUIBindings();
 
@@ -62,6 +61,7 @@ public class SettingsPresenter implements SearchableConfigurable {
 	}
 
 	private void setupUIBindings() {
+		lastUIRingVolume = uiModel.getRingVolume();
 		final ActionListener actionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -120,6 +120,10 @@ public class SettingsPresenter implements SearchableConfigurable {
 		}
 
 		uiModel.setRingVolume(settingsForm.ringVolumeSlider.getValue());
+		if (lastUIRingVolume != uiModel.getRingVolume()) {
+			lastUIRingVolume = uiModel.getRingVolume();
+			ringSound.play(uiModel.getRingVolume());
+		}
 
 		uiModel.setPopupEnabled(settingsForm.popupCheckBox.isSelected());
 		uiModel.setBlockDuringBreak(settingsForm.blockDuringBreak.isSelected());
@@ -144,11 +148,6 @@ public class SettingsPresenter implements SearchableConfigurable {
 
 		settingsForm.ringVolumeSlider.setValue(uiModel.getRingVolume());
 		settingsForm.ringVolumeSlider.setToolTipText(ringVolumeTooltip(uiModel));
-
-		if (lastUIRingVolume != uiModel.getRingVolume()) {
-			lastUIRingVolume = uiModel.getRingVolume();
-			ringSound.play(uiModel.getRingVolume());
-		}
 
 		settingsForm.popupCheckBox.setSelected(uiModel.isPopupEnabled());
 		settingsForm.blockDuringBreak.setSelected(uiModel.isBlockDuringBreak());
