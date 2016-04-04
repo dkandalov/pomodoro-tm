@@ -19,6 +19,7 @@ import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pomodoro.PomodoroComponent;
+import pomodoro.RingSound;
 import pomodoro.UIBundle;
 import pomodoro.model.Settings;
 
@@ -36,6 +37,8 @@ public class SettingsPresenter implements SearchableConfigurable {
 	private SettingsForm settingsForm;
 	private Settings uiModel;
 	private boolean updatingUI;
+	private RingSound ringSound;
+	private int lastUIRingVolume = -1;
 
 
 	public SettingsPresenter() {
@@ -44,12 +47,14 @@ public class SettingsPresenter implements SearchableConfigurable {
 
 	public SettingsPresenter(Settings settings) {
 		this.settings = settings;
+		this.ringSound = new RingSound();
 	}
 
 	@Override
 	public JComponent createComponent() {
 		settingsForm = new SettingsForm();
 		uiModel = new Settings();
+		lastUIRingVolume = uiModel.getRingVolume();
 
 		setupUIBindings();
 
@@ -139,6 +144,11 @@ public class SettingsPresenter implements SearchableConfigurable {
 
 		settingsForm.ringVolumeSlider.setValue(uiModel.getRingVolume());
 		settingsForm.ringVolumeSlider.setToolTipText(ringVolumeTooltip(uiModel));
+
+		if (lastUIRingVolume != uiModel.getRingVolume()) {
+			lastUIRingVolume = uiModel.getRingVolume();
+			ringSound.play(uiModel.getRingVolume());
+		}
 
 		settingsForm.popupCheckBox.setSelected(uiModel.isPopupEnabled());
 		settingsForm.blockDuringBreak.setSelected(uiModel.isBlockDuringBreak());

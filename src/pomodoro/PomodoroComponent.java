@@ -36,8 +36,6 @@ import pomodoro.model.Settings;
 import pomodoro.toolkitwindow.PomodoroToolWindows;
 
 import javax.swing.*;
-import java.applet.Applet;
-import java.applet.AudioClip;
 import java.awt.*;
 
 public class PomodoroComponent implements ApplicationComponent {
@@ -92,10 +90,7 @@ public class PomodoroComponent implements ApplicationComponent {
 
 
 	private static class UserNotifier {
-		// TODO sound playback seems to be slow for the first time
-		private final AudioClip ringSound1 = Applet.newAudioClip(getClass().getResource("/resources/ring.wav"));
-		private final AudioClip ringSound2 = Applet.newAudioClip(getClass().getResource("/resources/ring2.wav"));
-		private final AudioClip ringSound3 = Applet.newAudioClip(getClass().getResource("/resources/ring3.wav"));
+		private final RingSound ringSound = new RingSound();
 		private ModalDialog modalDialog;
 
 		public UserNotifier(final Settings settings, final PomodoroModel model) {
@@ -105,13 +100,13 @@ public class PomodoroComponent implements ApplicationComponent {
 					switch (model.getState()) {
 						case STOP:
 							if (model.getLastState() == PomodoroModel.PomodoroState.BREAK && !model.wasManuallyStopped()) {
-								playRingSound(settings.getRingVolume());
+								ringSound.play(settings.getRingVolume());
 								if (settings.isBlockDuringBreak()) unblockIntelliJ();
 							}
 							break;
 						case BREAK:
 							if (model.getLastState() != PomodoroModel.PomodoroState.BREAK) {
-								playRingSound(settings.getRingVolume());
+								ringSound.play(settings.getRingVolume());
 								if (settings.isPopupEnabled()) showPopupNotification();
 								if (settings.isBlockDuringBreak()) blockIntelliJ();
 							}
@@ -138,25 +133,6 @@ public class PomodoroComponent implements ApplicationComponent {
 		private void unblockIntelliJ() {
 			if (modalDialog == null) return; // can happen if user turns on this option during break
 			modalDialog.hide();
-		}
-
-		private void playRingSound(int ringVolume) {
-			switch (ringVolume) {
-				case 0:
-					// ring is disabled
-					break;
-				case 1:
-					ringSound1.play();
-					break;
-				case 2:
-					ringSound2.play();
-					break;
-				case 3:
-					ringSound3.play();
-					break;
-				default:
-					throw new IllegalStateException();
-			}
 		}
 
 		private void showPopupNotification() {
