@@ -17,8 +17,8 @@ import org.junit.Test;
 
 import static java.lang.System.currentTimeMillis;
 import static java.util.concurrent.TimeUnit.*;
-import static junit.framework.Assert.assertNull;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static pomodoro.model.PomodoroModel.PomodoroState.BREAK;
