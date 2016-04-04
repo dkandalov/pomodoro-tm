@@ -40,10 +40,6 @@ import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.*;
 
-/**
- * User: dima
- * Date: May 30, 2010
- */
 public class PomodoroComponent implements ApplicationComponent {
 	private ControlThread controlThread;
 	private PomodoroModel model;

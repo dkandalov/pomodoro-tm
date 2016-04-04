@@ -21,14 +21,6 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
-/**
- * Stores pomodoro plugin settings (see fields for details).
- * The state of this class is persisted by IntelliJ.
- * This class must be registered in plugin.xml.
- * <p/><p/>
- * User: dima
- * Date: May 29, 2010
- */
 @State(name = "PomodoroSettings", storages = {@Storage(id = "other", file = "$APP_CONFIG$/pomodoro.settings.xml")})
 public class Settings implements PersistentStateComponent<Settings> {
 	public static final int DEFAULT_POMODORO_LENGTH = 25;

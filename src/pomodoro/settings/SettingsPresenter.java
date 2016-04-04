@@ -28,10 +28,6 @@ import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * User: dima
- * Date: Oct 18, 2010
- */
 public class SettingsPresenter implements SearchableConfigurable {
 	private static final int MIN_TIME_INTERVAL = 1;
 	private static final int MAX_TIME_INTERVAL = 240;

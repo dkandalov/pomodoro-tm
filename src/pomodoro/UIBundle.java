@@ -23,9 +23,6 @@ import java.util.ResourceBundle;
 
 /**
  * Copied from {@link com.intellij.ui.UIBundle}.
- *
- * User: dima
- * Date: Jun 1, 2010
  */
 public class UIBundle {
 	private static Reference<ResourceBundle> ourBundle;

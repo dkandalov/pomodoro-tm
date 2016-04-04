@@ -15,10 +15,6 @@ package pomodoro.modalwindow;
 
 import java.util.Random;
 
-/**
-* User: dima
-* Date: Nov 29, 2010
-*/
 class FormModel {
 	private static final int OPTIONAL_CLICKS = 30;
 	private static final int MIN_NUMBER_OF_CLICKS = 10;

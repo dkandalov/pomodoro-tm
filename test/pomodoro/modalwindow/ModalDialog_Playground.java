@@ -15,10 +15,6 @@ package pomodoro.modalwindow;
 
 import javax.swing.*;
 
-/**
- * User: dima
- * Date: Nov 29, 2010
- */
 public class ModalDialog_Playground {
 	public static void main(String[] args) throws InterruptedException {
 		JFrame jFrame = new JFrame();

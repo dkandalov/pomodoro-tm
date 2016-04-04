@@ -22,10 +22,6 @@ import java.awt.event.KeyEvent;
 
 import static java.awt.event.KeyEvent.VK_ESCAPE;
 
-/**
- * User: dima
- * Date: Nov 29, 2010
- */
 public class ModalDialog {
 	private final JDialog jDialog;
 

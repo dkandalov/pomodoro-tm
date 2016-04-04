@@ -25,10 +25,6 @@ import static pomodoro.model.PomodoroModel.PomodoroState.BREAK;
 import static pomodoro.model.PomodoroModel.PomodoroState.RUN;
 import static pomodoro.model.PomodoroModel.PomodoroState.STOP;
 
-/**
- * User: dima
- * Date: May 29, 2010
- */
 public class PomodoroModelTest {
 	private static final int UPDATE_INTERVAL = 1100;
 

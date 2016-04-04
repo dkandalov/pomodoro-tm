@@ -20,10 +20,6 @@ import pomodoro.model.Settings;
 
 import javax.swing.*;
 
-/**
- * User: dima
- * Date: May 29, 2010
- */
 public class PomodoroForm_Playground {
 	public static void main(String[] args) {
 		MySettings config = new MySettings();

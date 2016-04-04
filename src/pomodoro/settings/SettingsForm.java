@@ -21,10 +21,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ResourceBundle;
 
-/**
- * User: dima
- * Date: Oct 18, 2010
- */
 class SettingsForm {
 	public JComboBox pomodoroLengthComboBox;
 	public JComboBox breakLengthComboBox;
