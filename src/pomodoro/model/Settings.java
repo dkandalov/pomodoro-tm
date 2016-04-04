@@ -31,7 +31,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 	public int ringVolume = 1;
 	public boolean popupEnabled = true;
 	public boolean blockDuringBreak = false;
-	public boolean showToolWindow = true;
+	public boolean showToolWindow = false;
 
 	private long timeoutToContinuePomodoro = MILLISECONDS.convert(DEFAULT_BREAK_LENGTH, MINUTES);
 	private ChangeListener changeListener;
