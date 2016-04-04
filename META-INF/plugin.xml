@@ -2,22 +2,24 @@
     <name>Pomodoro-tm</name>
     <description>Pomodoro timer</description>
     <version>0.44</version>
-    <vendor url="http://github.com/dkandalov/pomodoro-tm">mq0</vendor>
-    <idea-version since-build="8000"/>
+    <vendor url="http://github.com/dkandalov/pomodoro-tm">Dmitry Kandalov</vendor>
     <description>
         <![CDATA[
-	<html><body>
-	Time management plugin for Pomodoro Technique. See http://pomodorotechnique.com
-    </br>
-	How to use it:
-   <ol>
-   <li>Choose a task to be accomplished and start pomodoro timer.</li>
-   <li>Work on the task until the timer rings. If distracted during pomodoro, restart timer.</li>
-   <li>Take a short break.</li>
-   <li>Every 4 Pomodoros take a longer break.</li>
-   </ol>
-   </body></html>
-   ]]>
+        <html>
+        <body>
+        Time management plugin for <a href="http://pomodorotechnique.com">Pomodoro Technique</a>.
+        </br>
+        How to use it:
+        <ol>
+            <li>Choose a task to be accomplished and start pomodoro timer.</li>
+            <li>Work on the task until the timer rings. If distracted during pomodoro, restart timer.</li>
+            <li>Take a short break.</li>
+            <li>Every 4 Pomodoros take a longer break.</li>
+        </ol>
+        See also <a href="https://github.com/dkandalov/pomodoro-tm">GitHub page</a>.
+        </body>
+        </html>
+        ]]>
     </description>
 
     <!-- http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
