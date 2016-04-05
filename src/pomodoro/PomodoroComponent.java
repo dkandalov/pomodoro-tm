@@ -36,6 +36,7 @@ import pomodoro.model.PomodoroModel;
 import pomodoro.model.PomodoroModelState;
 import pomodoro.model.Settings;
 import pomodoro.toolkitwindow.PomodoroToolWindows;
+import pomodoro.widget.PomodoroWidget;
 
 import javax.swing.*;
 import java.awt.*;
