@@ -17,14 +17,15 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.wm.CustomStatusBarWidget;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.StatusBarWidget;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.util.ui.JBUI;
+import com.intellij.openapi.wm.impl.status.TextPanel;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import pomodoro.model.PomodoroModel;
 import pomodoro.toolkitwindow.PomodoroPresenter;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -32,37 +33,33 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro.png"));
 	private final ImageIcon pomodoroStoppedIcon = new ImageIcon(getClass().getResource("/resources/pomodoroStopped.png"));
 	private final ImageIcon pomodoroBreakIcon = new ImageIcon(getClass().getResource("/resources/pomodoroBreak.png"));
-	private final ImageIcon pomodoroDarkulaIcon = new ImageIcon(getClass().getResource("/resources/pomodoro-inverted.png"));
-	private final ImageIcon pomodoroStoppedDarkulaIcon = new ImageIcon(getClass().getResource("/resources/pomodoroStopped-inverted.png"));
-	private final ImageIcon pomodoroBreakDarkulaIcon = new ImageIcon(getClass().getResource("/resources/pomodoroBreak-inverted.png"));
+	private final ImageIcon pomodoroDarculaIcon = new ImageIcon(getClass().getResource("/resources/pomodoro-inverted.png"));
+	private final ImageIcon pomodoroStoppedDarculaIcon = new ImageIcon(getClass().getResource("/resources/pomodoroStopped-inverted.png"));
+	private final ImageIcon pomodoroBreakDarculaIcon = new ImageIcon(getClass().getResource("/resources/pomodoroBreak-inverted.png"));
+	private final TextPanelWithIcon panelWithIcon;
 	private StatusBar statusBar;
 
-	@Override
-	public void install(@NotNull StatusBar statusBar) {
-		this.statusBar = statusBar;
-	}
 
-	@Override
-	public JComponent getComponent() {
-		final JLabel label = new JBLabel();
-		label.setFont(JBUI.Fonts.label(11));
+	public PomodoroWidget() {
+		panelWithIcon = new TextPanelWithIcon();
 
-		final PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
+		PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
+		if (pomodoroComponent == null) return;
 		final PomodoroModel model = pomodoroComponent.getModel();
-		updateLabel(model, label);
+		updateWidgetPanel(model, panelWithIcon);
 
-		model.addUpdateListener(label, new Runnable() {
+		model.addUpdateListener(panelWithIcon, new Runnable() {
 			@Override
 			public void run() {
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						updateLabel(model, label);
+						updateWidgetPanel(model, panelWithIcon);
 					}
 				});
 			}
 		});
-		label.addMouseListener(new MouseAdapter() {
+		panelWithIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				model.switchToNextState();
@@ -79,9 +76,16 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 				statusBar.setInfo("");
 			}
 		});
+	}
 
-		label.setBorder(StatusBarWidget.WidgetBorder.WIDE);
-		return label;
+	@Override
+	public void install(@NotNull StatusBar statusBar) {
+		this.statusBar = statusBar;
+	}
+
+	@Override
+	public JComponent getComponent() {
+		return panelWithIcon;
 	}
 
 	@Override
@@ -105,19 +109,20 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 		}
 	}
 
-	private void updateLabel(PomodoroModel model, JLabel label) {
+	private void updateWidgetPanel(PomodoroModel model, TextPanelWithIcon panelWithIcon) {
 		int timeLeft = model.getProgressMax() - model.getProgress();
-		label.setText(PomodoroPresenter.formatTime(timeLeft));
-		label.setIcon(getIcon(model));
+		panelWithIcon.setText(PomodoroPresenter.formatTime(timeLeft));
+		panelWithIcon.setIcon(getIcon(model));
+		panelWithIcon.repaint();
 	}
 
 	@NotNull
 	private ImageIcon getIcon(PomodoroModel model) {
 		boolean underDarcula = UIUtil.isUnderDarcula();
 		switch (model.getState()) {
-			case STOP: return underDarcula ? pomodoroStoppedDarkulaIcon : pomodoroStoppedIcon;
-			case RUN: return underDarcula ? pomodoroDarkulaIcon : pomodoroIcon;
-			case BREAK: return underDarcula ? pomodoroBreakDarkulaIcon : pomodoroBreakIcon;
+			case STOP: return underDarcula ? pomodoroStoppedDarculaIcon : pomodoroStoppedIcon;
+			case RUN: return underDarcula ? pomodoroDarculaIcon : pomodoroIcon;
+			case BREAK: return underDarcula ? pomodoroBreakDarculaIcon : pomodoroBreakIcon;
 			default: throw new IllegalStateException();
 		}
 	}
@@ -136,4 +141,54 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 	public String ID() {
 		return "Pomodoro";
 	}
+
+
+	/**
+	 * Based on {@link com.intellij.openapi.wm.impl.status.TextPanel.WithIconAndArrows}
+	 */
+	private static class TextPanelWithIcon extends TextPanel {
+		private final static int GAP = 2;
+		@Nullable
+		private Icon myIcon;
+
+		@Override
+		protected void paintComponent(@NotNull final Graphics g) {
+			super.paintComponent(g);
+			if (getText() == null) return;
+
+			Rectangle r = getBounds();
+			Insets insets = getInsets();
+			if (myIcon != null) {
+				myIcon.paintIcon(this, g,
+						insets.left - GAP - myIcon.getIconWidth(),
+						r.height / 2 - myIcon.getIconHeight() / 2
+				);
+			}
+		}
+
+		@NotNull
+		@Override
+		public Insets getInsets() {
+			Insets insets = super.getInsets();
+			if (myIcon != null) {
+				insets.left += myIcon.getIconWidth() + GAP * 2;
+			}
+			return insets;
+		}
+
+		@Override
+		public Dimension getPreferredSize() {
+			Dimension preferredSize = super.getPreferredSize();
+			int deltaWidth = 0;
+			if (myIcon != null) {
+				deltaWidth += myIcon.getIconWidth();
+			}
+			return new Dimension(preferredSize.width + deltaWidth, preferredSize.height);
+		}
+
+		public void setIcon(@Nullable Icon icon) {
+			myIcon = icon;
+		}
+	}
+
 }
