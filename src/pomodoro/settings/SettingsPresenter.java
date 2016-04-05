@@ -81,6 +81,7 @@ public class SettingsPresenter implements SearchableConfigurable {
 		settingsForm.blockDuringBreak.addChangeListener(changeListener);
 		settingsForm.ringVolumeSlider.addChangeListener(changeListener);
 		settingsForm.showToolWindowCheckbox.addChangeListener(changeListener);
+		settingsForm.showTimeInToolbarWidgetCheckbox.addChangeListener(changeListener);
 	}
 
 	@Override
@@ -128,6 +129,7 @@ public class SettingsPresenter implements SearchableConfigurable {
 		uiModel.setPopupEnabled(settingsForm.popupCheckBox.isSelected());
 		uiModel.setBlockDuringBreak(settingsForm.blockDuringBreak.isSelected());
 		uiModel.setShowToolWindow(settingsForm.showToolWindowCheckbox.isSelected());
+		uiModel.setShowTimeInToolbarWidget(settingsForm.showTimeInToolbarWidgetCheckbox.isSelected());
 	}
 
 	private static Integer selectedItemAsInteger(JComboBox comboBox) {
@@ -152,6 +154,7 @@ public class SettingsPresenter implements SearchableConfigurable {
 		settingsForm.popupCheckBox.setSelected(uiModel.isPopupEnabled());
 		settingsForm.blockDuringBreak.setSelected(uiModel.isBlockDuringBreak());
 		settingsForm.showToolWindowCheckbox.setSelected(uiModel.isShowToolWindow());
+		settingsForm.showTimeInToolbarWidgetCheckbox.setSelected(uiModel.isShowTimeInToolbarWidget());
 
 		updatingUI = false;
 	}

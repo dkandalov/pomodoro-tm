@@ -21,6 +21,7 @@ public class PomodoroAction extends AnAction {
 	@Override
 	public void actionPerformed(AnActionEvent event) {
 		PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
+		if (pomodoroComponent == null) return;
 		pomodoroComponent.getModel().switchToNextState();
 	}
 }

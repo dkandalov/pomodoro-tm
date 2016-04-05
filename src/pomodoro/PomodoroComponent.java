@@ -14,6 +14,7 @@
 package pomodoro;
 
 import com.intellij.ide.DataManager;
+import com.intellij.openapi.Disposable;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.application.ApplicationManager;
@@ -23,6 +24,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.project.ProjectManagerAdapter;
 import com.intellij.openapi.ui.MessageType;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.wm.IdeFocusManager;
 import com.intellij.openapi.wm.StatusBar;
 import com.intellij.openapi.wm.ToolWindowManager;
@@ -44,12 +46,12 @@ public class PomodoroComponent implements ApplicationComponent {
 
 	@Override
 	public void initComponent() {
-		Settings settings =  getSettings();
+		final Settings settings = getSettings();
 
 		model = new PomodoroModel(settings, ServiceManager.getService(PomodoroModelState.class));
 
-		PomodoroToolWindows toolWindows = new PomodoroToolWindows();
-		settings.setChangeListener(toolWindows);
+		final PomodoroToolWindows toolWindows = new PomodoroToolWindows();
+		settings.addChangeListener(toolWindows);
 
 		new UserNotifier(settings, model);
 
@@ -57,7 +59,16 @@ public class PomodoroComponent implements ApplicationComponent {
 			@Override
 			public void projectOpened(Project project) {
 				StatusBar statusBar = statusBarFor(project);
-				statusBar.addWidget(new PomodoroWidget(), "before Position", project);
+				final PomodoroWidget widget = new PomodoroWidget();
+				statusBar.addWidget(widget, "before Position", project);
+				settings.addChangeListener(widget);
+
+				Disposer.register(project, new Disposable() {
+					@Override
+					public void dispose() {
+						settings.removeChangeListener(widget);
+					}
+				});
 			}
 		});
 

@@ -21,7 +21,9 @@ import com.intellij.openapi.wm.impl.status.TextPanel;
 import com.intellij.util.ui.UIUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import pomodoro.model.ChangeListener;
 import pomodoro.model.PomodoroModel;
+import pomodoro.model.Settings;
 import pomodoro.toolkitwindow.PomodoroPresenter;
 
 import javax.swing.*;
@@ -29,7 +31,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Multiframe {
+import static pomodoro.PomodoroComponent.getSettings;
+
+public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Multiframe, ChangeListener {
 	private final ImageIcon pomodoroIcon = new ImageIcon(getClass().getResource("/resources/pomodoro.png"));
 	private final ImageIcon pomodoroStoppedIcon = new ImageIcon(getClass().getResource("/resources/pomodoroStopped.png"));
 	private final ImageIcon pomodoroBreakIcon = new ImageIcon(getClass().getResource("/resources/pomodoroBreak.png"));
@@ -38,15 +42,17 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 	private final ImageIcon pomodoroBreakDarculaIcon = new ImageIcon(getClass().getResource("/resources/pomodoroBreak-inverted.png"));
 	private final TextPanelWithIcon panelWithIcon;
 	private StatusBar statusBar;
+	private final PomodoroModel model;
 
 
 	public PomodoroWidget() {
 		panelWithIcon = new TextPanelWithIcon();
+		final Settings settings = getSettings();
 
 		PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
-		if (pomodoroComponent == null) return;
-		final PomodoroModel model = pomodoroComponent.getModel();
-		updateWidgetPanel(model, panelWithIcon);
+		assert pomodoroComponent != null;
+		model = pomodoroComponent.getModel();
+		updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget());
 
 		model.addUpdateListener(panelWithIcon, new Runnable() {
 			@Override
@@ -54,7 +60,7 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
-						updateWidgetPanel(model, panelWithIcon);
+						updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget());
 					}
 				});
 			}
@@ -109,9 +115,13 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 		}
 	}
 
-	private void updateWidgetPanel(PomodoroModel model, TextPanelWithIcon panelWithIcon) {
-		int timeLeft = model.getProgressMax() - model.getProgress();
-		panelWithIcon.setText(PomodoroPresenter.formatTime(timeLeft));
+	private void updateWidgetPanel(PomodoroModel model, TextPanelWithIcon panelWithIcon, boolean showTimeInToolbarWidget) {
+		if (showTimeInToolbarWidget) {
+			int timeLeft = model.getProgressMax() - model.getProgress();
+			panelWithIcon.setText(PomodoroPresenter.formatTime(timeLeft));
+		} else {
+			panelWithIcon.setText("");
+		}
 		panelWithIcon.setIcon(getIcon(model));
 		panelWithIcon.repaint();
 	}
@@ -140,6 +150,11 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 	@Override
 	public String ID() {
 		return "Pomodoro";
+	}
+
+	@Override
+	public void onChange(Settings settings) {
+		updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget());
 	}
 
 

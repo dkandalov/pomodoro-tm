@@ -18,6 +18,9 @@ import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -32,9 +35,11 @@ public class Settings implements PersistentStateComponent<Settings> {
 	public boolean popupEnabled = true;
 	public boolean blockDuringBreak = false;
 	public boolean showToolWindow = false;
+	public boolean showTimeInToolbarWidget = true;
 
 	private long timeoutToContinuePomodoro = MILLISECONDS.convert(DEFAULT_BREAK_LENGTH, MINUTES);
-	private ChangeListener changeListener;
+	private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener>();
+
 
 	public long getPomodoroLengthInMillis() {
 //		return 10000;
@@ -94,6 +99,14 @@ public class Settings implements PersistentStateComponent<Settings> {
 		this.showToolWindow = showToolWindow;
 	}
 
+	public boolean isShowTimeInToolbarWidget() {
+		return showTimeInToolbarWidget;
+	}
+
+	public void setShowTimeInToolbarWidget(boolean showTimeInToolbarWidget) {
+		this.showTimeInToolbarWidget = showTimeInToolbarWidget;
+	}
+
 	/**
 	 * If IntelliJ shuts down during pomodoro and then restarts, pomodoro can be continued.
 	 * This property determines how much time can pass before we consider pomodoro to be expired.
@@ -104,8 +117,12 @@ public class Settings implements PersistentStateComponent<Settings> {
 		return timeoutToContinuePomodoro;
 	}
 
-	public void setChangeListener(ChangeListener changeListener) {
-		this.changeListener = changeListener;
+	public void addChangeListener(ChangeListener changeListener) {
+		changeListeners.add(changeListener);
+	}
+
+	public void removeChangeListener(ChangeListener changeListener) {
+		changeListeners.remove(changeListener);
 	}
 
 	@Override
@@ -116,7 +133,9 @@ public class Settings implements PersistentStateComponent<Settings> {
 	@Override
 	public void loadState(Settings settings) {
 		XmlSerializerUtil.copyBean(settings, this);
-		if (changeListener != null) changeListener.onChange(this);
+		for (ChangeListener changeListener : changeListeners) {
+			changeListener.onChange(this);
+		}
 	}
 
 	@SuppressWarnings({"RedundantIfStatement"})
@@ -133,6 +152,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 		if (popupEnabled != settings.popupEnabled) return false;
 		if (ringVolume != settings.ringVolume) return false;
 		if (showToolWindow != settings.showToolWindow) return false;
+		if (showTimeInToolbarWidget != settings.showTimeInToolbarWidget) return false;
 		if (timeoutToContinuePomodoro != settings.timeoutToContinuePomodoro) return false;
 
 		return true;
@@ -146,6 +166,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 		result = 31 * result + (popupEnabled ? 1 : 0);
 		result = 31 * result + (blockDuringBreak ? 1 : 0);
 		result = 31 * result + (showToolWindow ? 1 : 0);
+		result = 31 * result + (showTimeInToolbarWidget ? 1 : 0);
 		result = 31 * result + (int) (timeoutToContinuePomodoro ^ (timeoutToContinuePomodoro >>> 32));
 		return result;
 	}
@@ -159,6 +180,7 @@ public class Settings implements PersistentStateComponent<Settings> {
 				", popupEnabled=" + popupEnabled +
 				", blockDuringBreak=" + blockDuringBreak +
 				", showToolWindow=" + showToolWindow +
+				", showTimeInToolbarWidget=" + showTimeInToolbarWidget +
 				", timeoutToContinuePomodoro=" + timeoutToContinuePomodoro +
 				'}';
 	}
