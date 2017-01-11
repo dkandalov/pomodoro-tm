@@ -56,20 +56,28 @@ public class PomodoroModel {
 	private final PomodoroModelState pomodoroModelState;
 
 	public PomodoroModel(Settings settings, PomodoroModelState pomodoroModelState) {
+		this(settings, pomodoroModelState, System.currentTimeMillis());
+	}
+
+	public PomodoroModel(Settings settings, PomodoroModelState pomodoroModelState, long time) {
 		this.settings = settings;
 		this.pomodoroModelState = pomodoroModelState;
 
-		loadModelState();
+		loadModelState(time);
 
 		updateProgressMax();
 		progress = progressMax;
 	}
 
 	public synchronized void switchToNextState() {
+		switchToNextState(System.currentTimeMillis());
+	}
+
+	public synchronized void switchToNextState(long time) {
 		switch (state) {
 			case STOP:
 				state = RUN;
-				startTime = System.currentTimeMillis();
+				startTime = time;
 				updateProgressMax();
 				break;
 			case RUN:
@@ -83,11 +91,14 @@ public class PomodoroModel {
 			default:
 				throw new IllegalStateException();
 		}
-		updateState();
+		updateState(time);
 	}
 
 	public synchronized void updateState() {
-		long time = System.currentTimeMillis();
+		updateState(System.currentTimeMillis());
+	}
+
+	public synchronized void updateState(long time) {
 		switch (state) {
 			case RUN:
 				updateProgress(time);
@@ -157,14 +168,14 @@ public class PomodoroModel {
 		listeners.put(key, runnable);
 	}
 
-	private void loadModelState() {
+	private void loadModelState(long time) {
 		state = pomodoroModelState.getPomodoroState();
 		lastState = pomodoroModelState.getLastState();
 		startTime = pomodoroModelState.getStartTime();
 		pomodorosAmount = pomodoroModelState.getPomodorosAmount();
 
 		if (pomodoroModelState.getPomodoroState() != STOP) {
-			long timeSincePomodoroStart = System.currentTimeMillis() - pomodoroModelState.getStartTime();
+			long timeSincePomodoroStart = time - pomodoroModelState.getStartTime();
 			boolean shouldNotContinuePomodoro = (timeSincePomodoroStart > settings.getTimeoutToContinuePomodoro());
 			if (shouldNotContinuePomodoro) {
 				state = STOP;
