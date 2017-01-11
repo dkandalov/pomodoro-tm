@@ -77,6 +77,8 @@ public class SettingsPresenter implements SearchableConfigurable {
 		};
 		settingsForm.pomodoroLengthComboBox.addActionListener(actionListener);
 		settingsForm.breakLengthComboBox.addActionListener(actionListener);
+		settingsForm.longBreakLengthComboBox.addActionListener(actionListener);
+		settingsForm.longBreakFrequencyComboBox.addActionListener(actionListener);
 		settingsForm.popupCheckBox.addChangeListener(changeListener);
 		settingsForm.blockDuringBreak.addChangeListener(changeListener);
 		settingsForm.ringVolumeSlider.addChangeListener(changeListener);
@@ -120,6 +122,18 @@ public class SettingsPresenter implements SearchableConfigurable {
 			uiModel.setBreakLengthInMinutes(Settings.DEFAULT_BREAK_LENGTH);
 		}
 
+		try {
+			uiModel.setLongBreakLengthInMinutes(selectedItemAsInteger(settingsForm.longBreakLengthComboBox));
+		} catch (NumberFormatException e) {
+			uiModel.setLongBreakLengthInMinutes(Settings.DEFAULT_LONG_BREAK_LENGTH);
+		}
+
+		try {
+			uiModel.setLongBreakFrequency(selectedItemAsInteger(settingsForm.longBreakFrequencyComboBox));
+		} catch (NumberFormatException e) {
+			uiModel.setLongBreakFrequency(Settings.DEFAULT_LONG_BREAK_FREQUENCY);
+		}
+
 		uiModel.setRingVolume(settingsForm.ringVolumeSlider.getValue());
 		if (lastUIRingVolume != uiModel.getRingVolume()) {
 			lastUIRingVolume = uiModel.getRingVolume();
@@ -147,6 +161,8 @@ public class SettingsPresenter implements SearchableConfigurable {
 
 		settingsForm.pomodoroLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.getPomodoroLengthInMinutes()));
 		settingsForm.breakLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.getBreakLengthInMinutes()));
+		settingsForm.longBreakLengthComboBox.getModel().setSelectedItem(String.valueOf(uiModel.getLongBreakLengthInMinutes()));
+		settingsForm.longBreakFrequencyComboBox.getModel().setSelectedItem(String.valueOf(uiModel.getLongBreakFrequency()));
 
 		settingsForm.ringVolumeSlider.setValue(uiModel.getRingVolume());
 		settingsForm.ringVolumeSlider.setToolTipText(ringVolumeTooltip(uiModel));

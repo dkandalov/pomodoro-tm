@@ -28,9 +28,13 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 public class Settings implements PersistentStateComponent<Settings> {
 	public static final int DEFAULT_POMODORO_LENGTH = 25;
 	public static final int DEFAULT_BREAK_LENGTH = 5;
+	public static final int DEFAULT_LONG_BREAK_LENGTH = 20;
+	public static final int DEFAULT_LONG_BREAK_FREQUENCY = 4;
 
 	public int pomodoroLength = DEFAULT_POMODORO_LENGTH;
 	public int breakLength = DEFAULT_BREAK_LENGTH;
+	public int longBreakLength = DEFAULT_LONG_BREAK_LENGTH;
+	public int longBreakFrequency = DEFAULT_LONG_BREAK_FREQUENCY;
 	public int ringVolume = 1;
 	public boolean popupEnabled = true;
 	public boolean blockDuringBreak = false;
@@ -59,6 +63,14 @@ public class Settings implements PersistentStateComponent<Settings> {
 		return breakLength;
 	}
 
+	public int getLongBreakLengthInMinutes() {
+		return longBreakLength;
+	}
+
+	public int getLongBreakFrequency() {
+		return longBreakFrequency;
+	}
+
 	public int getRingVolume() {
 		return ringVolume;
 	}
@@ -81,6 +93,14 @@ public class Settings implements PersistentStateComponent<Settings> {
 
 	public void setBreakLengthInMinutes(int breakLength) {
 		this.breakLength = breakLength;
+	}
+
+	public void setLongBreakLengthInMinutes(int breakLength) {
+		this.longBreakLength = breakLength;
+	}
+
+	public void setLongBreakFrequency(int longBreakFrequency) {
+		this.longBreakFrequency = longBreakFrequency;
 	}
 
 	public void setRingVolume(int ringVolume) {
@@ -148,6 +168,8 @@ public class Settings implements PersistentStateComponent<Settings> {
 
 		if (blockDuringBreak != settings.blockDuringBreak) return false;
 		if (breakLength != settings.breakLength) return false;
+		if (longBreakLength != settings.longBreakLength) return false;
+		if (longBreakFrequency != settings.longBreakFrequency) return false;
 		if (pomodoroLength != settings.pomodoroLength) return false;
 		if (popupEnabled != settings.popupEnabled) return false;
 		if (ringVolume != settings.ringVolume) return false;
@@ -162,6 +184,8 @@ public class Settings implements PersistentStateComponent<Settings> {
 	public int hashCode() {
 		int result = pomodoroLength;
 		result = 31 * result + breakLength;
+		result = 31 * result + longBreakLength;
+		result = 31 * result + longBreakFrequency;
 		result = 31 * result + ringVolume;
 		result = 31 * result + (popupEnabled ? 1 : 0);
 		result = 31 * result + (blockDuringBreak ? 1 : 0);
@@ -176,6 +200,8 @@ public class Settings implements PersistentStateComponent<Settings> {
 		return "Settings{" +
 				"pomodoroLength=" + pomodoroLength +
 				", breakLength=" + breakLength +
+				", longBreakLength=" + longBreakLength +
+				", longBreakFrequency=" + longBreakFrequency +
 				", ringVolume=" + ringVolume +
 				", popupEnabled=" + popupEnabled +
 				", blockDuringBreak=" + blockDuringBreak +
