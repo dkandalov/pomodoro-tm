@@ -69,11 +69,11 @@ public class PomodoroModel {
 		progress = progressMax;
 	}
 
-	public synchronized void switchToNextState() {
-		switchToNextState(System.currentTimeMillis());
+	public synchronized void onUserSwitchToNextState() {
+		onUserSwitchToNextState(System.currentTimeMillis());
 	}
 
-	public synchronized void switchToNextState(long time) {
+	public synchronized void onUserSwitchToNextState(long time) {
 		switch (state) {
 			case STOP:
 				state = RUN;
@@ -91,14 +91,14 @@ public class PomodoroModel {
 			default:
 				throw new IllegalStateException();
 		}
-		updateState(time);
+		onTimer(time);
 	}
 
-	public synchronized void updateState() {
-		updateState(System.currentTimeMillis());
+	public synchronized void onTimer() {
+		onTimer(System.currentTimeMillis());
 	}
 
-	public synchronized void updateState(long time) {
+	public synchronized void onTimer(long time) {
 		switch (state) {
 			case RUN:
 				updateProgress(time);

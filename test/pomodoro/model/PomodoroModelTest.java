@@ -23,40 +23,60 @@ import static pomodoro.model.PomodoroModel.PomodoroState.*;
 public class PomodoroModelTest {
 	private static final int UPDATE_INTERVAL = 1100;
 
-	@Test public void trackingOnePomodoro() throws InterruptedException {
-		PomodoroModel model = new PomodoroModel(settings(2000, -1), new PomodoroModelState());
+	@Test public void doOnePomodoro() throws InterruptedException {
+		PomodoroModel model = new PomodoroModel(settings(2000, 1000), new PomodoroModelState());
 		assertThat(model.getState(), equalTo(STOP));
 		assertThat(model.getProgress(), equalTo(0));
 		assertThat(model.getPomodorosAmount(), equalTo(0));
 
-		model.switchToNextState(time(0));
+		model.onUserSwitchToNextState(time(0));
 
 		assertThat(model.getState(), equalTo(RUN));
 		assertThat(model.getProgressMax(), equalTo(2));
 
-		model.updateState(time(UPDATE_INTERVAL));
+		model.onTimer(time(UPDATE_INTERVAL));
 		assertThat(model.getProgress(), equalTo(1));
 
-		model.updateState(time(UPDATE_INTERVAL * 2));
+		model.onTimer(time(UPDATE_INTERVAL * 2));
 		assertThat(model.getState(), equalTo(BREAK));
 		assertThat(model.getProgress(), equalTo(0));
 		assertThat(model.getPomodorosAmount(), equalTo(1));
 	}
 
+	@Test public void doSeveralPomodoros() throws InterruptedException {
+		PomodoroModel model = new PomodoroModel(settings(2000, 1000), new PomodoroModelState());
+		assertThat(model.getPomodorosAmount(), equalTo(0));
+
+		model.onUserSwitchToNextState(time(0));
+		assertThat(model.getState(), equalTo(RUN));
+
+		model.onTimer(time(UPDATE_INTERVAL * 3));
+		assertThat(model.getState(), equalTo(BREAK));
+		assertThat(model.getPomodorosAmount(), equalTo(1));
+
+		model.onTimer(time(UPDATE_INTERVAL * 4));
+		model.onUserSwitchToNextState(time(UPDATE_INTERVAL * 4));
+		assertThat(model.getState(), equalTo(RUN));
+
+		model.onTimer(time(UPDATE_INTERVAL * 6));
+		assertThat(model.getState(), equalTo(BREAK));
+		assertThat(model.getPomodorosAmount(), equalTo(2));
+	}
+
 	@Test public void stopDuringPomodoro() throws InterruptedException {
-		PomodoroModel model = new PomodoroModel(settings(2000, -1), new PomodoroModelState());
+		PomodoroModel model = new PomodoroModel(settings(2000, 1000), new PomodoroModelState());
 		assertThat(model.getState(), equalTo(STOP));
 		assertThat(model.getProgress(), equalTo(0));
 		assertThat(model.getPomodorosAmount(), equalTo(0));
 
-		model.switchToNextState(time(0));
+		model.onUserSwitchToNextState(time(0));
 
 		assertThat(model.getState(), equalTo(RUN));
 
-		model.updateState(time(UPDATE_INTERVAL));
+		model.onTimer(time(UPDATE_INTERVAL));
 		assertThat(model.getProgress(), equalTo(1));
 
-		model.switchToNextState(time(UPDATE_INTERVAL * 2));
+		model.onUserSwitchToNextState(time(UPDATE_INTERVAL * 2));
 
 		assertThat(model.getState(), equalTo(STOP));
 		assertThat(model.getPomodorosAmount(), equalTo(0));
@@ -66,15 +86,15 @@ public class PomodoroModelTest {
 		PomodoroModel model = new PomodoroModel(settings(1000, 2000), new PomodoroModelState());
 
 		assertThat(model.getState(), equalTo(STOP));
-		model.switchToNextState(time(0));
+		model.onUserSwitchToNextState(time(0));
 
-		model.updateState(time(UPDATE_INTERVAL));
+		model.onTimer(time(UPDATE_INTERVAL));
 		assertThat(model.getState(), equalTo(BREAK));
 
-		model.updateState(time(UPDATE_INTERVAL) * 2);
+		model.onTimer(time(UPDATE_INTERVAL) * 2);
 		assertThat(model.getProgress(), equalTo(1));
 
-		model.updateState(time(UPDATE_INTERVAL) * 3);
+		model.onTimer(time(UPDATE_INTERVAL) * 3);
 		assertThat(model.getState(), equalTo(STOP));
 		assertThat(model.getProgress(), equalTo(2));
 	}
@@ -87,7 +107,7 @@ public class PomodoroModelTest {
 		assertTrue(model.getProgress() > 0);
 		assertThat(model.getPomodorosAmount(), equalTo(0));
 
-		model.updateState(time(UPDATE_INTERVAL));
+		model.onTimer(time(UPDATE_INTERVAL));
 
 		assertThat(model.getState(), equalTo(BREAK));
 		assertThat(model.getPomodorosAmount(), equalTo(1));
@@ -120,7 +140,7 @@ public class PomodoroModelTest {
 
 		assertThat(model.getState(), equalTo(RUN));
 
-		model.updateState(time(UPDATE_INTERVAL));
+		model.onTimer(time(UPDATE_INTERVAL));
 
 		assertThat(modelState.getPomodoroState(), equalTo(BREAK));
 		assertTrue("model state was updated", modelState.getStartTime() > pomodoroStartTime);

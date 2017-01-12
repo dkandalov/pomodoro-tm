@@ -67,7 +67,7 @@ public class PomodoroWidget implements CustomStatusBarWidget, StatusBarWidget.Mu
 		panelWithIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				model.switchToNextState();
+				model.onUserSwitchToNextState();
 			}
 
 			@Override

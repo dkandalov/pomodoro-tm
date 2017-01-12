@@ -35,7 +35,7 @@ public class PomodoroPresenter {
 
 		form.getControlButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				model.switchToNextState();
+				model.onUserSwitchToNextState();
 				updateUI();
 			}
 		});

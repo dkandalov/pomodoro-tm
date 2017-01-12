@@ -30,7 +30,7 @@ public class ControlThread extends Thread {
 	public void run() {
 		while (!shouldStop) {
 			try {
-				model.updateState();
+				model.onTimer();
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
