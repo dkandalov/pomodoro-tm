@@ -32,20 +32,23 @@ public class PomodoroModelState implements PersistentStateComponent<PomodoroMode
 	private PomodoroModel.PomodoroState pomodoroState;
 	private PomodoroModel.PomodoroState lastState;
 	private long startTime;
+	private long lastUpdateTime;
 	private int pomodorosAmount;
 
 	public PomodoroModelState() {
 		setPomodoroState(PomodoroModel.PomodoroState.STOP);
 		setLastState(null);
 		setStartTime(0);
+		setLastUpdateTime(0);
 		setPomodorosAmount(0);
 	}
 
 	@TestOnly
-	PomodoroModelState(PomodoroModel.PomodoroState pomodoroState, PomodoroModel.PomodoroState lastState, long startTime) {
-		this.setPomodoroState(pomodoroState);
-		this.setLastState(lastState);
-		this.setStartTime(startTime);
+	PomodoroModelState(PomodoroModel.PomodoroState pomodoroState, PomodoroModel.PomodoroState lastState, long startTime, long lastUpdateTime) {
+		setPomodoroState(pomodoroState);
+		setLastState(lastState);
+		setStartTime(startTime);
+		setLastUpdateTime(lastUpdateTime);
 	}
 
 	@Override
@@ -80,6 +83,14 @@ public class PomodoroModelState implements PersistentStateComponent<PomodoroMode
 
 	public synchronized void setStartTime(long startTime) {
 		this.startTime = startTime;
+	}
+
+	public synchronized long getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+
+	public synchronized void setLastUpdateTime(long lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
 	}
 
 	public synchronized int getPomodorosAmount() {

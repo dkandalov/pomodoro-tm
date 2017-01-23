@@ -100,14 +100,14 @@ public class PomodoroModelTest {
 	}
 
 	@Test public void afterIdeaRestart_ContinueFromSavedState_And_FinishPomodoro() throws InterruptedException {
-		PomodoroModelState modelState = new PomodoroModelState(RUN, RUN, time(SECONDS.toMillis(-24)));
-		PomodoroModel model = new PomodoroModel(settings(SECONDS.toMillis(25)), modelState, time(0));
+		PomodoroModelState modelState = new PomodoroModelState(RUN, RUN, minute(-24), second(-1));
+		PomodoroModel model = new PomodoroModel(settings(25), modelState, minute(0));
 
 		assertThat(model.getState(), equalTo(RUN));
 		assertTrue(model.getProgress() > 0);
 		assertThat(model.getPomodorosAmount(), equalTo(0));
 
-		model.onTimer(time(UPDATE_INTERVAL));
+		model.onTimer(minute(1));
 
 		assertThat(model.getState(), equalTo(BREAK));
 		assertThat(model.getPomodorosAmount(), equalTo(1));
@@ -115,8 +115,8 @@ public class PomodoroModelTest {
 
 	@Test public void afterIdeaRestart_ShouldNotContinueFromLastState_IfALotOfTimeHasPassed() throws InterruptedException {
 		// last state was RUN
-		PomodoroModelState modelState = new PomodoroModelState(RUN, RUN, time(HOURS.toMillis(-1)));
-		PomodoroModel model = new PomodoroModel(settings(SECONDS.toMillis(25)), modelState, time(0));
+		PomodoroModelState modelState = new PomodoroModelState(RUN, RUN, minute(-60), minute(0));
+		PomodoroModel model = new PomodoroModel(settings(minute(25), 2000), modelState, minute(0));
 
 		assertThat(model.getState(), equalTo(STOP));
 		assertNull(model.getLastState());
@@ -124,7 +124,7 @@ public class PomodoroModelTest {
 		assertThat(model.getPomodorosAmount(), equalTo(0));
 
 		// last state was BREAK
-		modelState = new PomodoroModelState(BREAK, RUN, time(0) - HOURS.toMillis(1));
+		modelState = new PomodoroModelState(BREAK, RUN, time(0) - HOURS.toMillis(1), time(-1000));
 		model = new PomodoroModel(settings(MINUTES.toMillis(6)), modelState, time(0));
 
 		assertThat(model.getState(), equalTo(STOP));
@@ -135,8 +135,8 @@ public class PomodoroModelTest {
 
 	@Test public void savePomodoroModelState() throws InterruptedException {
 		long pomodoroStartTime = SECONDS.toMillis(-24);
-		PomodoroModelState modelState = new PomodoroModelState(RUN, RUN, pomodoroStartTime);
-		PomodoroModel model = new PomodoroModel(settings(SECONDS.toMillis(24)), modelState, time(0));
+		PomodoroModelState modelState = new PomodoroModelState(RUN, RUN, pomodoroStartTime, time(0));
+		PomodoroModel model = new PomodoroModel(settings(SECONDS.toMillis(24), 2000), modelState, time(0));
 
 		assertThat(model.getState(), equalTo(RUN));
 
@@ -146,12 +146,22 @@ public class PomodoroModelTest {
 		assertTrue("model state was updated", modelState.getStartTime() > pomodoroStartTime);
 	}
 
+	private static long minute(long n) {
+		return MINUTES.toMillis(n);
+	}
+
+	private static long second(long n) {
+		return SECONDS.toMillis(n);
+	}
+
 	private static long time(long n) {
 		return n;
 	}
 
-	private static Settings settings(final long pomodoroLengthMs) {
-		return settings(pomodoroLengthMs, -1);
+	private static Settings settings(long pomodoroLength) {
+		Settings settings = new Settings();
+		settings.setPomodoroLengthInMinutes((int) pomodoroLength);
+		return settings;
 	}
 
 	private static Settings settings(final long pomodoroLengthMs, final long breakLengthMs) {

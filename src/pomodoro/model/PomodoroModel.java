@@ -130,7 +130,7 @@ public class PomodoroModel {
 
 		if (lastState != state) {
 			lastState = state;
-			saveModelState();
+			saveModelState(time);
 		}
 		lastState = state;
 	}
@@ -149,7 +149,7 @@ public class PomodoroModel {
 
 	public synchronized void resetPomodoros() {
 		pomodorosAmount = 0;
-		saveModelState();
+		pomodoroModelState.setPomodorosAmount(pomodorosAmount);
 	}
 
 	public synchronized PomodoroState getState() {
@@ -175,21 +175,22 @@ public class PomodoroModel {
 		pomodorosAmount = pomodoroModelState.getPomodorosAmount();
 
 		if (pomodoroModelState.getPomodoroState() != STOP) {
-			long timeSincePomodoroStart = time - pomodoroModelState.getStartTime();
+			long timeSincePomodoroStart = time - pomodoroModelState.getLastUpdateTime();
 			boolean shouldNotContinuePomodoro = (timeSincePomodoroStart > settings.getTimeoutToContinuePomodoro());
 			if (shouldNotContinuePomodoro) {
 				state = STOP;
 				lastState = null;
 				startTime = -1;
-				saveModelState();
+				saveModelState(time);
 			}
 		}
 	}
 
-	private void saveModelState() {
+	private void saveModelState(long time) {
 		pomodoroModelState.setPomodoroState(state);
 		pomodoroModelState.setLastState(lastState);
 		pomodoroModelState.setStartTime(startTime);
+		pomodoroModelState.setLastUpdateTime(time);
 		pomodoroModelState.setPomodorosAmount(pomodorosAmount);
 	}
 
