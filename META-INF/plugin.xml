@@ -37,8 +37,7 @@
     </application-components>
 
     <actions>
-        <action id="Start/stop pomodoro" class="pomodoro.PomodoroAction"
-                description="Start or stop pomodoro timer">
+        <action id="Start/stop pomodoro" class="pomodoro.PomodoroAction" text="Start/Stop Pomodoro" description="Start or stop pomodoro timer">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift P"/>
         </action>
     </actions>
