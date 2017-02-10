@@ -59,11 +59,11 @@ public class PomodoroModel {
 		this(settings, pomodoroModelState, System.currentTimeMillis());
 	}
 
-	public PomodoroModel(Settings settings, PomodoroModelState pomodoroModelState, long time) {
+	public PomodoroModel(Settings settings, PomodoroModelState pomodoroModelState, long now) {
 		this.settings = settings;
 		this.pomodoroModelState = pomodoroModelState;
 
-		loadModelState(time);
+		loadModelState(now);
 
 		updateProgressMax();
 		progress = progressMax;
@@ -168,29 +168,29 @@ public class PomodoroModel {
 		listeners.put(key, runnable);
 	}
 
-	private void loadModelState(long time) {
+	private void loadModelState(long now) {
 		state = pomodoroModelState.getPomodoroState();
 		lastState = pomodoroModelState.getLastState();
 		startTime = pomodoroModelState.getStartTime();
 		pomodorosAmount = pomodoroModelState.getPomodorosAmount();
 
 		if (pomodoroModelState.getPomodoroState() != STOP) {
-			long timeSincePomodoroStart = time - pomodoroModelState.getLastUpdateTime();
+			long timeSincePomodoroStart = now - pomodoroModelState.getLastUpdateTime();
 			boolean shouldNotContinuePomodoro = (timeSincePomodoroStart > settings.getTimeoutToContinuePomodoro());
 			if (shouldNotContinuePomodoro) {
 				state = STOP;
 				lastState = null;
 				startTime = -1;
-				saveModelState(time);
+				saveModelState(now);
 			}
 		}
 	}
 
-	private void saveModelState(long time) {
+	private void saveModelState(long now) {
 		pomodoroModelState.setPomodoroState(state);
 		pomodoroModelState.setLastState(lastState);
 		pomodoroModelState.setStartTime(startTime);
-		pomodoroModelState.setLastUpdateTime(time);
+		pomodoroModelState.setLastUpdateTime(now);
 		pomodoroModelState.setPomodorosAmount(pomodorosAmount);
 	}
 

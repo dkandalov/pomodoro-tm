@@ -115,7 +115,7 @@ public class PomodoroModelTest {
 
 	@Test public void afterIdeaRestart_ShouldNotContinueFromLastState_IfALotOfTimeHasPassed() throws InterruptedException {
 		// last state was RUN
-		PomodoroModelState modelState = new PomodoroModelState(RUN, RUN, minute(-60), minute(0));
+		PomodoroModelState modelState = new PomodoroModelState(RUN, RUN, minute(-60), minute(-20));
 		PomodoroModel model = new PomodoroModel(settings(minute(25), 2000), modelState, minute(0));
 
 		assertThat(model.getState(), equalTo(STOP));
@@ -124,8 +124,8 @@ public class PomodoroModelTest {
 		assertThat(model.getPomodorosAmount(), equalTo(0));
 
 		// last state was BREAK
-		modelState = new PomodoroModelState(BREAK, RUN, time(0) - HOURS.toMillis(1), time(-1000));
-		model = new PomodoroModel(settings(MINUTES.toMillis(6)), modelState, time(0));
+		modelState = new PomodoroModelState(BREAK, RUN, minute(-60), minute(-20));
+		model = new PomodoroModel(settings(minute(6), 2000), modelState, time(0));
 
 		assertThat(model.getState(), equalTo(STOP));
 		assertNull(model.getLastState());
