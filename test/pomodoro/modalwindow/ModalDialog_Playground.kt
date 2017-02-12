@@ -11,18 +11,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pomodoro.modalwindow;
+package pomodoro.modalwindow
 
-import javax.swing.*;
+import javax.swing.JFrame
 
-public class ModalDialog_Playground {
-	public static void main(String[] args) throws InterruptedException {
-		JFrame jFrame = new JFrame();
-		ModalDialog modalDialog = new ModalDialog(jFrame);
-		modalDialog.show();
-
-		Thread.sleep(60 * 1000);
-
-		modalDialog.hide();
-	}
+fun main(args: Array<String>) {
+    ModalDialog(JFrame()).apply {
+        show()
+        Thread.sleep(60 * 1000L)
+        hide()
+    }
 }
