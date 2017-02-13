@@ -11,17 +11,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pomodoro;
+package pomodoro
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.actionSystem.AnAction
+import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.application.ApplicationManager
 
-public class PomodoroAction extends AnAction {
-	@Override
-	public void actionPerformed(AnActionEvent event) {
-		PomodoroComponent pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent.class);
-		if (pomodoroComponent == null) return;
-		pomodoroComponent.getModel().onUserSwitchToNextState();
-	}
+class PomodoroAction : AnAction() {
+    override fun actionPerformed(event: AnActionEvent) {
+        val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java) ?: return
+        pomodoroComponent.model.onUserSwitchToNextState()
+    }
 }
