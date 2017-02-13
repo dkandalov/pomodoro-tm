@@ -11,28 +11,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pomodoro.modalwindow;
+package pomodoro.modalwindow
 
-import java.util.Random;
+import java.util.*
 
-class FormModel {
-	private static final int OPTIONAL_CLICKS = 30;
-	private static final int MIN_NUMBER_OF_CLICKS = 10;
-	private int clicksToUnlock;
+internal class FormModel {
+    private val optionalClicks = 30
+    private val minNumberOfClicks = 10
+    private var clicksToUnlock = minNumberOfClicks + Random().nextInt(optionalClicks)
 
-	public FormModel() {
-		clicksToUnlock = MIN_NUMBER_OF_CLICKS + new Random().nextInt(OPTIONAL_CLICKS);
-	}
+    fun userClick() {
+        clicksToUnlock--
+    }
 
-	public void userClick() {
-		clicksToUnlock--;
-	}
+    fun clicksLeft() = if (clicksToUnlock > 0) clicksToUnlock else 0
 
-	public int clicksLeft() {
-		return (clicksToUnlock > 0 ? clicksToUnlock : 0);
-	}
-
-	public boolean intellijIsAllowedToBeUnlocked() {
-		return clicksToUnlock <= 0;
-	}
+    fun intellijIsAllowedToBeUnlocked() = clicksToUnlock <= 0
 }
