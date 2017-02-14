@@ -30,7 +30,7 @@ class PomodoroModelTest {
 
         model.onUserSwitchToNextState(time(0))
         assertThat(model.state, equalTo(RUN))
-        assertThat(model.progressMax, equalTo(2))
+        assertThat(model.getProgressMax(), equalTo(2))
 
         model.onTimer(time(updateInterval))
         assertThat(model.progress, equalTo(1))

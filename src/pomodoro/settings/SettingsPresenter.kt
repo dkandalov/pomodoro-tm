@@ -27,7 +27,7 @@ import javax.swing.event.ChangeListener
 
 class SettingsPresenter constructor(private val settings: Settings = PomodoroComponent.settings) : SearchableConfigurable {
     private var settingsForm: SettingsForm? = null
-    private var uiModel: Settings? = null
+    private lateinit var uiModel: Settings
     private var updatingUI: Boolean = false
     private val ringSound: RingSound
     private var lastUIRingVolume = -1
@@ -46,7 +46,7 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
     }
 
     private fun setupUIBindings() {
-        lastUIRingVolume = uiModel!!.getRingVolume()
+        lastUIRingVolume = uiModel.getRingVolume()
         val actionListener = ActionListener {
             updateUIModel()
             updateUI()
@@ -79,7 +79,7 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
     }
 
     override fun reset() {
-        uiModel!!.loadState(settings)
+        uiModel.loadState(settings)
         updateUI()
     }
 
@@ -88,39 +88,39 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         if (updatingUI) return
 
         try {
-            uiModel!!.pomodoroLengthInMinutes = selectedItemAsInteger(settingsForm!!.pomodoroLengthComboBox)!!
+            uiModel.pomodoroLengthInMinutes = selectedItemAsInteger(settingsForm!!.pomodoroLengthComboBox)!!
         } catch (e: NumberFormatException) {
-            uiModel!!.pomodoroLengthInMinutes = Settings.DEFAULT_POMODORO_LENGTH
+            uiModel.pomodoroLengthInMinutes = Settings.DEFAULT_POMODORO_LENGTH
         }
 
         try {
-            uiModel!!.breakLengthInMinutes = selectedItemAsInteger(settingsForm!!.breakLengthComboBox)!!
+            uiModel.breakLengthInMinutes = selectedItemAsInteger(settingsForm!!.breakLengthComboBox)!!
         } catch (e: NumberFormatException) {
-            uiModel!!.breakLengthInMinutes = Settings.DEFAULT_BREAK_LENGTH
+            uiModel.breakLengthInMinutes = Settings.DEFAULT_BREAK_LENGTH
         }
 
         try {
-            uiModel!!.longBreakLengthInMinutes = selectedItemAsInteger(settingsForm!!.longBreakLengthComboBox)!!
+            uiModel.longBreakLengthInMinutes = selectedItemAsInteger(settingsForm!!.longBreakLengthComboBox)!!
         } catch (e: NumberFormatException) {
-            uiModel!!.longBreakLengthInMinutes = Settings.DEFAULT_LONG_BREAK_LENGTH
+            uiModel.longBreakLengthInMinutes = Settings.DEFAULT_LONG_BREAK_LENGTH
         }
 
         try {
-            uiModel!!.setLongBreakFrequency(selectedItemAsInteger(settingsForm!!.longBreakFrequencyComboBox)!!)
+            uiModel.setLongBreakFrequency(selectedItemAsInteger(settingsForm!!.longBreakFrequencyComboBox)!!)
         } catch (e: NumberFormatException) {
-            uiModel!!.setLongBreakFrequency(Settings.DEFAULT_LONG_BREAK_FREQUENCY)
+            uiModel.setLongBreakFrequency(Settings.DEFAULT_LONG_BREAK_FREQUENCY)
         }
 
-        uiModel!!.setRingVolume(settingsForm!!.ringVolumeSlider.value)
-        if (lastUIRingVolume != uiModel!!.getRingVolume()) {
-            lastUIRingVolume = uiModel!!.getRingVolume()
-            ringSound.play(uiModel!!.getRingVolume())
+        uiModel.setRingVolume(settingsForm!!.ringVolumeSlider.value)
+        if (lastUIRingVolume != uiModel.getRingVolume()) {
+            lastUIRingVolume = uiModel.getRingVolume()
+            ringSound.play(uiModel.getRingVolume())
         }
 
-        uiModel!!.isPopupEnabled = settingsForm!!.popupCheckBox.isSelected
-        uiModel!!.isBlockDuringBreak = settingsForm!!.blockDuringBreak.isSelected
-        uiModel!!.isShowToolWindow = settingsForm!!.showToolWindowCheckbox.isSelected
-        uiModel!!.isShowTimeInToolbarWidget = settingsForm!!.showTimeInToolbarWidgetCheckbox.isSelected
+        uiModel.isPopupEnabled = settingsForm!!.popupCheckBox.isSelected
+        uiModel.isBlockDuringBreak = settingsForm!!.blockDuringBreak.isSelected
+        uiModel.isShowToolWindow = settingsForm!!.showToolWindowCheckbox.isSelected
+        uiModel.isShowTimeInToolbarWidget = settingsForm!!.showTimeInToolbarWidgetCheckbox.isSelected
     }
 
     private fun updateUI() {
@@ -129,18 +129,18 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         updatingUI = true
 
         settingsForm!!.apply {
-            pomodoroLengthComboBox.model.selectedItem = uiModel!!.pomodoroLengthInMinutes.toString()
-            breakLengthComboBox.model.selectedItem = uiModel!!.breakLengthInMinutes.toString()
-            longBreakLengthComboBox.model.selectedItem = uiModel!!.longBreakLengthInMinutes.toString()
-            longBreakFrequencyComboBox.model.selectedItem = uiModel!!.getLongBreakFrequency().toString()
+            pomodoroLengthComboBox.model.selectedItem = uiModel.pomodoroLengthInMinutes.toString()
+            breakLengthComboBox.model.selectedItem = uiModel.breakLengthInMinutes.toString()
+            longBreakLengthComboBox.model.selectedItem = uiModel.longBreakLengthInMinutes.toString()
+            longBreakFrequencyComboBox.model.selectedItem = uiModel.getLongBreakFrequency().toString()
 
-            ringVolumeSlider.value = uiModel!!.getRingVolume()
-            ringVolumeSlider.toolTipText = ringVolumeTooltip(uiModel!!)
+            ringVolumeSlider.value = uiModel.getRingVolume()
+            ringVolumeSlider.toolTipText = ringVolumeTooltip(uiModel)
 
-            popupCheckBox.isSelected = uiModel!!.isPopupEnabled
-            blockDuringBreak.isSelected = uiModel!!.isBlockDuringBreak
-            showToolWindowCheckbox.isSelected = uiModel!!.isShowToolWindow
-            showTimeInToolbarWidgetCheckbox.isSelected = uiModel!!.isShowTimeInToolbarWidget
+            popupCheckBox.isSelected = uiModel.isPopupEnabled
+            blockDuringBreak.isSelected = uiModel.isBlockDuringBreak
+            showToolWindowCheckbox.isSelected = uiModel.isShowToolWindow
+            showTimeInToolbarWidgetCheckbox.isSelected = uiModel.isShowTimeInToolbarWidget
         }
 
         updatingUI = false
@@ -159,7 +159,7 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         }
     }
 
-    @Nls override fun getDisplayName() = UIBundle.message("settings.title")!!
+    @Nls override fun getDisplayName() = UIBundle.message("settings.title")
 
     override fun getHelpTopic() = null
 

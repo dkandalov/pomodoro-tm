@@ -66,10 +66,10 @@ class PomodoroPresenter(private val model: PomodoroModel) {
             }
             form.pomodorosLabel.text = model.pomodorosAmount.toString()
 
-            form.progressBar.maximum = model.progressMax
+            form.progressBar.maximum = model.getProgressMax()
             form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(model.progress)
 
-            val timeLeft = model.progressMax - model.progress
+            val timeLeft = model.getProgressMax() - model.progress
             form.progressBar.string = progressBarPrefix + " " + formatTime(timeLeft)
         }
     }

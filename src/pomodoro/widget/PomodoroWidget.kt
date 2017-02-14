@@ -38,7 +38,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
     private val pomodoroStoppedDarculaIcon = ImageIcon(javaClass.getResource("/resources/pomodoroStopped-inverted.png"))
     private val pomodoroBreakDarculaIcon = ImageIcon(javaClass.getResource("/resources/pomodoroBreak-inverted.png"))
     private val panelWithIcon = TextPanelWithIcon()
-    private var statusBar: StatusBar? = null
+    private lateinit var statusBar: StatusBar
     private val model: PomodoroModel
 
     init {
@@ -56,11 +56,11 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
 
             override fun mouseEntered(e: MouseEvent?) {
                 val tooltipText = tooltipText(model)
-                statusBar!!.info = tooltipText
+                statusBar.info = tooltipText
             }
 
             override fun mouseExited(e: MouseEvent?) {
-                statusBar!!.info = ""
+                statusBar.info = ""
             }
         })
     }
@@ -94,7 +94,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
         if (showTimeInToolbarWidget) {
-            val timeLeft = model.progressMax - model.progress
+            val timeLeft = model.getProgressMax() - model.progress
             panelWithIcon.text = PomodoroPresenter.formatTime(timeLeft)
         } else {
             panelWithIcon.text = ""
