@@ -37,7 +37,6 @@ fun main(args: Array<String>) {
 private class MySettings : Settings() {
     // timeout should be > 10 to progress in UI
     // because of PomodoroPresenter.hack_for_jdk1_6_u06__IDEA_9_0_2__winXP()
-    override fun getPomodoroLengthInMillis() = 15 * 1000L
-
-    override fun getBreakLengthInMillis() = 15 * 1000L
+    override val pomodoroLengthInMillis = 15 * 1000L
+    override val breakLengthInMillis = 15 * 1000L
 }

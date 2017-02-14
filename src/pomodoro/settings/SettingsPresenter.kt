@@ -46,7 +46,7 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
     }
 
     private fun setupUIBindings() {
-        lastUIRingVolume = uiModel.getRingVolume()
+        lastUIRingVolume = uiModel.ringVolume
         val actionListener = ActionListener {
             updateUIModel()
             updateUI()
@@ -106,15 +106,15 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         }
 
         try {
-            uiModel.setLongBreakFrequency(selectedItemAsInteger(settingsForm!!.longBreakFrequencyComboBox)!!)
+            uiModel.longBreakFrequency = selectedItemAsInteger(settingsForm!!.longBreakFrequencyComboBox)!!
         } catch (e: NumberFormatException) {
-            uiModel.setLongBreakFrequency(Settings.DEFAULT_LONG_BREAK_FREQUENCY)
+            uiModel.longBreakFrequency = Settings.DEFAULT_LONG_BREAK_FREQUENCY
         }
 
-        uiModel.setRingVolume(settingsForm!!.ringVolumeSlider.value)
-        if (lastUIRingVolume != uiModel.getRingVolume()) {
-            lastUIRingVolume = uiModel.getRingVolume()
-            ringSound.play(uiModel.getRingVolume())
+        uiModel.ringVolume = settingsForm!!.ringVolumeSlider.value
+        if (lastUIRingVolume != uiModel.ringVolume) {
+            lastUIRingVolume = uiModel.ringVolume
+            ringSound.play(uiModel.ringVolume)
         }
 
         uiModel.isPopupEnabled = settingsForm!!.popupCheckBox.isSelected
@@ -132,9 +132,9 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
             pomodoroLengthComboBox.model.selectedItem = uiModel.pomodoroLengthInMinutes.toString()
             breakLengthComboBox.model.selectedItem = uiModel.breakLengthInMinutes.toString()
             longBreakLengthComboBox.model.selectedItem = uiModel.longBreakLengthInMinutes.toString()
-            longBreakFrequencyComboBox.model.selectedItem = uiModel.getLongBreakFrequency().toString()
+            longBreakFrequencyComboBox.model.selectedItem = uiModel.longBreakFrequency.toString()
 
-            ringVolumeSlider.value = uiModel.getRingVolume()
+            ringVolumeSlider.value = uiModel.ringVolume
             ringVolumeSlider.toolTipText = ringVolumeTooltip(uiModel)
 
             popupCheckBox.isSelected = uiModel.isPopupEnabled
@@ -152,10 +152,10 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
     }
 
     @Nls private fun ringVolumeTooltip(uiModel: Settings): String {
-        if (uiModel.getRingVolume() == 0) {
+        if (uiModel.ringVolume == 0) {
             return UIBundle.message("settings.ringSlider.noSoundTooltip")
         } else {
-            return UIBundle.message("settings.ringSlider.volumeTooltip", uiModel.getRingVolume())
+            return UIBundle.message("settings.ringSlider.volumeTooltip", uiModel.ringVolume)
         }
     }
 

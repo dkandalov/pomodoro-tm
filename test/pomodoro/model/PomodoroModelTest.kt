@@ -161,8 +161,8 @@ class PomodoroModelTest {
 
         private fun settings(pomodoroLengthMs: Long, breakLengthMs: Long): Settings {
             return object : Settings() {
-                override fun getPomodoroLengthInMillis() = pomodoroLengthMs
-                override fun getBreakLengthInMillis() = breakLengthMs
+                override val pomodoroLengthInMillis = pomodoroLengthMs
+                override val breakLengthInMillis = breakLengthMs
             }
         }
     }

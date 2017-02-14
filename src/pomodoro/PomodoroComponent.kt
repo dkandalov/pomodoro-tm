@@ -85,11 +85,11 @@ class PomodoroComponent : ApplicationComponent {
             model.addUpdateListener(this) {
                 when (model.state) {
                     PomodoroModel.PomodoroState.STOP -> if (model.lastState == PomodoroModel.PomodoroState.BREAK && !model.wasManuallyStopped()) {
-                        ringSound.play(settings.getRingVolume())
+                        ringSound.play(settings.ringVolume)
                         if (settings.isBlockDuringBreak) unblockIntelliJ()
                     }
                     PomodoroModel.PomodoroState.BREAK -> if (model.lastState != PomodoroModel.PomodoroState.BREAK) {
-                        ringSound.play(settings.getRingVolume())
+                        ringSound.play(settings.ringVolume)
                         if (settings.isPopupEnabled) showPopupNotification()
                         if (settings.isBlockDuringBreak) blockIntelliJ()
                     }
