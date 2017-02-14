@@ -31,7 +31,7 @@ class PomodoroToolWindows : ChangeListener {
         ProjectManager.getInstance().addProjectManagerListener(object : ProjectManagerListener {
             override fun projectOpened(project: Project?) {
                 if (project == null) return
-                if (PomodoroComponent.getSettings().isShowToolWindow) {
+                if (PomodoroComponent.settings.isShowToolWindow) {
                     registerWindowFor(project)
                 }
             }
@@ -68,7 +68,7 @@ class PomodoroToolWindows : ChangeListener {
         }
 
         val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java)
-        val presenter = PomodoroPresenter(pomodoroComponent.model)
+        val presenter = PomodoroPresenter(pomodoroComponent.model!!)
 
         val myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM)
         myToolWindow.icon = pomodoroIcon

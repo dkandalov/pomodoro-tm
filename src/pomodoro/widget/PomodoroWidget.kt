@@ -29,7 +29,6 @@ import javax.swing.*
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 
-import pomodoro.PomodoroComponent.getSettings
 
 class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, ChangeListener {
     private val pomodoroIcon = ImageIcon(javaClass.getResource("/resources/pomodoro.png"))
@@ -43,10 +42,10 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
     private val model: PomodoroModel
 
     init {
-        val settings = getSettings()
+        val settings = PomodoroComponent.settings
 
         val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java)!!
-        model = pomodoroComponent.model
+        model = pomodoroComponent.model!!
         updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget)
 
         model.addUpdateListener(panelWithIcon) { SwingUtilities.invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) } }

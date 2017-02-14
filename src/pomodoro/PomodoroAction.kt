@@ -20,6 +20,6 @@ import com.intellij.openapi.application.ApplicationManager
 class PomodoroAction : AnAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java) ?: return
-        pomodoroComponent.model.onUserSwitchToNextState()
+        pomodoroComponent.model!!.onUserSwitchToNextState()
     }
 }

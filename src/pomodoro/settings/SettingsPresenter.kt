@@ -25,7 +25,7 @@ import javax.swing.JComboBox
 import javax.swing.JComponent
 import javax.swing.event.ChangeListener
 
-class SettingsPresenter constructor(private val settings: Settings = PomodoroComponent.getSettings()) : SearchableConfigurable {
+class SettingsPresenter constructor(private val settings: Settings = PomodoroComponent.settings) : SearchableConfigurable {
     private var settingsForm: SettingsForm? = null
     private var uiModel: Settings? = null
     private var updatingUI: Boolean = false
