@@ -11,8 +11,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package pomodoro.model;
+package pomodoro.model
 
-public interface ChangeListener {
-	void onChange(Settings settings);
+interface ChangeListener {
+    fun onChange(settings: Settings)
 }
