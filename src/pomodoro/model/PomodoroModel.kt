@@ -17,9 +17,9 @@ import pomodoro.model.PomodoroModel.PomodoroState.*
 import java.util.*
 
 
-class PomodoroModel @JvmOverloads constructor(private val settings: Settings,
-                                              private val pomodoroModelState: PomodoroModelState,
-                                              now: Long = System.currentTimeMillis()) {
+class PomodoroModel(private val settings: Settings,
+                    private val pomodoroModelState: PomodoroModelState,
+                    now: Long = System.currentTimeMillis()) {
 
     enum class PomodoroState {
         /**
@@ -55,9 +55,7 @@ class PomodoroModel @JvmOverloads constructor(private val settings: Settings,
     private val listeners = WeakHashMap<Any, () -> Unit>()
 
     init {
-
         loadModelState(now)
-
         updateProgressMax()
         progress = progressMax
     }
@@ -126,7 +124,7 @@ class PomodoroModel @JvmOverloads constructor(private val settings: Settings,
     }
 
     @Synchronized fun getProgressMax(): Int {
-        return progressMax / PROGRESS_INTERVAL_MILLIS
+        return progressMax / progressIntervalMillis
     }
 
     @Synchronized fun resetPomodoros() {
@@ -169,7 +167,7 @@ class PomodoroModel @JvmOverloads constructor(private val settings: Settings,
     }
 
     private fun updateProgress(time: Long) {
-        progress = ((time - startTime) / PROGRESS_INTERVAL_MILLIS).toInt()
+        progress = ((time - startTime) / progressIntervalMillis).toInt()
         if (progress > getProgressMax()) {
             progress = getProgressMax()
         }
@@ -183,6 +181,6 @@ class PomodoroModel @JvmOverloads constructor(private val settings: Settings,
     }
 
     companion object {
-        private val PROGRESS_INTERVAL_MILLIS = 1000
+        private const val progressIntervalMillis = 1000
     }
 }

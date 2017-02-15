@@ -38,9 +38,8 @@ import pomodoro.widget.PomodoroWidget
 import javax.swing.SwingUtilities
 
 class PomodoroComponent : ApplicationComponent {
-    private var controlThread: ControlThread? = null
-    var model: PomodoroModel? = null
-        private set
+    private lateinit var controlThread: ControlThread
+    lateinit var model: PomodoroModel private set
 
     override fun initComponent() {
         val settings = settings
@@ -50,7 +49,7 @@ class PomodoroComponent : ApplicationComponent {
         val toolWindows = PomodoroToolWindows()
         settings.addChangeListener(toolWindows)
 
-        UserNotifier(settings, model!!)
+        UserNotifier(settings, model)
 
         ProjectManager.getInstance().addProjectManagerListener(object : ProjectManagerAdapter() {
             override fun projectOpened(project: Project?) {
@@ -64,12 +63,12 @@ class PomodoroComponent : ApplicationComponent {
             }
         })
 
-        controlThread = ControlThread(model!!)
-        controlThread!!.start()
+        controlThread = ControlThread(model)
+        controlThread.start()
     }
 
     override fun disposeComponent() {
-        controlThread!!.shouldStop()
+        controlThread.shouldStop()
     }
 
     override fun getComponentName(): String {

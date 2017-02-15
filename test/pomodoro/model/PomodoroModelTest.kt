@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit.SECONDS
 
 class PomodoroModelTest {
 
-    @Test fun doOnePomodoro() {
+    @Test fun `do one pomodoro`() {
         val model = PomodoroModel(settings(2000, 1000), PomodoroModelState())
         assertThat(model.state, equalTo(STOP))
         assertThat(model.progress, equalTo(0))
@@ -41,7 +41,7 @@ class PomodoroModelTest {
         assertThat(model.pomodorosAmount, equalTo(1))
     }
 
-    @Test fun doSeveralPomodoros() {
+    @Test fun `do several pomodoros`() {
         val model = PomodoroModel(settings(2000, 1000), PomodoroModelState())
         assertThat(model.pomodorosAmount, equalTo(0))
 
@@ -61,7 +61,7 @@ class PomodoroModelTest {
         assertThat(model.pomodorosAmount, equalTo(2))
     }
 
-    @Test fun stopDuringPomodoro() {
+    @Test fun `stop during pomodoro`() {
         val model = PomodoroModel(settings(2000, 1000), PomodoroModelState())
         assertThat(model.state, equalTo(STOP))
         assertThat(model.progress, equalTo(0))
@@ -80,7 +80,7 @@ class PomodoroModelTest {
         assertThat(model.pomodorosAmount, equalTo(0))
     }
 
-    @Test fun autoStopAfterBreak() {
+    @Test fun `auto stop after break`() {
         val model = PomodoroModel(settings(1000, 2000), PomodoroModelState())
 
         assertThat(model.state, equalTo(STOP))
@@ -97,7 +97,7 @@ class PomodoroModelTest {
         assertThat(model.progress, equalTo(2))
     }
 
-    @Test fun afterIdeaRestart_ContinueFromSavedState_And_FinishPomodoro() {
+    @Test fun `after idea restart continue from saved state and finish pomodoro`() {
         val modelState = PomodoroModelState(RUN, RUN, minute(-24), second(-1))
         val model = PomodoroModel(settings(25), modelState, minute(0))
 
@@ -111,7 +111,7 @@ class PomodoroModelTest {
         assertThat(model.pomodorosAmount, equalTo(1))
     }
 
-    @Test fun afterIdeaRestart_ShouldNotContinueFromLastState_IfALotOfTimeHasPassed() {
+    @Test fun `after idea restart should not continue from last state if aLot of time has passed`() {
         // last state was RUN
         var modelState = PomodoroModelState(RUN, RUN, minute(-60), minute(-20))
         var model = PomodoroModel(settings(minute(25), 2000), modelState, minute(0))
@@ -131,7 +131,7 @@ class PomodoroModelTest {
         assertThat(model.pomodorosAmount, equalTo(0))
     }
 
-    @Test fun savePomodoroModelState() {
+    @Test fun `save pomodoro model state`() {
         val pomodoroStartTime = SECONDS.toMillis(-24)
         val modelState = PomodoroModelState(RUN, RUN, pomodoroStartTime, time(0))
         val model = PomodoroModel(settings(SECONDS.toMillis(24), 2000), modelState, time(0))

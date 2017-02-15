@@ -1,4 +1,4 @@
-<idea-plugin version="2">
+<idea-plugin>
     <name>Pomodoro-tm</name>
     <description>Pomodoro timer</description>
     <version>0.46</version>

@@ -45,7 +45,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
         val settings = PomodoroComponent.settings
 
         val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java)!!
-        model = pomodoroComponent.model!!
+        model = pomodoroComponent.model
         updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget)
 
         model.addUpdateListener(panelWithIcon) { SwingUtilities.invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) } }
