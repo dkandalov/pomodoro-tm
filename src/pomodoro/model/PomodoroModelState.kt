@@ -28,15 +28,15 @@ import com.intellij.util.xmlb.XmlSerializerUtil
  */
 @State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.state.xml")))
 class PomodoroModelState : PersistentStateComponent<PomodoroModelState> {
-    @get:Synchronized @set:Synchronized var pomodoroState: PomodoroModel.PomodoroState? = null
-    @get:Synchronized @set:Synchronized var lastState: PomodoroModel.PomodoroState? = null
-    @get:Synchronized @set:Synchronized var startTime: Long = 0
-    @get:Synchronized @set:Synchronized var lastUpdateTime: Long = 0
-    @get:Synchronized @set:Synchronized var pomodorosAmount: Int = 0
+    @get:Synchronized @set:Synchronized var pomodoroState: PomodoroModel.PomodoroState
+    @get:Synchronized @set:Synchronized var lastState: PomodoroModel.PomodoroState
+    @get:Synchronized @set:Synchronized var startTime: Long
+    @get:Synchronized @set:Synchronized var lastUpdateTime: Long
+    @get:Synchronized @set:Synchronized var pomodorosAmount: Int
 
     constructor() {
         pomodoroState = PomodoroModel.PomodoroState.STOP
-        lastState = null
+        lastState = PomodoroModel.PomodoroState.STOP
         startTime = 0
         lastUpdateTime = 0
         pomodorosAmount = 0
@@ -47,13 +47,10 @@ class PomodoroModelState : PersistentStateComponent<PomodoroModelState> {
         this.lastState = lastState
         this.startTime = startTime
         this.lastUpdateTime = lastUpdateTime
+        this.pomodorosAmount = 0
     }
 
-    override fun getState(): PomodoroModelState? {
-        return this
-    }
+    override fun getState() = this
 
-    @Synchronized override fun loadState(state: PomodoroModelState) {
-        XmlSerializerUtil.copyBean(state, this)
-    }
+    @Synchronized override fun loadState(state: PomodoroModelState) = XmlSerializerUtil.copyBean(state, this)
 }

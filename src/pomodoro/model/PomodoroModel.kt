@@ -36,9 +36,9 @@ class PomodoroModel(private val settings: Settings,
         BREAK
     }
 
-    @get:Synchronized var state: PomodoroState? = null
+    @get:Synchronized lateinit var state: PomodoroState
         private set
-    @get:Synchronized var lastState: PomodoroState? = null
+    @get:Synchronized lateinit var lastState: PomodoroState
         private set
     private var startTime: Long = 0
     private var progressMax: Int = 0
@@ -151,7 +151,7 @@ class PomodoroModel(private val settings: Settings,
             val shouldNotContinuePomodoro = timeSincePomodoroStart > settings.timeoutToContinuePomodoro
             if (shouldNotContinuePomodoro) {
                 state = STOP
-                lastState = null
+                lastState = STOP
                 startTime = -1
                 saveModelState(now)
             }
