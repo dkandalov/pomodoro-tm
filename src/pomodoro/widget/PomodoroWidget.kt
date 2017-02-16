@@ -79,7 +79,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
 
     private fun tooltipText(model: PomodoroModel): String {
         val nextAction = nextActionName(model)
-        val pomodorosAmount = model.pomodorosAmount
+        val pomodorosAmount = model.pomodoros
         return UIBundle.message("statuspanel.tooltip", nextAction, pomodorosAmount)
     }
 

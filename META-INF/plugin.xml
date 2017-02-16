@@ -44,7 +44,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceInterface="pomodoro.model.Settings" serviceImplementation="pomodoro.model.Settings"/>
-        <applicationService serviceInterface="pomodoro.model.PomodoroModelState" serviceImplementation="pomodoro.model.PomodoroModelState"/>
+        <applicationService serviceInterface="pomodoro.model.PomodoroModelPersistence" serviceImplementation="pomodoro.model.PomodoroModelPersistence"/>
         <applicationConfigurable instance="pomodoro.settings.SettingsPresenter"/>
     </extensions>
 </idea-plugin>

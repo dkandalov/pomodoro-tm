@@ -31,7 +31,7 @@ import com.intellij.openapi.wm.WindowManager
 import pomodoro.modalwindow.ModalDialog
 import pomodoro.model.ControlThread
 import pomodoro.model.PomodoroModel
-import pomodoro.model.PomodoroModelState
+import pomodoro.model.PomodoroModelPersistence
 import pomodoro.model.Settings
 import pomodoro.toolkitwindow.PomodoroToolWindows
 import pomodoro.widget.PomodoroWidget
@@ -44,7 +44,7 @@ class PomodoroComponent : ApplicationComponent {
     override fun initComponent() {
         val settings = settings
 
-        model = PomodoroModel(settings, ServiceManager.getService(PomodoroModelState::class.java))
+        model = PomodoroModel(settings, ServiceManager.getService(PomodoroModelPersistence::class.java))
 
         val toolWindows = PomodoroToolWindows()
         settings.addChangeListener(toolWindows)

@@ -64,7 +64,7 @@ class PomodoroPresenter(private val model: PomodoroModel) {
                 }
                 else -> throw IllegalStateException()
             }
-            form.pomodorosLabel.text = model.pomodorosAmount.toString()
+            form.pomodorosLabel.text = model.pomodoros.toString()
 
             form.progressBar.maximum = model.getProgressMax()
             form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(model.progress)

@@ -18,7 +18,7 @@ import java.util.*
 
 
 class PomodoroModel(private val settings: Settings,
-                    private val pomodoroModelState: PomodoroModelState,
+                    private val persistence: PomodoroModelPersistence,
                     now: Long = System.currentTimeMillis()) {
 
     enum class PomodoroState {
@@ -44,7 +44,7 @@ class PomodoroModel(private val settings: Settings,
     private var progressMax: Int = 0
     @get:Synchronized var progress: Int = 0
         private set
-    @get:Synchronized var pomodorosAmount: Int = 0
+    @get:Synchronized var pomodoros: Int = 0
         private set
     private var wasManuallyStopped: Boolean = false
     /**
@@ -97,7 +97,7 @@ class PomodoroModel(private val settings: Settings,
                     startTime = time
                     updateProgress(time)
                     updateProgressMax()
-                    pomodorosAmount++
+                    pomodoros++
                 }
             }
             BREAK -> {
@@ -128,8 +128,8 @@ class PomodoroModel(private val settings: Settings,
     }
 
     @Synchronized fun resetPomodoros() {
-        pomodorosAmount = 0
-        pomodoroModelState.pomodorosAmount = pomodorosAmount
+        pomodoros = 0
+        persistence.pomodorosAmount = pomodoros
     }
 
     @Synchronized fun wasManuallyStopped(): Boolean {
@@ -141,13 +141,13 @@ class PomodoroModel(private val settings: Settings,
     }
 
     private fun loadModelState(now: Long) {
-        state = pomodoroModelState.pomodoroState
-        lastState = pomodoroModelState.lastState
-        startTime = pomodoroModelState.startTime
-        pomodorosAmount = pomodoroModelState.pomodorosAmount
+        state = persistence.pomodoroState
+        lastState = persistence.lastState
+        startTime = persistence.startTime
+        pomodoros = persistence.pomodorosAmount
 
-        if (pomodoroModelState.pomodoroState != STOP) {
-            val timeSincePomodoroStart = now - pomodoroModelState.lastUpdateTime
+        if (persistence.pomodoroState != STOP) {
+            val timeSincePomodoroStart = now - persistence.lastUpdateTime
             val shouldNotContinuePomodoro = timeSincePomodoroStart > settings.timeoutToContinuePomodoro
             if (shouldNotContinuePomodoro) {
                 state = STOP
@@ -159,11 +159,11 @@ class PomodoroModel(private val settings: Settings,
     }
 
     private fun saveModelState(now: Long) {
-        pomodoroModelState.pomodoroState = state
-        pomodoroModelState.lastState = lastState
-        pomodoroModelState.startTime = startTime
-        pomodoroModelState.lastUpdateTime = now
-        pomodoroModelState.pomodorosAmount = pomodorosAmount
+        persistence.pomodoroState = state
+        persistence.lastState = lastState
+        persistence.startTime = startTime
+        persistence.lastUpdateTime = now
+        persistence.pomodorosAmount = pomodoros
     }
 
     private fun updateProgress(time: Long) {

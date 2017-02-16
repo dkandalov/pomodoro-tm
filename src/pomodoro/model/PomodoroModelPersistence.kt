@@ -27,7 +27,7 @@ import com.intellij.util.xmlb.XmlSerializerUtil
  * IntelliJ platform thread which persists it.
  */
 @State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.state.xml")))
-class PomodoroModelState : PersistentStateComponent<PomodoroModelState> {
+class PomodoroModelPersistence : PersistentStateComponent<PomodoroModelPersistence> {
     @get:Synchronized @set:Synchronized var pomodoroState: PomodoroModel.PomodoroState
     @get:Synchronized @set:Synchronized var lastState: PomodoroModel.PomodoroState
     @get:Synchronized @set:Synchronized var startTime: Long
@@ -52,5 +52,5 @@ class PomodoroModelState : PersistentStateComponent<PomodoroModelState> {
 
     override fun getState() = this
 
-    @Synchronized override fun loadState(state: PomodoroModelState) = XmlSerializerUtil.copyBean(state, this)
+    @Synchronized override fun loadState(persistence: PomodoroModelPersistence) = XmlSerializerUtil.copyBean(persistence, this)
 }
