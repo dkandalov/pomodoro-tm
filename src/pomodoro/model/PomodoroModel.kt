@@ -84,10 +84,6 @@ class PomodoroModel(private val settings: Settings,
         onTimer(time)
     }
 
-    @Synchronized fun onTimer() {
-        onTimer(System.currentTimeMillis())
-    }
-
     @Synchronized fun onTimer(time: Long) {
         when (state) {
             RUN -> {

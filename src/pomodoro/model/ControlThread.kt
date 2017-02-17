@@ -27,7 +27,7 @@ class ControlThread(private val model: PomodoroModel) : Thread() {
     override fun run() {
         while (!shouldStop) {
             try {
-                model.onTimer()
+                model.onTimer(System.currentTimeMillis())
                 try {
                     Thread.sleep(500)
                 } catch (e: InterruptedException) {
@@ -38,7 +38,6 @@ class ControlThread(private val model: PomodoroModel) : Thread() {
                 // this thread shouldn't be destroyed in case there are coding errors
                 e.printStackTrace() // TODO report exception
             }
-
         }
     }
 
