@@ -17,6 +17,7 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
+import pomodoro.model.PomodoroModel.PomodoroState
 
 /**
  * Class for persisting pomodoro state.
@@ -28,21 +29,15 @@ import com.intellij.util.xmlb.XmlSerializerUtil
  */
 @State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.state.xml")))
 class PomodoroModelPersistence : PersistentStateComponent<PomodoroModelPersistence> {
-    @get:Synchronized @set:Synchronized var pomodoroState: PomodoroModel.PomodoroState
-    @get:Synchronized @set:Synchronized var lastState: PomodoroModel.PomodoroState
-    @get:Synchronized @set:Synchronized var startTime: Long
-    @get:Synchronized @set:Synchronized var lastUpdateTime: Long
-    @get:Synchronized @set:Synchronized var pomodorosAmount: Int
+    @get:Synchronized @set:Synchronized var pomodoroState = PomodoroState.STOP
+    @get:Synchronized @set:Synchronized var lastState = PomodoroState.STOP
+    @get:Synchronized @set:Synchronized var startTime = 0L
+    @get:Synchronized @set:Synchronized var lastUpdateTime = 0L
+    @get:Synchronized @set:Synchronized var pomodorosAmount = 0
 
-    constructor() {
-        pomodoroState = PomodoroModel.PomodoroState.STOP
-        lastState = PomodoroModel.PomodoroState.STOP
-        startTime = 0
-        lastUpdateTime = 0
-        pomodorosAmount = 0
-    }
+    constructor()
 
-    constructor(pomodoroState: PomodoroModel.PomodoroState, lastState: PomodoroModel.PomodoroState, startTime: Long, lastUpdateTime: Long) {
+    constructor(pomodoroState: PomodoroState, lastState: PomodoroState, startTime: Long, lastUpdateTime: Long) {
         this.pomodoroState = pomodoroState
         this.lastState = lastState
         this.startTime = startTime

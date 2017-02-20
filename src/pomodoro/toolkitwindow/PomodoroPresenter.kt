@@ -17,6 +17,7 @@ import pomodoro.UIBundle
 import pomodoro.model.PomodoroModel
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+import java.lang.System.currentTimeMillis
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 import javax.swing.SwingUtilities
@@ -30,7 +31,7 @@ class PomodoroPresenter(private val model: PomodoroModel) {
 
     init {
         form.controlButton.addActionListener {
-            model.onUserSwitchToNextState()
+            model.onUserSwitchToNextState(currentTimeMillis())
             updateUI()
         }
         form.pomodorosLabel.addMouseListener(object : MouseAdapter() {

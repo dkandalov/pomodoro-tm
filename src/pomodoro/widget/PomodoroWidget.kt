@@ -28,6 +28,7 @@ import pomodoro.toolkitwindow.PomodoroPresenter
 import javax.swing.*
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
+import java.lang.System.currentTimeMillis
 
 
 class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, ChangeListener {
@@ -51,7 +52,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
         model.addUpdateListener(panelWithIcon) { SwingUtilities.invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) } }
         panelWithIcon.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent?) {
-                model.onUserSwitchToNextState()
+                model.onUserSwitchToNextState(currentTimeMillis())
             }
 
             override fun mouseEntered(e: MouseEvent?) {

@@ -36,10 +36,8 @@ class PomodoroModel(private val settings: Settings,
         BREAK
     }
 
-    @get:Synchronized lateinit var state: PomodoroState
-        private set
-    @get:Synchronized lateinit var lastState: PomodoroState
-        private set
+    @get:Synchronized lateinit var state: PomodoroState private set
+    @get:Synchronized lateinit var lastState: PomodoroState private set
     private var startTime: Long = 0
     private var progressMax: Int = 0
     @get:Synchronized var progress: Int = 0
@@ -58,10 +56,6 @@ class PomodoroModel(private val settings: Settings,
         loadModelState(now)
         updateProgressMax()
         progress = progressMax
-    }
-
-    @Synchronized fun onUserSwitchToNextState() {
-        onUserSwitchToNextState(System.currentTimeMillis())
     }
 
     @Synchronized fun onUserSwitchToNextState(time: Long) {
