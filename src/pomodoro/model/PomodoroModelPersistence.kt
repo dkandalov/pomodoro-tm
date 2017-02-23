@@ -28,22 +28,13 @@ import pomodoro.model.PomodoroModel.PomodoroState
  * IntelliJ platform thread which persists it.
  */
 @State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.state.xml")))
-class PomodoroModelPersistence : PersistentStateComponent<PomodoroModelPersistence> {
-    @get:Synchronized @set:Synchronized var pomodoroState = PomodoroState.STOP
-    @get:Synchronized @set:Synchronized var lastState = PomodoroState.STOP
-    @get:Synchronized @set:Synchronized var startTime = 0L
-    @get:Synchronized @set:Synchronized var lastUpdateTime = 0L
-    @get:Synchronized @set:Synchronized var pomodorosAmount = 0
-
-    constructor()
-
-    constructor(pomodoroState: PomodoroState, lastState: PomodoroState, startTime: Long, lastUpdateTime: Long) {
-        this.pomodoroState = pomodoroState
-        this.lastState = lastState
-        this.startTime = startTime
-        this.lastUpdateTime = lastUpdateTime
-        this.pomodorosAmount = 0
-    }
+data class PomodoroModelPersistence(
+        var pomodoroState: PomodoroState = PomodoroState.STOP,
+        var lastState: PomodoroState = PomodoroState.STOP,
+        var startTime: Long = 0,
+        var lastUpdateTime: Long = 0,
+        var pomodorosAmount: Int = 0
+) : PersistentStateComponent<PomodoroModelPersistence> {
 
     override fun getState() = this
 

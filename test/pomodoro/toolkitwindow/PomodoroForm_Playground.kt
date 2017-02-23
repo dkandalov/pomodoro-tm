@@ -21,7 +21,7 @@ import javax.swing.JFrame
 import javax.swing.WindowConstants
 
 fun main(args: Array<String>) {
-    val config = MySettings()
+    val config = Settings(pomodoroLengthInMinutes = 1, breakLengthInMinutes = 1)
     val model = PomodoroModel(config, PomodoroModelPersistence())
     val presenter = PomodoroPresenter(model)
     ControlThread(model).start()
@@ -32,11 +32,4 @@ fun main(args: Array<String>) {
         pack()
         isVisible = true
     }
-}
-
-private class MySettings : Settings() {
-    // timeout should be > 10 to progress in UI
-    // because of PomodoroPresenter.hack_for_jdk1_6_u06__IDEA_9_0_2__winXP()
-    override val pomodoroLengthInMillis = 15 * 1000L
-    override val breakLengthInMillis = 15 * 1000L
 }

@@ -22,18 +22,17 @@ import java.util.concurrent.TimeUnit.MILLISECONDS
 import java.util.concurrent.TimeUnit.MINUTES
 
 @State(name = "PomodoroSettings", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
-open class Settings : PersistentStateComponent<Settings> {
-
-    var pomodoroLengthInMinutes = DEFAULT_POMODORO_LENGTH
-    var breakLengthInMinutes = DEFAULT_BREAK_LENGTH
-    var longBreakLengthInMinutes = DEFAULT_LONG_BREAK_LENGTH
-    var longBreakFrequency = DEFAULT_LONG_BREAK_FREQUENCY
-    var ringVolume = 1
-    var isPopupEnabled = true
-    var isBlockDuringBreak = false
-    var isShowToolWindow = false
-    var isShowTimeInToolbarWidget = true
-
+data class Settings(
+        var pomodoroLengthInMinutes: Int = DEFAULT_POMODORO_LENGTH,
+        var breakLengthInMinutes: Int = DEFAULT_BREAK_LENGTH,
+        var longBreakLengthInMinutes: Int = DEFAULT_LONG_BREAK_LENGTH,
+        var longBreakFrequency: Int = DEFAULT_LONG_BREAK_FREQUENCY,
+        var ringVolume: Int = 1,
+        var isPopupEnabled: Boolean = true,
+        var isBlockDuringBreak: Boolean = false,
+        var isShowToolWindow: Boolean = false,
+        var isShowTimeInToolbarWidget: Boolean = true
+) : PersistentStateComponent<Settings> {
     /**
      * If IntelliJ shuts down during pomodoro and then restarts, pomodoro can be continued.
      * This property determines how much time can pass before we consider pomodoro to be expired.
@@ -43,10 +42,10 @@ open class Settings : PersistentStateComponent<Settings> {
     private val changeListeners = ArrayList<ChangeListener>()
 
 
-    open val pomodoroLengthInMillis: Long
+    val pomodoroLengthInMillis: Long
         get() = MINUTES.toMillis(pomodoroLengthInMinutes.toLong())
 
-    open val breakLengthInMillis: Long
+    val breakLengthInMillis: Long
         get() = MINUTES.toMillis(breakLengthInMinutes.toLong())
 
     fun addChangeListener(changeListener: ChangeListener) {
@@ -66,55 +65,6 @@ open class Settings : PersistentStateComponent<Settings> {
         for (changeListener in changeListeners) {
             changeListener.onChange(this)
         }
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other == null || javaClass != other.javaClass) return false
-
-        val settings = other as Settings?
-
-        if (isBlockDuringBreak != settings!!.isBlockDuringBreak) return false
-        if (breakLengthInMinutes != settings.breakLengthInMinutes) return false
-        if (longBreakLengthInMinutes != settings.longBreakLengthInMinutes) return false
-        if (longBreakFrequency != settings.longBreakFrequency) return false
-        if (pomodoroLengthInMinutes != settings.pomodoroLengthInMinutes) return false
-        if (isPopupEnabled != settings.isPopupEnabled) return false
-        if (ringVolume != settings.ringVolume) return false
-        if (isShowToolWindow != settings.isShowToolWindow) return false
-        if (isShowTimeInToolbarWidget != settings.isShowTimeInToolbarWidget) return false
-        if (timeoutToContinuePomodoro != settings.timeoutToContinuePomodoro) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = pomodoroLengthInMinutes
-        result = 31 * result + breakLengthInMinutes
-        result = 31 * result + longBreakLengthInMinutes
-        result = 31 * result + longBreakFrequency
-        result = 31 * result + ringVolume
-        result = 31 * result + if (isPopupEnabled) 1 else 0
-        result = 31 * result + if (isBlockDuringBreak) 1 else 0
-        result = 31 * result + if (isShowToolWindow) 1 else 0
-        result = 31 * result + if (isShowTimeInToolbarWidget) 1 else 0
-        result = 31 * result + (timeoutToContinuePomodoro xor timeoutToContinuePomodoro.ushr(32)).toInt()
-        return result
-    }
-
-    override fun toString(): String {
-        return "Settings{" +
-                "pomodoroLength=" + pomodoroLengthInMinutes +
-                ", breakLength=" + breakLengthInMinutes +
-                ", longBreakLength=" + longBreakLengthInMinutes +
-                ", longBreakFrequency=" + longBreakFrequency +
-                ", ringVolume=" + ringVolume +
-                ", popupEnabled=" + isPopupEnabled +
-                ", blockDuringBreak=" + isBlockDuringBreak +
-                ", showToolWindow=" + isShowToolWindow +
-                ", showTimeInToolbarWidget=" + isShowTimeInToolbarWidget +
-                ", timeoutToContinuePomodoro=" + timeoutToContinuePomodoro +
-                '}'
     }
 
     companion object {
