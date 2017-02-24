@@ -81,12 +81,12 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
 
     private fun tooltipText(model: PomodoroModel): String {
         val nextAction = nextActionName(model)
-        val pomodorosAmount = model.pomodoros
+        val pomodorosAmount = model.state.pomodorosAmount
         return UIBundle.message("statuspanel.tooltip", nextAction, pomodorosAmount)
     }
 
     private fun nextActionName(model: PomodoroModel): String {
-        when (model.stateType) {
+        when (model.state.type) {
             PomodoroState.Type.STOP -> return UIBundle.message("statuspanel.start")
             PomodoroState.Type.RUN -> return UIBundle.message("statuspanel.stop")
             PomodoroState.Type.BREAK -> return UIBundle.message("statuspanel.stop_break")
@@ -96,7 +96,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
         if (showTimeInToolbarWidget) {
-            val timeLeft = model.getProgressMax() - model.progress
+            val timeLeft = model.getProgressMax() - model.state.progress
             panelWithIcon.text = PomodoroPresenter.formatTime(timeLeft)
         } else {
             panelWithIcon.text = ""
@@ -107,7 +107,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
 
     private fun getIcon(model: PomodoroModel): ImageIcon {
         val underDarcula = UIUtil.isUnderDarcula()
-        when (model.stateType) {
+        when (model.state.type) {
             PomodoroState.Type.STOP -> return if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
             PomodoroState.Type.RUN -> return if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
             PomodoroState.Type.BREAK -> return if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon

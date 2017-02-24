@@ -50,7 +50,7 @@ class PomodoroPresenter(private val model: PomodoroModel) {
 
     private fun updateUI() {
         SwingUtilities.invokeLater {
-            when (model.stateType) {
+            when (model.state.type) {
                 PomodoroState.Type.RUN -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     form.controlButton.icon = stopIcon
@@ -66,12 +66,12 @@ class PomodoroPresenter(private val model: PomodoroModel) {
                 }
                 else -> throw IllegalStateException()
             }
-            form.pomodorosLabel.text = model.pomodoros.toString()
+            form.pomodorosLabel.text = model.state.pomodorosAmount.toString()
 
             form.progressBar.maximum = model.getProgressMax()
-            form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(model.progress)
+            form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(model.state.progress)
 
-            val timeLeft = model.getProgressMax() - model.progress
+            val timeLeft = model.getProgressMax() - model.state.progress
             form.progressBar.string = progressBarPrefix + " " + formatTime(timeLeft)
         }
     }

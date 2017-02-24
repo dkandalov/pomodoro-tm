@@ -35,6 +35,7 @@ import pomodoro.model.PomodoroState
 import pomodoro.model.Settings
 import pomodoro.toolkitwindow.PomodoroToolWindows
 import pomodoro.widget.PomodoroWidget
+import java.lang.System.currentTimeMillis
 import javax.swing.SwingUtilities
 
 class PomodoroComponent : ApplicationComponent {
@@ -45,6 +46,7 @@ class PomodoroComponent : ApplicationComponent {
         val settings = settings
 
         model = PomodoroModel(settings, ServiceManager.getService(PomodoroState::class.java))
+        model.onIdeStartup(now = currentTimeMillis())
 
         val toolWindows = PomodoroToolWindows()
         settings.addChangeListener(toolWindows)
@@ -82,12 +84,12 @@ class PomodoroComponent : ApplicationComponent {
 
         init {
             model.addUpdateListener(this) {
-                when (model.stateType) {
-                    PomodoroState.Type.STOP -> if (model.lastStateType == PomodoroState.Type.BREAK && !model.wasManuallyStopped()) {
+                when (model.state.type) {
+                    PomodoroState.Type.STOP -> if (model.state.lastState == PomodoroState.Type.BREAK && !model.wasManuallyStopped()) {
                         ringSound.play(settings.ringVolume)
                         if (settings.isBlockDuringBreak) unblockIntelliJ()
                     }
-                    PomodoroState.Type.BREAK -> if (model.lastStateType != PomodoroState.Type.BREAK) {
+                    PomodoroState.Type.BREAK -> if (model.state.lastState != PomodoroState.Type.BREAK) {
                         ringSound.play(settings.ringVolume)
                         if (settings.isPopupEnabled) showPopupNotification()
                         if (settings.isBlockDuringBreak) blockIntelliJ()

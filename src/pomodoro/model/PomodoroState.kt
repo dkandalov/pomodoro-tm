@@ -33,7 +33,9 @@ data class PomodoroState(
         var lastState: Type = Type.STOP,
         var startTime: Long = 0,
         var lastUpdateTime: Long = 0,
-        var pomodorosAmount: Int = 0
+        var pomodorosAmount: Int = 0,
+        var progress: Int = 0,
+        var progressMax: Int = 0
 ) : PersistentStateComponent<PomodoroState> {
 
     override fun getState() = this

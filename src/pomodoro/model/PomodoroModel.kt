@@ -17,18 +17,8 @@ import pomodoro.model.PomodoroState.Type.*
 import java.util.*
 
 
-class PomodoroModel(private val settings: Settings,
-                    private var state: PomodoroState,
-                    now: Long = System.currentTimeMillis()) {
+class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
 
-    @get:Synchronized lateinit var stateType: PomodoroState.Type private set
-    @get:Synchronized lateinit var lastStateType: PomodoroState.Type private set
-    private var startTime: Long = 0
-    private var progressMax: Int = 0
-    @get:Synchronized var progress: Int = 0
-        private set
-    @get:Synchronized var pomodoros: Int = 0
-        private set
     private var wasManuallyStopped: Boolean = false
     /**
      * It's a WeakHashMap to make it simpler to automatically remove listeners.
@@ -38,24 +28,36 @@ class PomodoroModel(private val settings: Settings,
     private val listeners = WeakHashMap<Any, () -> Unit>()
 
     init {
-        loadModelState(now)
-        updateProgressMax()
-        progress = progressMax
+        state.progressMax = updateProgressMax()
+        state.progress = state.progressMax
     }
 
-    @Synchronized fun onUserSwitchToNextState(time: Long) {
-        when (stateType) {
+    fun onIdeStartup(now: Long) {
+        if (state.type != STOP) {
+            val timeSincePomodoroStart = now - state.lastUpdateTime
+            val shouldNotContinuePomodoro = timeSincePomodoroStart > settings.timeoutToContinuePomodoro
+            if (shouldNotContinuePomodoro) {
+                state.type = STOP
+                state.lastState = STOP
+                state.startTime = -1
+                state.progress = 0
+            }
+        }
+    }
+
+    @Synchronized fun onUserSwitchToNextState(time: Long) = state.apply {
+        when (type) {
             STOP -> {
-                stateType = RUN
+                type = RUN
                 startTime = time
-                updateProgressMax()
+                progressMax = updateProgressMax()
             }
             RUN -> {
-                stateType = STOP
+                type = STOP
                 wasManuallyStopped = true
             }
             BREAK -> {
-                stateType = STOP
+                type = STOP
                 wasManuallyStopped = true
             }
             else -> throw IllegalStateException()
@@ -63,27 +65,27 @@ class PomodoroModel(private val settings: Settings,
         onTimer(time)
     }
 
-    @Synchronized fun onTimer(time: Long) {
-        when (stateType) {
+    @Synchronized fun onTimer(time: Long) = state.apply {
+        when (type) {
             RUN -> {
-                updateProgress(time)
+                progress = updateProgress(time)
                 if (time >= startTime + progressMax) {
-                    stateType = BREAK
+                    type = BREAK
                     startTime = time
-                    updateProgress(time)
-                    updateProgressMax()
-                    pomodoros++
+                    progress = updateProgress(time)
+                    progressMax = updateProgressMax()
+                    pomodorosAmount++
                 }
             }
             BREAK -> {
                 updateProgress(time)
                 if (time >= startTime + progressMax) {
-                    stateType = STOP
+                    type = STOP
                     wasManuallyStopped = false
                 }
             }
-            STOP -> if (lastStateType == STOP) {
-                return
+            STOP -> if (lastState == STOP) {
+                return@apply
             }
         }
 
@@ -91,20 +93,18 @@ class PomodoroModel(private val settings: Settings,
             listener.invoke()
         }
 
-        if (lastStateType != stateType) {
-            lastStateType = stateType
-            saveModelState(time)
+        if (lastState != type) {
+            lastState = type
         }
-        lastStateType = stateType
+        lastState = type
     }
 
     @Synchronized fun getProgressMax(): Int {
-        return progressMax / progressIntervalMillis
+        return state.progressMax / progressIntervalMillis
     }
 
     @Synchronized fun resetPomodoros() {
-        pomodoros = 0
-        state.pomodorosAmount = pomodoros
+        state.pomodorosAmount = 0
     }
 
     @Synchronized fun wasManuallyStopped(): Boolean {
@@ -115,43 +115,15 @@ class PomodoroModel(private val settings: Settings,
         listeners.put(key, runnable)
     }
 
-    private fun loadModelState(now: Long) {
-        stateType = state.type
-        lastStateType = state.lastState
-        startTime = state.startTime
-        pomodoros = state.pomodorosAmount
-
-        if (state.type != STOP) {
-            val timeSincePomodoroStart = now - state.lastUpdateTime
-            val shouldNotContinuePomodoro = timeSincePomodoroStart > settings.timeoutToContinuePomodoro
-            if (shouldNotContinuePomodoro) {
-                stateType = STOP
-                lastStateType = STOP
-                startTime = -1
-                saveModelState(now)
-            }
-        }
+    private fun updateProgress(time: Long): Int {
+        return ((time - state.startTime) / progressIntervalMillis).toInt().capAt(getProgressMax())
     }
 
-    private fun saveModelState(now: Long) {
-        state.type = stateType
-        state.lastState = lastStateType
-        state.startTime = startTime
-        state.lastUpdateTime = now
-        state.pomodorosAmount = pomodoros
-    }
-
-    private fun updateProgress(time: Long) {
-        progress = ((time - startTime) / progressIntervalMillis).toInt()
-        if (progress > getProgressMax()) {
-            progress = getProgressMax()
-        }
-    }
-
-    private fun updateProgressMax() {
-        when (stateType) {
-            RUN -> progressMax = settings.pomodoroLengthInMillis.toInt()
-            BREAK -> progressMax = settings.breakLengthInMillis.toInt()
+    private fun updateProgressMax(): Int {
+        return when (state.type) {
+            RUN -> settings.pomodoroLengthInMillis.toInt()
+            BREAK -> settings.breakLengthInMillis.toInt()
+            else -> 0
         }
     }
 
@@ -159,3 +131,5 @@ class PomodoroModel(private val settings: Settings,
         private const val progressIntervalMillis = 1000
     }
 }
+
+private fun Int.capAt(max: Int) = if (this > max) max else this
