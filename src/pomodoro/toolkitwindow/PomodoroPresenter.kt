@@ -15,6 +15,7 @@ package pomodoro.toolkitwindow
 
 import pomodoro.UIBundle
 import pomodoro.model.PomodoroModel
+import pomodoro.model.PomodoroState
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.lang.System.currentTimeMillis
@@ -49,17 +50,17 @@ class PomodoroPresenter(private val model: PomodoroModel) {
 
     private fun updateUI() {
         SwingUtilities.invokeLater {
-            when (model.state) {
-                PomodoroModel.PomodoroState.RUN -> {
+            when (model.stateType) {
+                PomodoroState.Type.RUN -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     form.controlButton.icon = stopIcon
                     progressBarPrefix = UIBundle.message("toolwindow.prefix_working")
                 }
-                PomodoroModel.PomodoroState.STOP -> {
+                PomodoroState.Type.STOP -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_start")
                     form.controlButton.icon = playIcon
                 }
-                PomodoroModel.PomodoroState.BREAK -> {
+                PomodoroState.Type.BREAK -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     progressBarPrefix = UIBundle.message("toolwindow.button_break")
                 }

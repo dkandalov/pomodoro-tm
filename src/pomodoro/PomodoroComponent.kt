@@ -31,7 +31,7 @@ import com.intellij.openapi.wm.WindowManager
 import pomodoro.modalwindow.ModalDialog
 import pomodoro.model.ControlThread
 import pomodoro.model.PomodoroModel
-import pomodoro.model.PomodoroModelPersistence
+import pomodoro.model.PomodoroState
 import pomodoro.model.Settings
 import pomodoro.toolkitwindow.PomodoroToolWindows
 import pomodoro.widget.PomodoroWidget
@@ -44,7 +44,7 @@ class PomodoroComponent : ApplicationComponent {
     override fun initComponent() {
         val settings = settings
 
-        model = PomodoroModel(settings, ServiceManager.getService(PomodoroModelPersistence::class.java))
+        model = PomodoroModel(settings, ServiceManager.getService(PomodoroState::class.java))
 
         val toolWindows = PomodoroToolWindows()
         settings.addChangeListener(toolWindows)
@@ -82,12 +82,12 @@ class PomodoroComponent : ApplicationComponent {
 
         init {
             model.addUpdateListener(this) {
-                when (model.state) {
-                    PomodoroModel.PomodoroState.STOP -> if (model.lastState == PomodoroModel.PomodoroState.BREAK && !model.wasManuallyStopped()) {
+                when (model.stateType) {
+                    PomodoroState.Type.STOP -> if (model.lastStateType == PomodoroState.Type.BREAK && !model.wasManuallyStopped()) {
                         ringSound.play(settings.ringVolume)
                         if (settings.isBlockDuringBreak) unblockIntelliJ()
                     }
-                    PomodoroModel.PomodoroState.BREAK -> if (model.lastState != PomodoroModel.PomodoroState.BREAK) {
+                    PomodoroState.Type.BREAK -> if (model.lastStateType != PomodoroState.Type.BREAK) {
                         ringSound.play(settings.ringVolume)
                         if (settings.isPopupEnabled) showPopupNotification()
                         if (settings.isBlockDuringBreak) blockIntelliJ()

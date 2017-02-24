@@ -17,7 +17,7 @@ import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
-import pomodoro.model.PomodoroModel.PomodoroState
+import pomodoro.model.PomodoroState.Type
 
 /**
  * Class for persisting pomodoro state.
@@ -28,15 +28,24 @@ import pomodoro.model.PomodoroModel.PomodoroState
  * IntelliJ platform thread which persists it.
  */
 @State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.state.xml")))
-data class PomodoroModelPersistence(
-        var pomodoroState: PomodoroState = PomodoroState.STOP,
-        var lastState: PomodoroState = PomodoroState.STOP,
+data class PomodoroState(
+        var type: Type = Type.STOP,
+        var lastState: Type = Type.STOP,
         var startTime: Long = 0,
         var lastUpdateTime: Long = 0,
         var pomodorosAmount: Int = 0
-) : PersistentStateComponent<PomodoroModelPersistence> {
+) : PersistentStateComponent<PomodoroState> {
 
     override fun getState() = this
 
-    @Synchronized override fun loadState(persistence: PomodoroModelPersistence) = XmlSerializerUtil.copyBean(persistence, this)
+    @Synchronized override fun loadState(persistence: PomodoroState) = XmlSerializerUtil.copyBean(persistence, this)
+
+    enum class Type {
+        /** Pomodoro timer was not started or was stopped during pomodoro or break. */
+        STOP,
+        /** Pomodoro in progress. */
+        RUN,
+        /** Pomodoro during break. Can only happen after completing a pomodoro. */
+        BREAK
+    }
 }

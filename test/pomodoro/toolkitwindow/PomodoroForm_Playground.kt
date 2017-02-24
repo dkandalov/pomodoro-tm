@@ -15,14 +15,14 @@ package pomodoro.toolkitwindow
 
 import pomodoro.model.ControlThread
 import pomodoro.model.PomodoroModel
-import pomodoro.model.PomodoroModelPersistence
+import pomodoro.model.PomodoroState
 import pomodoro.model.Settings
 import javax.swing.JFrame
 import javax.swing.WindowConstants
 
 fun main(args: Array<String>) {
     val config = Settings(pomodoroLengthInMinutes = 1, breakLengthInMinutes = 1)
-    val model = PomodoroModel(config, PomodoroModelPersistence())
+    val model = PomodoroModel(config, PomodoroState())
     val presenter = PomodoroPresenter(model)
     ControlThread(model).start()
 

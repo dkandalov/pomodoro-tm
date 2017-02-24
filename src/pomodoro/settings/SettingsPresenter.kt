@@ -29,12 +29,8 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
     private var settingsForm: SettingsForm? = null
     private lateinit var uiModel: Settings
     private var updatingUI: Boolean = false
-    private val ringSound: RingSound
+    private val ringSound = RingSound()
     private var lastUIRingVolume = -1
-
-    init {
-        this.ringSound = RingSound()
-    }
 
     override fun createComponent(): JComponent? {
         settingsForm = SettingsForm()

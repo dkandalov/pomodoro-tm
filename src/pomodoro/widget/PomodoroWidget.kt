@@ -22,6 +22,7 @@ import pomodoro.PomodoroComponent
 import pomodoro.UIBundle
 import pomodoro.model.ChangeListener
 import pomodoro.model.PomodoroModel
+import pomodoro.model.PomodoroState
 import pomodoro.model.Settings
 import pomodoro.toolkitwindow.PomodoroPresenter
 
@@ -85,10 +86,10 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
     }
 
     private fun nextActionName(model: PomodoroModel): String {
-        when (model.state) {
-            PomodoroModel.PomodoroState.STOP -> return UIBundle.message("statuspanel.start")
-            PomodoroModel.PomodoroState.RUN -> return UIBundle.message("statuspanel.stop")
-            PomodoroModel.PomodoroState.BREAK -> return UIBundle.message("statuspanel.stop_break")
+        when (model.stateType) {
+            PomodoroState.Type.STOP -> return UIBundle.message("statuspanel.start")
+            PomodoroState.Type.RUN -> return UIBundle.message("statuspanel.stop")
+            PomodoroState.Type.BREAK -> return UIBundle.message("statuspanel.stop_break")
             else -> return ""
         }
     }
@@ -106,10 +107,10 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
 
     private fun getIcon(model: PomodoroModel): ImageIcon {
         val underDarcula = UIUtil.isUnderDarcula()
-        when (model.state) {
-            PomodoroModel.PomodoroState.STOP -> return if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
-            PomodoroModel.PomodoroState.RUN -> return if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
-            PomodoroModel.PomodoroState.BREAK -> return if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon
+        when (model.stateType) {
+            PomodoroState.Type.STOP -> return if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
+            PomodoroState.Type.RUN -> return if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
+            PomodoroState.Type.BREAK -> return if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon
             else -> throw IllegalStateException()
         }
     }
