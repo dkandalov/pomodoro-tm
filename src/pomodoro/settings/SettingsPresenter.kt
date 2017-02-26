@@ -20,7 +20,7 @@ import pomodoro.PomodoroComponent
 import pomodoro.RingSound
 import pomodoro.UIBundle
 import pomodoro.model.Settings
-import pomodoro.model.toDurationMinutes
+import pomodoro.model.minutes
 import java.awt.event.ActionListener
 import javax.swing.JComboBox
 import javax.swing.JComponent
@@ -85,19 +85,19 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         if (updatingUI) return
 
         try {
-            uiModel.pomodoroDuration = selectedItemAsInteger(settingsForm!!.pomodoroLengthComboBox).toDurationMinutes()
+            uiModel.pomodoroDuration = selectedItemAsInteger(settingsForm!!.pomodoroLengthComboBox).minutes
         } catch (e: NumberFormatException) {
             uiModel.pomodoroDuration = Settings.defaultPomodoroDuration
         }
 
         try {
-            uiModel.breakDuration = selectedItemAsInteger(settingsForm!!.breakLengthComboBox).toDurationMinutes()
+            uiModel.breakDuration = selectedItemAsInteger(settingsForm!!.breakLengthComboBox).minutes
         } catch (e: NumberFormatException) {
             uiModel.breakDuration = Settings.defaultBreakDuration
         }
 
         try {
-            uiModel.longBreakDuration = selectedItemAsInteger(settingsForm!!.longBreakLengthComboBox).toDurationMinutes()
+            uiModel.longBreakDuration = selectedItemAsInteger(settingsForm!!.longBreakLengthComboBox).minutes
         } catch (e: NumberFormatException) {
             uiModel.longBreakDuration = Settings.defaultLongBreakDuration
         }

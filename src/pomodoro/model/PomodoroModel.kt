@@ -17,7 +17,6 @@ import pomodoro.model.PomodoroState.Type.*
 import java.time.Duration
 import java.time.Instant
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
@@ -112,14 +111,15 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         listeners.put(key, listener)
     }
 
-    private fun progressSince(time: Instant) = Duration.between(state.startTime, time).capAt(progressMax)
+    private fun progressSince(time: Instant): Duration {
+        fun Duration.capAt(max: Duration) = if (this > max) max else this
+        return Duration.between(state.startTime, time).capAt(progressMax)
+    }
 
     interface Listener {
         fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean)
     }
 }
 
-private fun Duration.capAt(max: Duration) = if (this > max) max else this
-
-fun Number.toDurationMillis() = Duration.ofMillis(toLong())!!
-fun Number.toDurationMinutes() = Duration.ofMillis(TimeUnit.MINUTES.toMillis(toLong()))!!
+val Number.minutes: Duration
+    get() = Duration.ofMinutes(toLong())
