@@ -18,7 +18,6 @@ import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import pomodoro.model.PomodoroState.Type.*
-import java.time.Duration
 import java.time.Instant
 import java.util.concurrent.TimeUnit.MINUTES
 import java.util.concurrent.TimeUnit.SECONDS
@@ -26,89 +25,88 @@ import java.util.concurrent.TimeUnit.SECONDS
 class PomodoroModelTest {
 
     @Test fun `do one pomodoro`() {
-        PomodoroModel(settings(2000, 1000), PomodoroState()).apply {
+        PomodoroModel(settings(2, 1), PomodoroState()).apply {
             assertThat(state.type, equalTo(STOP))
-            assertThat(state.progress, equalTo(0.toDuration()))
+            assertThat(state.progress, equalTo(0.toDurationMinutes()))
             assertThat(state.pomodorosAmount, equalTo(0))
 
             onUserSwitchToNextState(time(0))
             assertThat(state.type, equalTo(RUN))
-            assertThat(progressMax, equalTo((2000 * 60 * 1000L).toDuration()))
+            assertThat(progressMax, equalTo(2.toDurationMinutes()))
 
-            onTimer(time(updateInterval))
-            assertThat(state.progress, equalTo(updateInterval.toDuration()))
+            onTimer(minute(1))
+            assertThat(state.progress, equalTo(1.toDurationMinutes()))
 
-            onTimer(time((updateInterval * 2)))
+            onTimer(minute(2))
             assertThat(state.type, equalTo(BREAK))
-            assertThat(state.progress, equalTo(0.toDuration()))
+            assertThat(state.progress, equalTo(0.toDurationMinutes()))
             assertThat(state.pomodorosAmount, equalTo(1))
         }
     }
 
     @Test fun `do several pomodoros`() {
-        PomodoroModel(settings(2000, 1000), PomodoroState()).apply {
+        PomodoroModel(settings(2, 1), PomodoroState()).apply {
             assertThat(state.pomodorosAmount, equalTo(0))
 
-            onUserSwitchToNextState(time(0))
+            onUserSwitchToNextState(minute(0))
             assertThat(state.type, equalTo(RUN))
 
-            onTimer(time((updateInterval * 3)))
+            onTimer(minute(2))
             assertThat(state.type, equalTo(BREAK))
             assertThat(state.pomodorosAmount, equalTo(1))
 
-            onTimer(time((updateInterval * 4)))
-            onUserSwitchToNextState(time((updateInterval * 4)))
+            onTimer(minute(4))
+            onUserSwitchToNextState(time(4))
             assertThat(state.type, equalTo(RUN))
 
-            onTimer(time((updateInterval * 6)))
+            onTimer(minute(6))
             assertThat(state.type, equalTo(BREAK))
             assertThat(state.pomodorosAmount, equalTo(2))
         }
     }
 
     @Test fun `stop during pomodoro`() {
-        PomodoroModel(settings(2000, 1000), PomodoroState()).apply {
+        PomodoroModel(settings(2, 1), PomodoroState()).apply {
             assertThat(state.type, equalTo(STOP))
-            assertThat(state.progress, equalTo(0.toDuration()))
+            assertThat(state.progress, equalTo(0.toDurationMinutes()))
             assertThat(state.pomodorosAmount, equalTo(0))
 
-            onUserSwitchToNextState(time(0))
-
+            onUserSwitchToNextState(minute(0))
             assertThat(state.type, equalTo(RUN))
 
-            onTimer(time(updateInterval))
-//        assertThat(state.progress, equalTo(1)) // TODO
+            onTimer(minute(1))
+            assertThat(state.progress, equalTo(1.toDurationMinutes()))
 
-            onUserSwitchToNextState(time((updateInterval * 2)))
-
+            onUserSwitchToNextState(minute(2))
             assertThat(state.type, equalTo(STOP))
             assertThat(state.pomodorosAmount, equalTo(0))
         }
     }
 
     @Test fun `auto stop after break`() {
-        PomodoroModel(settings(1000, 2000), PomodoroState()).apply {
+        PomodoroModel(settings(1, 2), PomodoroState()).apply {
             assertThat(state.type, equalTo(STOP))
             onUserSwitchToNextState(time(0))
 
-            onTimer(time(updateInterval))
+            onTimer(minute(1))
             assertThat(state.type, equalTo(BREAK))
 
-            onTimer(time(updateInterval * 2))
-//        assertThat(state.progress, equalTo(updateInterval.toInt() / 1000)) // TODO
+            onTimer(minute(2))
+            assertThat(state.progress, equalTo(1.toDurationMinutes()))
 
-            onTimer(time(updateInterval * 3))
+            onTimer(minute(3))
             assertThat(state.type, equalTo(STOP))
-//        assertThat(state.progress, equalTo(2 * updateInterval.toInt() / 1000)) // TODO
+            assertThat(state.progress, equalTo(2.toDurationMinutes()))
         }
     }
 
     @Test fun `after idea restart continue from saved state and finish pomodoro`() {
-        PomodoroModel(settings(25), PomodoroState(RUN, RUN, minute(-24), second(-1))).apply {
+        val settings = Settings(25.toDurationMinutes())
+        PomodoroModel(settings, PomodoroState(RUN, RUN, minute(-24), second(-1))).apply {
             onIdeStartup(minute(0))
 
             assertThat(state.type, equalTo(RUN))
-            assertTrue(state.progress > 0.toDuration())
+            assertTrue(state.progress > 0.toDurationMinutes())
             assertThat(state.pomodorosAmount, equalTo(0))
 
             onTimer(minute(1))
@@ -121,11 +119,11 @@ class PomodoroModelTest {
     @Test fun `after idea restart should not continue from last state if a lot of time has passed`() {
         // last state was RUN
         var modelState = PomodoroState(RUN, RUN, minute(-60), minute(-20))
-        var model = PomodoroModel(settings(minute(25).toEpochMilli(), 2000), modelState)
+        var model = PomodoroModel(settings(25, 2), modelState)
         model.onIdeStartup(minute(0))
 
         assertThat(model.state.type, equalTo(STOP))
-        assertThat(model.state.progress, equalTo(0.toDuration()))
+        assertThat(model.state.progress, equalTo(0.toDurationMillis()))
         assertThat(model.state.pomodorosAmount, equalTo(0))
 
         // last state was BREAK
@@ -134,45 +132,36 @@ class PomodoroModelTest {
         model.onIdeStartup(minute(0))
 
         assertThat(model.state.type, equalTo(STOP))
-        assertThat(model.state.progress, equalTo(0.toDuration()))
+        assertThat(model.state.progress, equalTo(0.toDurationMillis()))
         assertThat(model.state.pomodorosAmount, equalTo(0))
     }
 
     @Test fun `save pomodoro model state`() {
         val pomodoroStartTime = minute(-2)
         val modelState = PomodoroState(RUN, RUN, pomodoroStartTime, time(0))
-        val model = PomodoroModel(settings(pomodoroLength = 2, breakLength = 2000), modelState)
+        val model = PomodoroModel(settings(2, 2), modelState)
 
         assertThat(model.state.type, equalTo(RUN))
 
-        model.onTimer(time(updateInterval))
+        model.onTimer(minute(1))
 
         assertThat(modelState.type, equalTo(BREAK))
         assertTrue("model state was updated", modelState.startTime > pomodoroStartTime)
     }
 
     companion object {
-        private val updateInterval = minute(1100L).toEpochMilli()
-
         private fun minute(n: Long) = time(MINUTES.toMillis(n))
 
         private fun second(n: Long) = time(SECONDS.toMillis(n))
 
         private fun time(n: Long) = Instant.ofEpochMilli(n)
 
-        private fun settings(pomodoroLength: Long): Settings {
-            val settings = Settings()
-            settings.pomodoroLengthInMinutes = pomodoroLength.toInt()
-            return settings
-        }
-
-        private fun settings(pomodoroLength: Long, breakLength: Long): Settings {
+        private fun settings(pomodoroDuration: Long, breakDuration: Long): Settings {
             return Settings(
-                    pomodoroLengthInMinutes = pomodoroLength.toInt(),
-                    breakLengthInMinutes = breakLength.toInt()
+                pomodoroDuration = pomodoroDuration.toDurationMinutes(),
+                breakDuration = breakDuration.toDurationMinutes()
             )
         }
     }
 }
 
-private fun Number.toDuration() = Duration.ofMillis(this.toLong())

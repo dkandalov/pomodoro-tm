@@ -20,6 +20,8 @@ import pomodoro.PomodoroComponent
 import pomodoro.RingSound
 import pomodoro.UIBundle
 import pomodoro.model.Settings
+import pomodoro.model.toDurationMillis
+import pomodoro.model.toDurationMinutes
 import java.awt.event.ActionListener
 import javax.swing.JComboBox
 import javax.swing.JComponent
@@ -84,25 +86,25 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         if (updatingUI) return
 
         try {
-            uiModel.pomodoroLengthInMinutes = selectedItemAsInteger(settingsForm!!.pomodoroLengthComboBox)!!
+            uiModel.pomodoroDuration = selectedItemAsInteger(settingsForm!!.pomodoroLengthComboBox).toDurationMinutes()
         } catch (e: NumberFormatException) {
-            uiModel.pomodoroLengthInMinutes = Settings.defaultPomodoroLength
+            uiModel.pomodoroDuration = Settings.defaultPomodoroDuration
         }
 
         try {
-            uiModel.breakLengthInMinutes = selectedItemAsInteger(settingsForm!!.breakLengthComboBox)!!
+            uiModel.breakDuration = selectedItemAsInteger(settingsForm!!.breakLengthComboBox).toDurationMinutes()
         } catch (e: NumberFormatException) {
-            uiModel.breakLengthInMinutes = Settings.defaultBreakLength
+            uiModel.breakDuration = Settings.defaultBreakDuration
         }
 
         try {
-            uiModel.longBreakLengthInMinutes = selectedItemAsInteger(settingsForm!!.longBreakLengthComboBox)!!
+            uiModel.longBreakLengthInMinutes = selectedItemAsInteger(settingsForm!!.longBreakLengthComboBox)
         } catch (e: NumberFormatException) {
             uiModel.longBreakLengthInMinutes = Settings.defaultLongBreakLength
         }
 
         try {
-            uiModel.longBreakFrequency = selectedItemAsInteger(settingsForm!!.longBreakFrequencyComboBox)!!
+            uiModel.longBreakFrequency = selectedItemAsInteger(settingsForm!!.longBreakFrequencyComboBox)
         } catch (e: NumberFormatException) {
             uiModel.longBreakFrequency = Settings.defaultLongBreakFrequency
         }
@@ -125,8 +127,8 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         updatingUI = true
 
         settingsForm!!.apply {
-            pomodoroLengthComboBox.model.selectedItem = uiModel.pomodoroLengthInMinutes.toString()
-            breakLengthComboBox.model.selectedItem = uiModel.breakLengthInMinutes.toString()
+            pomodoroLengthComboBox.model.selectedItem = uiModel.pomodoroDuration.toString()
+            breakLengthComboBox.model.selectedItem = uiModel.breakDuration.toString()
             longBreakLengthComboBox.model.selectedItem = uiModel.longBreakLengthInMinutes.toString()
             longBreakFrequencyComboBox.model.selectedItem = uiModel.longBreakFrequency.toString()
 
@@ -167,9 +169,9 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         private const val MIN_TIME_INTERVAL = 1
         private const val MAX_TIME_INTERVAL = 240
 
-        private fun selectedItemAsInteger(comboBox: JComboBox<*>): Int? {
+        private fun selectedItemAsInteger(comboBox: JComboBox<*>): Int {
             val s = (comboBox.selectedItem as String).trim { it <= ' ' }
-            val value = Integer.valueOf(s)
+            val value = s.toInt()
             if (value < MIN_TIME_INTERVAL) return MIN_TIME_INTERVAL
             if (value > MAX_TIME_INTERVAL) return MAX_TIME_INTERVAL
             return value

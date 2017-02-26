@@ -17,6 +17,7 @@ import pomodoro.model.PomodoroState.Type.*
 import java.time.Duration
 import java.time.Instant
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 
 class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
@@ -34,7 +35,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
     fun onIdeStartup(now: Instant) {
         if (state.type != STOP) {
             val timeSincePomodoroStart = Duration.between(state.lastUpdateTime, now)
-            val shouldNotContinuePomodoro = timeSincePomodoroStart.toMillis() > settings.timeoutToContinuePomodoro
+            val shouldNotContinuePomodoro = timeSincePomodoroStart > settings.timeoutToContinuePomodoro
             if (shouldNotContinuePomodoro) {
                 state.type = STOP
                 state.lastState = STOP
@@ -98,8 +99,8 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
 
     val progressMax: Duration
         get() = when (state.type) {
-            RUN -> Duration.ofMillis(settings.pomodoroLengthInMillis)
-            BREAK -> Duration.ofMillis(settings.breakLengthInMillis)
+            RUN -> settings.pomodoroDuration
+            BREAK -> settings.breakDuration
             else -> Duration.ZERO
         }
 
@@ -119,3 +120,6 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
 }
 
 private fun Duration.capAt(max: Duration) = if (this > max) max else this
+
+fun Number.toDurationMillis() = Duration.ofMillis(toLong())!!
+fun Number.toDurationMinutes() = Duration.ofMillis(TimeUnit.MINUTES.toMillis(toLong()))!!

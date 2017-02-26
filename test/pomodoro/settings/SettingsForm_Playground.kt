@@ -15,6 +15,7 @@ package pomodoro.settings
 
 import com.intellij.openapi.options.ConfigurationException
 import pomodoro.model.Settings
+import pomodoro.model.toDurationMillis
 import java.awt.Button
 import java.awt.FlowLayout
 import java.awt.event.ActionListener
@@ -22,7 +23,7 @@ import javax.swing.JFrame
 import javax.swing.WindowConstants
 
 fun main(args: Array<String>) {
-    val settings = createSettings()
+    val settings = Settings().copy(pomodoroDuration = 123.toDurationMillis())
     val presenter = SettingsPresenter(settings)
     val component = presenter.createComponent()
     presenter.reset()
@@ -54,12 +55,6 @@ fun main(args: Array<String>) {
         pack()
         isVisible = true
     }
-}
-
-private fun createSettings(): Settings {
-    val settings = Settings()
-    settings.pomodoroLengthInMinutes = 123
-    return settings
 }
 
 private fun createButton(label: String, actionListener: ActionListener): Button {

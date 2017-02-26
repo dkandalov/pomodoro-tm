@@ -16,15 +16,21 @@ package pomodoro.model
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
+import com.intellij.util.xmlb.Converter
 import com.intellij.util.xmlb.XmlSerializerUtil
+import com.intellij.util.xmlb.annotations.OptionTag
+import pomodoro.model.Settings.Companion.defaultPomodoroDuration
+import java.time.Duration
 import java.util.*
 import java.util.concurrent.TimeUnit.MILLISECONDS
 import java.util.concurrent.TimeUnit.MINUTES
 
 @State(name = "PomodoroSettings", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
 data class Settings(
-        var pomodoroLengthInMinutes: Int = defaultPomodoroLength,
-        var breakLengthInMinutes: Int = defaultBreakLength,
+        @OptionTag(tag = "pomodoroLengthInMinutes", converter = MinutesConverter::class)
+        var pomodoroDuration: Duration = defaultPomodoroDuration,
+        @OptionTag(tag = "breakLengthInMinutes", converter = MinutesConverter::class)
+        var breakDuration: Duration = defaultBreakDuration,
         var longBreakLengthInMinutes: Int = defaultLongBreakLength,
         var longBreakFrequency: Int = defaultLongBreakFrequency,
         var ringVolume: Int = 1,
@@ -38,15 +44,8 @@ data class Settings(
      * This property determines how much time can pass before we consider pomodoro to be expired.
      * @return timeout in milliseconds
      */
-    val timeoutToContinuePomodoro = MILLISECONDS.convert(defaultBreakLength.toLong(), MINUTES)
+    val timeoutToContinuePomodoro = defaultBreakDuration
     private val changeListeners = ArrayList<ChangeListener>()
-
-
-    val pomodoroLengthInMillis: Long
-        get() = MINUTES.toMillis(pomodoroLengthInMinutes.toLong())
-
-    val breakLengthInMillis: Long
-        get() = MINUTES.toMillis(breakLengthInMinutes.toLong())
 
     fun addChangeListener(changeListener: ChangeListener) {
         changeListeners.add(changeListener)
@@ -67,9 +66,14 @@ data class Settings(
         }
     }
 
+    class MinutesConverter : Converter<Duration>() {
+        override fun toString(t: Duration) = t.toMinutes().toString()
+        override fun fromString(value: String) = Duration.ofMinutes(value.toLong())!!
+    }
+
     companion object {
-        const val defaultPomodoroLength = 25
-        const val defaultBreakLength = 5
+        val defaultPomodoroDuration = Duration.ofMinutes(25)!!
+        val defaultBreakDuration = Duration.ofMinutes(5)!!
         const val defaultLongBreakLength = 20
         const val defaultLongBreakFrequency = 4
     }
