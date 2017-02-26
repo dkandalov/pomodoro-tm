@@ -86,25 +86,25 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         try {
             uiModel.pomodoroLengthInMinutes = selectedItemAsInteger(settingsForm!!.pomodoroLengthComboBox)!!
         } catch (e: NumberFormatException) {
-            uiModel.pomodoroLengthInMinutes = Settings.DEFAULT_POMODORO_LENGTH
+            uiModel.pomodoroLengthInMinutes = Settings.defaultPomodoroLength
         }
 
         try {
             uiModel.breakLengthInMinutes = selectedItemAsInteger(settingsForm!!.breakLengthComboBox)!!
         } catch (e: NumberFormatException) {
-            uiModel.breakLengthInMinutes = Settings.DEFAULT_BREAK_LENGTH
+            uiModel.breakLengthInMinutes = Settings.defaultBreakLength
         }
 
         try {
             uiModel.longBreakLengthInMinutes = selectedItemAsInteger(settingsForm!!.longBreakLengthComboBox)!!
         } catch (e: NumberFormatException) {
-            uiModel.longBreakLengthInMinutes = Settings.DEFAULT_LONG_BREAK_LENGTH
+            uiModel.longBreakLengthInMinutes = Settings.defaultLongBreakLength
         }
 
         try {
             uiModel.longBreakFrequency = selectedItemAsInteger(settingsForm!!.longBreakFrequencyComboBox)!!
         } catch (e: NumberFormatException) {
-            uiModel.longBreakFrequency = Settings.DEFAULT_LONG_BREAK_FREQUENCY
+            uiModel.longBreakFrequency = Settings.defaultLongBreakFrequency
         }
 
         uiModel.ringVolume = settingsForm!!.ringVolumeSlider.value

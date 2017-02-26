@@ -23,10 +23,10 @@ import java.util.concurrent.TimeUnit.MINUTES
 
 @State(name = "PomodoroSettings", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
 data class Settings(
-        var pomodoroLengthInMinutes: Int = DEFAULT_POMODORO_LENGTH,
-        var breakLengthInMinutes: Int = DEFAULT_BREAK_LENGTH,
-        var longBreakLengthInMinutes: Int = DEFAULT_LONG_BREAK_LENGTH,
-        var longBreakFrequency: Int = DEFAULT_LONG_BREAK_FREQUENCY,
+        var pomodoroLengthInMinutes: Int = defaultPomodoroLength,
+        var breakLengthInMinutes: Int = defaultBreakLength,
+        var longBreakLengthInMinutes: Int = defaultLongBreakLength,
+        var longBreakFrequency: Int = defaultLongBreakFrequency,
         var ringVolume: Int = 1,
         var isPopupEnabled: Boolean = true,
         var isBlockDuringBreak: Boolean = false,
@@ -38,7 +38,7 @@ data class Settings(
      * This property determines how much time can pass before we consider pomodoro to be expired.
      * @return timeout in milliseconds
      */
-    val timeoutToContinuePomodoro = MILLISECONDS.convert(DEFAULT_BREAK_LENGTH.toLong(), MINUTES)
+    val timeoutToContinuePomodoro = MILLISECONDS.convert(defaultBreakLength.toLong(), MINUTES)
     private val changeListeners = ArrayList<ChangeListener>()
 
 
@@ -68,9 +68,9 @@ data class Settings(
     }
 
     companion object {
-        val DEFAULT_POMODORO_LENGTH = 25
-        val DEFAULT_BREAK_LENGTH = 5
-        val DEFAULT_LONG_BREAK_LENGTH = 20
-        val DEFAULT_LONG_BREAK_FREQUENCY = 4
+        const val defaultPomodoroLength = 25
+        const val defaultBreakLength = 5
+        const val defaultLongBreakLength = 20
+        const val defaultLongBreakFrequency = 4
     }
 }
