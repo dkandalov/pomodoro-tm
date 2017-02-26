@@ -16,7 +16,10 @@ package pomodoro.model
 import com.intellij.openapi.components.PersistentStateComponent
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
+import com.intellij.util.xmlb.Converter
 import com.intellij.util.xmlb.XmlSerializerUtil
+import com.intellij.util.xmlb.annotations.OptionTag
+import com.intellij.util.xmlb.annotations.Transient
 import pomodoro.model.PomodoroState.Type
 
 /**
@@ -27,15 +30,15 @@ import pomodoro.model.PomodoroState.Type
  * Thread-safe because it's accessed from [ControlThread] and
  * IntelliJ platform thread which persists it.
  */
-@State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.state.xml")))
+@State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
 data class PomodoroState(
-        var type: Type = Type.STOP,
-        var lastState: Type = Type.STOP,
-        var startTime: Long = 0,
-        var lastUpdateTime: Long = 0,
-        var pomodorosAmount: Int = 0,
-        var progress: Int = 0,
-        var progressMax: Int = 0
+        @Transient var type: Type = Type.STOP,
+        @OptionTag(tag = "lastState", converter = EnumConverter::class) var lastState: Type = Type.STOP,
+        @OptionTag(tag = "startTime") var startTime: Long = 0,
+        @OptionTag(tag = "lastUpdateTime") var lastUpdateTime: Long = 0,
+        @OptionTag(tag = "pomodorosAmount") var pomodorosAmount: Int = 0,
+        @Transient var progress: Int = 0,
+        @Transient var progressMax: Int = 0
 ) : PersistentStateComponent<PomodoroState> {
 
     override fun getState() = this
@@ -49,5 +52,16 @@ data class PomodoroState(
         RUN,
         /** Pomodoro during break. Can only happen after completing a pomodoro. */
         BREAK
+    }
+
+    private class EnumConverter : Converter<Type>() {
+        override fun toString(t: Type) = t.name
+
+        override fun fromString(value: String): Type? = when (value) {
+            "STOP" -> Type.STOP
+            "RUN" -> Type.RUN
+            "BREAK" -> Type.BREAK
+            else -> Type.valueOf(value)
+        }
     }
 }
