@@ -29,7 +29,8 @@ data class Settings(
         var pomodoroDuration: Duration = defaultPomodoroDuration,
         @OptionTag(tag = "breakLengthInMinutes", converter = MinutesConverter::class)
         var breakDuration: Duration = defaultBreakDuration,
-        var longBreakLengthInMinutes: Int = defaultLongBreakLength,
+        @OptionTag(converter = MinutesConverter::class)
+        var longBreakDuration: Duration = defaultLongBreakDuration,
         var longBreakFrequency: Int = defaultLongBreakFrequency,
         var ringVolume: Int = 1,
         var isPopupEnabled: Boolean = true,
@@ -76,7 +77,7 @@ data class Settings(
     companion object {
         val defaultPomodoroDuration = Duration.ofMinutes(25)!!
         val defaultBreakDuration = Duration.ofMinutes(5)!!
-        const val defaultLongBreakLength = 20
+        val defaultLongBreakDuration = Duration.ofMinutes(20)!!
         const val defaultLongBreakFrequency = 4
     }
 }

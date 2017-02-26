@@ -20,7 +20,6 @@ import pomodoro.PomodoroComponent
 import pomodoro.RingSound
 import pomodoro.UIBundle
 import pomodoro.model.Settings
-import pomodoro.model.toDurationMillis
 import pomodoro.model.toDurationMinutes
 import java.awt.event.ActionListener
 import javax.swing.JComboBox
@@ -98,9 +97,9 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         }
 
         try {
-            uiModel.longBreakLengthInMinutes = selectedItemAsInteger(settingsForm!!.longBreakLengthComboBox)
+            uiModel.longBreakDuration = selectedItemAsInteger(settingsForm!!.longBreakLengthComboBox).toDurationMinutes()
         } catch (e: NumberFormatException) {
-            uiModel.longBreakLengthInMinutes = Settings.defaultLongBreakLength
+            uiModel.longBreakDuration = Settings.defaultLongBreakDuration
         }
 
         try {
@@ -129,7 +128,7 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         settingsForm!!.apply {
             pomodoroLengthComboBox.model.selectedItem = uiModel.pomodoroDuration.toString()
             breakLengthComboBox.model.selectedItem = uiModel.breakDuration.toString()
-            longBreakLengthComboBox.model.selectedItem = uiModel.longBreakLengthInMinutes.toString()
+            longBreakLengthComboBox.model.selectedItem = uiModel.longBreakDuration.toString()
             longBreakFrequencyComboBox.model.selectedItem = uiModel.longBreakFrequency.toString()
 
             ringVolumeSlider.value = uiModel.ringVolume
