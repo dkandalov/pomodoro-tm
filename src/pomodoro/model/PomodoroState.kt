@@ -33,10 +33,10 @@ import java.time.Instant
 @State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
 data class PomodoroState(
         @Transient var type: Type = Type.STOP,
-        @OptionTag(tag = "lastState", converter = EnumConverter::class) var lastState: Type = Type.STOP,
-        @OptionTag(tag = "startTime", converter = InstantConverter::class) var startTime: Instant = Instant.EPOCH,
-        @OptionTag(tag = "lastUpdateTime", converter = InstantConverter::class) var lastUpdateTime: Instant = Instant.EPOCH,
-        @OptionTag(tag = "pomodorosAmount") var pomodorosAmount: Int = 0,
+        @OptionTag(nameAttribute = "lastState", converter = EnumConverter::class) var lastState: Type = Type.STOP,
+        @OptionTag(nameAttribute = "startTime", converter = InstantConverter::class) var startTime: Instant = Instant.EPOCH,
+        @OptionTag(nameAttribute = "lastUpdateTime", converter = InstantConverter::class) var lastUpdateTime: Instant = Instant.EPOCH,
+        @OptionTag(nameAttribute = "pomodorosAmount") var pomodorosAmount: Int = 0,
         @Transient var progress: Duration = Duration.ZERO
 ) : PersistentStateComponent<PomodoroState> {
 

@@ -25,9 +25,9 @@ import java.util.*
 
 @State(name = "PomodoroSettings", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
 data class Settings(
-        @OptionTag(tag = "pomodoroLengthInMinutes", converter = MinutesConverter::class)
+        @OptionTag(nameAttribute = "pomodoroLengthInMinutes", converter = MinutesConverter::class)
         var pomodoroDuration: Duration = defaultPomodoroDuration,
-        @OptionTag(tag = "breakLengthInMinutes", converter = MinutesConverter::class)
+        @OptionTag(nameAttribute = "breakLengthInMinutes", converter = MinutesConverter::class)
         var breakDuration: Duration = defaultBreakDuration,
         @OptionTag(converter = MinutesConverter::class)
         var longBreakDuration: Duration = defaultLongBreakDuration,
