@@ -20,7 +20,6 @@ import org.junit.Test
 import pomodoro.model.PomodoroState.Type.*
 import java.time.Instant
 import java.util.concurrent.TimeUnit.MINUTES
-import java.util.concurrent.TimeUnit.SECONDS
 
 class PomodoroModelTest {
 
@@ -30,7 +29,7 @@ class PomodoroModelTest {
             assertThat(state.progress, equalTo(0.toDurationMinutes()))
             assertThat(state.pomodorosAmount, equalTo(0))
 
-            onUserSwitchToNextState(time(0))
+            onUserSwitchToNextState(minute(0))
             assertThat(state.type, equalTo(RUN))
             assertThat(progressMax, equalTo(2.toDurationMinutes()))
 
@@ -56,7 +55,7 @@ class PomodoroModelTest {
             assertThat(state.pomodorosAmount, equalTo(1))
 
             onTimer(minute(4))
-            onUserSwitchToNextState(time(4))
+            onUserSwitchToNextState(minute(4))
             assertThat(state.type, equalTo(RUN))
 
             onTimer(minute(6))
@@ -86,7 +85,7 @@ class PomodoroModelTest {
     @Test fun `auto stop after break`() {
         PomodoroModel(settings(1, 2), PomodoroState()).apply {
             assertThat(state.type, equalTo(STOP))
-            onUserSwitchToNextState(time(0))
+            onUserSwitchToNextState(minute(0))
 
             onTimer(minute(1))
             assertThat(state.type, equalTo(BREAK))
@@ -138,7 +137,7 @@ class PomodoroModelTest {
 
     @Test fun `save pomodoro model state`() {
         val pomodoroStartTime = minute(-2)
-        val modelState = PomodoroState(RUN, RUN, pomodoroStartTime, time(0))
+        val modelState = PomodoroState(RUN, RUN, pomodoroStartTime, minute(0))
         val model = PomodoroModel(settings(2, 2), modelState)
 
         assertThat(model.state.type, equalTo(RUN))
@@ -150,11 +149,9 @@ class PomodoroModelTest {
     }
 
     companion object {
-        private fun minute(n: Long) = time(MINUTES.toMillis(n))
+        private fun second(n: Long) = Instant.ofEpochSecond(n)
 
-        private fun second(n: Long) = time(SECONDS.toMillis(n))
-
-        private fun time(n: Long) = Instant.ofEpochMilli(n)
+        private fun minute(n: Long) = Instant.ofEpochMilli(MINUTES.toMillis(n))
 
         private fun settings(pomodoroDuration: Long, breakDuration: Long): Settings {
             return Settings(

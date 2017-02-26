@@ -23,7 +23,7 @@ import javax.swing.JFrame
 import javax.swing.WindowConstants
 
 fun main(args: Array<String>) {
-    val settings = Settings().copy(pomodoroDuration = 123.toDurationMillis())
+    val settings = Settings(pomodoroDuration = 123.toDurationMillis())
     val presenter = SettingsPresenter(settings)
     val component = presenter.createComponent()
     presenter.reset()
@@ -39,8 +39,8 @@ fun main(args: Array<String>) {
                 println(settings)
                 presenter.apply()
                 println(settings)
-            } catch (e1: ConfigurationException) {
-                e1.printStackTrace()
+            } catch (e: ConfigurationException) {
+                e.printStackTrace()
             }
         }))
         contentPane.add(createButton("<Reset>", ActionListener {
@@ -58,7 +58,7 @@ fun main(args: Array<String>) {
 }
 
 private fun createButton(label: String, actionListener: ActionListener): Button {
-    val button = Button(label)
-    button.addActionListener(actionListener)
-    return button
+    return Button(label).apply {
+        addActionListener(actionListener)
+    }
 }

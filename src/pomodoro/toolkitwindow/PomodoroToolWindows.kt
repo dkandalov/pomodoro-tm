@@ -22,11 +22,10 @@ import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.content.ContentFactory
 import pomodoro.PomodoroComponent
 import pomodoro.UIBundle
-import pomodoro.model.ChangeListener
 import pomodoro.model.Settings
 import javax.swing.ImageIcon
 
-class PomodoroToolWindows : ChangeListener {
+class PomodoroToolWindows : Settings.ChangeListener {
     init {
         ProjectManager.getInstance().addProjectManagerListener(object : ProjectManagerListener {
             override fun projectOpened(project: Project?) {
@@ -38,26 +37,19 @@ class PomodoroToolWindows : ChangeListener {
 
             override fun projectClosed(project: Project?) {
                 if (project == null) return
-                // unregister window in any case
                 unregisterWindowFrom(project)
             }
 
-            override fun canCloseProject(project: Project?): Boolean {
-                return true
-            }
+            override fun canCloseProject(project: Project?) = true
 
             override fun projectClosing(project: Project?) {}
         })
     }
 
     override fun onChange(settings: Settings) {
-        val projects = ProjectManager.getInstance().openProjects
-        for (project in projects) {
-            if (settings.isShowToolWindow) {
-                registerWindowFor(project)
-            } else {
-                unregisterWindowFrom(project)
-            }
+        for (project in ProjectManager.getInstance().openProjects) {
+            if (settings.isShowToolWindow) registerWindowFor(project)
+            else unregisterWindowFrom(project)
         }
     }
 

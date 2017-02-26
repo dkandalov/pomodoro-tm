@@ -22,8 +22,6 @@ import com.intellij.util.xmlb.annotations.OptionTag
 import pomodoro.model.Settings.Companion.defaultPomodoroDuration
 import java.time.Duration
 import java.util.*
-import java.util.concurrent.TimeUnit.MILLISECONDS
-import java.util.concurrent.TimeUnit.MINUTES
 
 @State(name = "PomodoroSettings", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
 data class Settings(
@@ -69,6 +67,10 @@ data class Settings(
     class MinutesConverter : Converter<Duration>() {
         override fun toString(t: Duration) = t.toMinutes().toString()
         override fun fromString(value: String) = Duration.ofMinutes(value.toLong())!!
+    }
+
+    interface ChangeListener {
+        fun onChange(settings: Settings)
     }
 
     companion object {

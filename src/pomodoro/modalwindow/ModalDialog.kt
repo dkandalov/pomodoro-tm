@@ -13,6 +13,7 @@
  */
 package pomodoro.modalwindow
 
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.util.ui.UIUtil
 import java.awt.Dialog
 import java.awt.Frame
@@ -21,7 +22,6 @@ import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
 import java.awt.event.KeyEvent.VK_ESCAPE
 import javax.swing.JDialog
-import javax.swing.SwingUtilities
 
 class ModalDialog(window: Window) {
     private val jDialog: JDialog
@@ -29,11 +29,7 @@ class ModalDialog(window: Window) {
     init {
         val model = FormModel()
 
-        if (window is Dialog) {
-            jDialog = JDialog(window)
-        } else {
-            jDialog = JDialog(window as Frame)
-        }
+        jDialog = JDialog(window as? Dialog ?: window as Frame)
 
         val keyAdapter = object : KeyAdapter() {
             override fun keyPressed(keyEvent: KeyEvent?) {
@@ -55,10 +51,10 @@ class ModalDialog(window: Window) {
     }
 
     fun show() {
-        SwingUtilities.invokeLater { jDialog.isVisible = true }
+        ApplicationManager.getApplication().invokeLater { jDialog.isVisible = true }
     }
 
     fun hide() {
-        SwingUtilities.invokeLater { jDialog.dispose() }
+        ApplicationManager.getApplication().invokeLater { jDialog.dispose() }
     }
 }

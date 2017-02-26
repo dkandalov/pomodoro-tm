@@ -13,6 +13,7 @@
  */
 package pomodoro.toolkitwindow
 
+import com.intellij.openapi.application.ApplicationManager
 import pomodoro.UIBundle
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
@@ -22,7 +23,6 @@ import java.time.Duration
 import java.time.Instant
 import javax.swing.ImageIcon
 import javax.swing.JComponent
-import javax.swing.SwingUtilities
 
 class PomodoroPresenter(private val model: PomodoroModel) {
     private val playIcon = ImageIcon(javaClass.getResource("/resources/play-icon.png"))
@@ -57,7 +57,7 @@ class PomodoroPresenter(private val model: PomodoroModel) {
     }
 
     private fun updateUI(state: PomodoroState) {
-        SwingUtilities.invokeLater {
+        ApplicationManager.getApplication().invokeLater {
             when (state.type) {
                 PomodoroState.Type.RUN -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
@@ -80,7 +80,7 @@ class PomodoroPresenter(private val model: PomodoroModel) {
             form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(state.progress.toProgress().toLong()).toInt()
 
             val timeLeft = model.progressMax - state.progress
-            form.progressBar.string = progressBarPrefix + " " + formatTime(timeLeft)
+            form.progressBar.string = progressBarPrefix + " " + formatDuration(timeLeft)
         }
     }
 
@@ -90,7 +90,7 @@ class PomodoroPresenter(private val model: PomodoroModel) {
             return if (progress < 10) 10 else progress
         }
 
-        fun formatTime(timeLeft: Duration): String {
+        fun formatDuration(timeLeft: Duration): String {
             val min = timeLeft.toMinutes() / 60
             val sec = timeLeft.seconds
             return String.format("%02d", min) + ":" + String.format("%02d", sec)

@@ -15,11 +15,9 @@ internal class TextPanelWithIcon : TextPanel() {
         super.paintComponent(g)
         if (text == null) return
 
-        val r = bounds
-        val insets = insets
         myIcon?.paintIcon(this, g,
                 insets.left - GAP - iconWidth(),
-                r.height / 2 - iconWidth() / 2
+                bounds.height / 2 - iconWidth() / 2
         )
     }
 
@@ -41,6 +39,6 @@ internal class TextPanelWithIcon : TextPanel() {
     private fun iconWidth() = myIcon?.iconWidth ?: 0
 
     companion object {
-        private val GAP = 2
+        private const val GAP = 2
     }
 }

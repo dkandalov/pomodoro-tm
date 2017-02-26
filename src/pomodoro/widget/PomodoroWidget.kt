@@ -20,9 +20,9 @@ import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.util.ui.UIUtil
 import pomodoro.PomodoroComponent
 import pomodoro.UIBundle
-import pomodoro.model.ChangeListener
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
+import pomodoro.model.PomodoroState.Type.*
 import pomodoro.model.Settings
 import pomodoro.toolkitwindow.PomodoroPresenter
 import java.awt.event.MouseAdapter
@@ -30,10 +30,9 @@ import java.awt.event.MouseEvent
 import java.time.Instant
 import javax.swing.ImageIcon
 import javax.swing.JComponent
-import javax.swing.SwingUtilities
 
 
-class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, ChangeListener {
+class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settings.ChangeListener {
     private val pomodoroIcon = ImageIcon(javaClass.getResource("/resources/pomodoro.png"))
     private val pomodoroStoppedIcon = ImageIcon(javaClass.getResource("/resources/pomodoroStopped.png"))
     private val pomodoroBreakIcon = ImageIcon(javaClass.getResource("/resources/pomodoroBreak.png"))
@@ -53,7 +52,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
 
         model.addUpdateListener(panelWithIcon, object : PomodoroModel.Listener {
             override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
-                SwingUtilities.invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) }
+                ApplicationManager.getApplication().invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) }
             }
         })
         panelWithIcon.addMouseListener(object : MouseAdapter() {
@@ -90,19 +89,17 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
         return UIBundle.message("statuspanel.tooltip", nextAction, pomodorosAmount)
     }
 
-    private fun nextActionName(model: PomodoroModel): String {
-        when (model.state.type) {
-            PomodoroState.Type.STOP -> return UIBundle.message("statuspanel.start")
-            PomodoroState.Type.RUN -> return UIBundle.message("statuspanel.stop")
-            PomodoroState.Type.BREAK -> return UIBundle.message("statuspanel.stop_break")
-            else -> return ""
-        }
+    private fun nextActionName(model: PomodoroModel) = when (model.state.type) {
+        STOP -> UIBundle.message("statuspanel.start")
+        RUN -> UIBundle.message("statuspanel.stop")
+        BREAK -> UIBundle.message("statuspanel.stop_break")
+        else -> ""
     }
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
         if (showTimeInToolbarWidget) {
             val timeLeft = model.progressMax - model.state.progress
-            panelWithIcon.text = PomodoroPresenter.formatTime(timeLeft)
+            panelWithIcon.text = PomodoroPresenter.formatDuration(timeLeft)
         } else {
             panelWithIcon.text = ""
         }
@@ -112,10 +109,10 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
 
     private fun getIcon(state: PomodoroState): ImageIcon {
         val underDarcula = UIUtil.isUnderDarcula()
-        when (state.type) {
-            PomodoroState.Type.STOP -> return if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
-            PomodoroState.Type.RUN -> return if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
-            PomodoroState.Type.BREAK -> return if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon
+        return when (state.type) {
+            STOP -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
+            RUN -> if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
+            BREAK -> if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon
             else -> throw IllegalStateException()
         }
     }
