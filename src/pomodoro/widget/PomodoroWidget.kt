@@ -50,7 +50,11 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
         model = pomodoroComponent.model
         updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget)
 
-        model.addUpdateListener(panelWithIcon) { SwingUtilities.invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) } }
+        model.addUpdateListener(panelWithIcon, object : PomodoroModel.Listener {
+            override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
+                SwingUtilities.invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) }
+            }
+        })
         panelWithIcon.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent?) {
                 model.onUserSwitchToNextState(currentTimeMillis())
@@ -101,13 +105,13 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
         } else {
             panelWithIcon.text = ""
         }
-        panelWithIcon.setIcon(getIcon(model))
+        panelWithIcon.setIcon(getIcon(model.state))
         panelWithIcon.repaint()
     }
 
-    private fun getIcon(model: PomodoroModel): ImageIcon {
+    private fun getIcon(state: PomodoroState): ImageIcon {
         val underDarcula = UIUtil.isUnderDarcula()
-        when (model.state.type) {
+        when (state.type) {
             PomodoroState.Type.STOP -> return if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
             PomodoroState.Type.RUN -> return if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
             PomodoroState.Type.BREAK -> return if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon

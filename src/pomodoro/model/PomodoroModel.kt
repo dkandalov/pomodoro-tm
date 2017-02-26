@@ -18,14 +18,12 @@ import java.util.*
 
 
 class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
-
-    private var wasManuallyStopped: Boolean = false
     /**
-     * It's a WeakHashMap to make it simpler to automatically remove listeners.
+     * Use WeakHashMap to make it simpler to automatically remove listeners.
      * The most common usage is when there are several IntelliJ windows, UI components subscribe to model and
      * then window is being closed.
      */
-    private val listeners = WeakHashMap<Any, () -> Unit>()
+    private val listeners = WeakHashMap<Any, Listener>()
 
     init {
         state.progressMax = updateProgressMax()
@@ -46,6 +44,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
     }
 
     @Synchronized fun onUserSwitchToNextState(time: Long) = state.apply {
+        var wasManuallyStopped = false
         when (type) {
             STOP -> {
                 type = RUN
@@ -62,10 +61,10 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
             }
             else -> throw IllegalStateException()
         }
-        onTimer(time)
+        onTimer(time, wasManuallyStopped)
     }
 
-    @Synchronized fun onTimer(time: Long) = state.apply {
+    @Synchronized fun onTimer(time: Long, wasManuallyStopped: Boolean = false) = state.apply {
         when (type) {
             RUN -> {
                 progress = updateProgress(time)
@@ -81,7 +80,6 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
                 updateProgress(time)
                 if (time >= startTime + progressMax) {
                     type = STOP
-                    wasManuallyStopped = false
                 }
             }
             STOP -> if (lastState == STOP) {
@@ -90,7 +88,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         }
 
         for (listener in listeners.values) {
-            listener.invoke()
+            listener.onStateChange(state, wasManuallyStopped)
         }
 
         if (lastState != type) {
@@ -107,24 +105,22 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         state.pomodorosAmount = 0
     }
 
-    @Synchronized fun wasManuallyStopped(): Boolean {
-        return wasManuallyStopped
-    }
-
-    @Synchronized fun addUpdateListener(key: Any, runnable: () -> Unit) {
-        listeners.put(key, runnable)
+    @Synchronized fun addUpdateListener(key: Any, listener: Listener) {
+        listeners.put(key, listener)
     }
 
     private fun updateProgress(time: Long): Int {
         return ((time - state.startTime) / progressIntervalMillis).toInt().capAt(getProgressMax())
     }
 
-    private fun updateProgressMax(): Int {
-        return when (state.type) {
-            RUN -> settings.pomodoroLengthInMillis.toInt()
-            BREAK -> settings.breakLengthInMillis.toInt()
-            else -> 0
-        }
+    private fun updateProgressMax() = when (state.type) {
+        RUN -> settings.pomodoroLengthInMillis.toInt()
+        BREAK -> settings.breakLengthInMillis.toInt()
+        else -> 0
+    }
+
+    interface Listener {
+        fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean)
     }
 
     companion object {

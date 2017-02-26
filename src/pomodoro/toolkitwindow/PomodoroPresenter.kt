@@ -33,24 +33,28 @@ class PomodoroPresenter(private val model: PomodoroModel) {
     init {
         form.controlButton.addActionListener {
             model.onUserSwitchToNextState(currentTimeMillis())
-            updateUI()
+            updateUI(model.state)
         }
         form.pomodorosLabel.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(event: MouseEvent?) {
                 if (event!!.clickCount >= 2) {
                     model.resetPomodoros()
-                    updateUI()
+                    updateUI(model.state)
                 }
             }
         })
-        updateUI()
+        updateUI(model.state)
 
-        model.addUpdateListener(this) { updateUI() }
+        model.addUpdateListener(this, object : PomodoroModel.Listener {
+            override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
+                updateUI(state)
+            }
+        })
     }
 
-    private fun updateUI() {
+    private fun updateUI(state: PomodoroState) {
         SwingUtilities.invokeLater {
-            when (model.state.type) {
+            when (state.type) {
                 PomodoroState.Type.RUN -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     form.controlButton.icon = stopIcon
@@ -66,12 +70,12 @@ class PomodoroPresenter(private val model: PomodoroModel) {
                 }
                 else -> throw IllegalStateException()
             }
-            form.pomodorosLabel.text = model.state.pomodorosAmount.toString()
+            form.pomodorosLabel.text = state.pomodorosAmount.toString()
 
             form.progressBar.maximum = model.getProgressMax()
-            form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(model.state.progress)
+            form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(state.progress)
 
-            val timeLeft = model.getProgressMax() - model.state.progress
+            val timeLeft = model.getProgressMax() - state.progress
             form.progressBar.string = progressBarPrefix + " " + formatTime(timeLeft)
         }
     }

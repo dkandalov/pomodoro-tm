@@ -83,19 +83,21 @@ class PomodoroComponent : ApplicationComponent {
         private var modalDialog: ModalDialog? = null
 
         init {
-            model.addUpdateListener(this) {
-                when (model.state.type) {
-                    PomodoroState.Type.STOP -> if (model.state.lastState == PomodoroState.Type.BREAK && !model.wasManuallyStopped()) {
-                        ringSound.play(settings.ringVolume)
-                        if (settings.isBlockDuringBreak) unblockIntelliJ()
-                    }
-                    PomodoroState.Type.BREAK -> if (model.state.lastState != PomodoroState.Type.BREAK) {
-                        ringSound.play(settings.ringVolume)
-                        if (settings.isPopupEnabled) showPopupNotification()
-                        if (settings.isBlockDuringBreak) blockIntelliJ()
+            model.addUpdateListener(this, object : PomodoroModel.Listener {
+                override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
+                    when (state.type) {
+                        PomodoroState.Type.STOP -> if (state.lastState == PomodoroState.Type.BREAK && !wasManuallyStopped) {
+                            ringSound.play(settings.ringVolume)
+                            if (settings.isBlockDuringBreak) unblockIntelliJ()
+                        }
+                        PomodoroState.Type.BREAK -> if (state.lastState != PomodoroState.Type.BREAK) {
+                            ringSound.play(settings.ringVolume)
+                            if (settings.isPopupEnabled) showPopupNotification()
+                            if (settings.isBlockDuringBreak) blockIntelliJ()
+                        }
                     }
                 }
-            }
+            })
         }
 
         private fun blockIntelliJ() {
