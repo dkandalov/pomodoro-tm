@@ -14,6 +14,7 @@
 package pomodoro.model
 
 import com.intellij.openapi.application.ApplicationManager
+import java.time.Instant
 
 /**
  * (Note that [com.intellij.openapi.actionSystem.ActionManager.addTimerListener]
@@ -29,7 +30,7 @@ class ControlThread(private val model: PomodoroModel) : Thread() {
     override fun run() {
         while (!shouldStop) {
             ApplicationManager.getApplication().invokeLater {
-                model.onTimer(System.currentTimeMillis())
+                model.onTimer(Instant.now())
             }
             Thread.sleep(500)
         }

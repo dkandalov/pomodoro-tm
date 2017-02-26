@@ -21,24 +21,23 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.intellij.util.xmlb.annotations.Transient
 import pomodoro.model.PomodoroState.Type
+import pomodoro.model.PomodoroState.Type.BREAK
+import pomodoro.model.PomodoroState.Type.RUN
+import java.time.Duration
+import java.time.Instant
 
 /**
  * Class for persisting pomodoro state.
- * It was not implemented as part of [Settings] class
- * because instances of this class cannot be directly changed by user.
-
- * Thread-safe because it's accessed from [ControlThread] and
- * IntelliJ platform thread which persists it.
+ * It was not implemented as part of [Settings] class because instances of this class cannot be directly changed by user.
  */
 @State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
 data class PomodoroState(
         @Transient var type: Type = Type.STOP,
         @OptionTag(tag = "lastState", converter = EnumConverter::class) var lastState: Type = Type.STOP,
-        @OptionTag(tag = "startTime") var startTime: Long = 0,
-        @OptionTag(tag = "lastUpdateTime") var lastUpdateTime: Long = 0,
+        @OptionTag(tag = "startTime", converter = InstantConverter::class) var startTime: Instant = Instant.EPOCH,
+        @OptionTag(tag = "lastUpdateTime", converter = InstantConverter::class) var lastUpdateTime: Instant = Instant.EPOCH,
         @OptionTag(tag = "pomodorosAmount") var pomodorosAmount: Int = 0,
-        @Transient var progress: Int = 0,
-        @Transient var progressMax: Int = 0
+        @Transient var progress: Duration = Duration.ZERO
 ) : PersistentStateComponent<PomodoroState> {
 
     override fun getState() = this
@@ -54,13 +53,17 @@ data class PomodoroState(
         BREAK
     }
 
+    private class InstantConverter : Converter<Instant>() {
+        override fun toString(t: Instant) = t.toEpochMilli().toString()
+        override fun fromString(value: String) = Instant.ofEpochMilli(value.toLong()) ?: Instant.EPOCH!!
+    }
+
     private class EnumConverter : Converter<Type>() {
         override fun toString(t: Type) = t.name
-
         override fun fromString(value: String): Type? = when (value) {
             "STOP" -> Type.STOP
-            "RUN" -> Type.RUN
-            "BREAK" -> Type.BREAK
+            "RUN" -> RUN
+            "BREAK" -> BREAK
             else -> Type.valueOf(value)
         }
     }

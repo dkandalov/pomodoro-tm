@@ -35,7 +35,7 @@ import pomodoro.model.PomodoroState
 import pomodoro.model.Settings
 import pomodoro.toolkitwindow.PomodoroToolWindows
 import pomodoro.widget.PomodoroWidget
-import java.lang.System.currentTimeMillis
+import java.time.Instant
 import javax.swing.SwingUtilities
 
 class PomodoroComponent : ApplicationComponent {
@@ -46,7 +46,7 @@ class PomodoroComponent : ApplicationComponent {
         val settings = settings
 
         model = PomodoroModel(settings, ServiceManager.getService(PomodoroState::class.java))
-        model.onIdeStartup(now = currentTimeMillis())
+        model.onIdeStartup(Instant.now())
 
         val toolWindows = PomodoroToolWindows()
         settings.addChangeListener(toolWindows)

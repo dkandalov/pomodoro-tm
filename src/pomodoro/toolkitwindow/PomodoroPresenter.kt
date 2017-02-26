@@ -18,7 +18,8 @@ import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import java.lang.System.currentTimeMillis
+import java.time.Duration
+import java.time.Instant
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 import javax.swing.SwingUtilities
@@ -30,9 +31,12 @@ class PomodoroPresenter(private val model: PomodoroModel) {
     private val form = PomodoroForm()
     private var progressBarPrefix = ""
 
+    val contentPane: JComponent
+        get() = form.rootPanel
+
     init {
         form.controlButton.addActionListener {
-            model.onUserSwitchToNextState(currentTimeMillis())
+            model.onUserSwitchToNextState(Instant.now())
             updateUI(model.state)
         }
         form.pomodorosLabel.addMouseListener(object : MouseAdapter() {
@@ -72,28 +76,28 @@ class PomodoroPresenter(private val model: PomodoroModel) {
             }
             form.pomodorosLabel.text = state.pomodorosAmount.toString()
 
-            form.progressBar.maximum = model.getProgressMax()
-            form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(state.progress)
+            form.progressBar.maximum = model.progressMax.toProgress()
+            form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(state.progress.toProgress().toLong()).toInt()
 
-            val timeLeft = model.getProgressMax() - state.progress
+            val timeLeft = model.progressMax - state.progress
             form.progressBar.string = progressBarPrefix + " " + formatTime(timeLeft)
         }
     }
 
-    val contentPane: JComponent
-        get() = form.rootPanel
-
     companion object {
-
-        private fun hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(progress: Int): Int {
+        private fun hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(progress: Long): Long {
             // for some reason JProgressBar doesn't display text when progress is too small to be displayed
             return if (progress < 10) 10 else progress
         }
 
-        fun formatTime(timeLeft: Int): String {
-            val min = timeLeft / 60
-            val sec = timeLeft % 60
+        fun formatTime(timeLeft: Duration): String {
+            val min = timeLeft.toMinutes() / 60
+            val sec = timeLeft.seconds
             return String.format("%02d", min) + ":" + String.format("%02d", sec)
+        }
+
+        fun Duration.toProgress(): Int {
+            return (this.toMillis() / 1000).toInt()
         }
     }
 

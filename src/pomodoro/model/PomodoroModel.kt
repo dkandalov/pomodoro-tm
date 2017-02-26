@@ -14,6 +14,8 @@
 package pomodoro.model
 
 import pomodoro.model.PomodoroState.Type.*
+import java.time.Duration
+import java.time.Instant
 import java.util.*
 
 
@@ -26,30 +28,28 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
     private val listeners = WeakHashMap<Any, Listener>()
 
     init {
-        state.progressMax = updateProgressMax()
-        state.progress = state.progressMax
+        state.progress = progressMax
     }
 
-    fun onIdeStartup(now: Long) {
+    fun onIdeStartup(now: Instant) {
         if (state.type != STOP) {
-            val timeSincePomodoroStart = now - state.lastUpdateTime
-            val shouldNotContinuePomodoro = timeSincePomodoroStart > settings.timeoutToContinuePomodoro
+            val timeSincePomodoroStart = Duration.between(state.lastUpdateTime, now)
+            val shouldNotContinuePomodoro = timeSincePomodoroStart.toMillis() > settings.timeoutToContinuePomodoro
             if (shouldNotContinuePomodoro) {
                 state.type = STOP
                 state.lastState = STOP
-                state.startTime = -1
-                state.progress = 0
+                state.startTime = Instant.EPOCH
+                state.progress = Duration.ZERO
             }
         }
     }
 
-    fun onUserSwitchToNextState(time: Long) = state.apply {
+    fun onUserSwitchToNextState(time: Instant) = state.apply {
         var wasManuallyStopped = false
         when (type) {
             STOP -> {
                 type = RUN
                 startTime = time
-                progressMax = updateProgressMax()
             }
             RUN -> {
                 type = STOP
@@ -64,20 +64,19 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         onTimer(time, wasManuallyStopped)
     }
 
-    fun onTimer(time: Long, wasManuallyStopped: Boolean = false) = state.apply {
+    fun onTimer(time: Instant, wasManuallyStopped: Boolean = false) = state.apply {
         when (type) {
             RUN -> {
-                progress = updateProgress(time)
+                progress = progressSince(time)
                 if (time >= startTime + progressMax) {
                     type = BREAK
                     startTime = time
-                    progress = updateProgress(time)
-                    progressMax = updateProgressMax()
+                    progress = progressSince(time)
                     pomodorosAmount++
                 }
             }
             BREAK -> {
-                updateProgress(time)
+                progress = progressSince(time)
                 if (time >= startTime + progressMax) {
                     type = STOP
                 }
@@ -97,9 +96,12 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         lastState = type
     }
 
-    fun getProgressMax(): Int {
-        return state.progressMax / progressIntervalMillis
-    }
+    val progressMax: Duration
+        get() = when (state.type) {
+            RUN -> Duration.ofMillis(settings.pomodoroLengthInMillis)
+            BREAK -> Duration.ofMillis(settings.breakLengthInMillis)
+            else -> Duration.ZERO
+        }
 
     fun resetPomodoros() {
         state.pomodorosAmount = 0
@@ -109,23 +111,11 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         listeners.put(key, listener)
     }
 
-    private fun updateProgress(time: Long): Int {
-        return ((time - state.startTime) / progressIntervalMillis).toInt().capAt(getProgressMax())
-    }
-
-    private fun updateProgressMax() = when (state.type) {
-        RUN -> settings.pomodoroLengthInMillis.toInt()
-        BREAK -> settings.breakLengthInMillis.toInt()
-        else -> 0
-    }
+    private fun progressSince(time: Instant) = Duration.between(state.startTime, time).capAt(progressMax)
 
     interface Listener {
         fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean)
     }
-
-    companion object {
-        private const val progressIntervalMillis = 1000
-    }
 }
 
-private fun Int.capAt(max: Int) = if (this > max) max else this
+private fun Duration.capAt(max: Duration) = if (this > max) max else this

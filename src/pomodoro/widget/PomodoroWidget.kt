@@ -25,11 +25,12 @@ import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
 import pomodoro.model.Settings
 import pomodoro.toolkitwindow.PomodoroPresenter
-
-import javax.swing.*
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import java.lang.System.currentTimeMillis
+import java.time.Instant
+import javax.swing.ImageIcon
+import javax.swing.JComponent
+import javax.swing.SwingUtilities
 
 
 class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, ChangeListener {
@@ -57,7 +58,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
         })
         panelWithIcon.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent?) {
-                model.onUserSwitchToNextState(currentTimeMillis())
+                model.onUserSwitchToNextState(Instant.now())
             }
 
             override fun mouseEntered(e: MouseEvent?) {
@@ -100,7 +101,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Change
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
         if (showTimeInToolbarWidget) {
-            val timeLeft = model.getProgressMax() - model.state.progress
+            val timeLeft = model.progressMax - model.state.progress
             panelWithIcon.text = PomodoroPresenter.formatTime(timeLeft)
         } else {
             panelWithIcon.text = ""
