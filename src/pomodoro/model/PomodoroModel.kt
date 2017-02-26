@@ -43,7 +43,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         }
     }
 
-    @Synchronized fun onUserSwitchToNextState(time: Long) = state.apply {
+    fun onUserSwitchToNextState(time: Long) = state.apply {
         var wasManuallyStopped = false
         when (type) {
             STOP -> {
@@ -64,7 +64,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         onTimer(time, wasManuallyStopped)
     }
 
-    @Synchronized fun onTimer(time: Long, wasManuallyStopped: Boolean = false) = state.apply {
+    fun onTimer(time: Long, wasManuallyStopped: Boolean = false) = state.apply {
         when (type) {
             RUN -> {
                 progress = updateProgress(time)
@@ -97,15 +97,15 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         lastState = type
     }
 
-    @Synchronized fun getProgressMax(): Int {
+    fun getProgressMax(): Int {
         return state.progressMax / progressIntervalMillis
     }
 
-    @Synchronized fun resetPomodoros() {
+    fun resetPomodoros() {
         state.pomodorosAmount = 0
     }
 
-    @Synchronized fun addUpdateListener(key: Any, listener: Listener) {
+    fun addUpdateListener(key: Any, listener: Listener) {
         listeners.put(key, listener)
     }
 

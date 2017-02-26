@@ -13,12 +13,14 @@
  */
 package pomodoro.model
 
+import com.intellij.openapi.application.ApplicationManager
+
 /**
  * (Note that [com.intellij.openapi.actionSystem.ActionManager.addTimerListener]
  * won't work as a timer callback)
  */
 class ControlThread(private val model: PomodoroModel) : Thread() {
-    @Volatile private var shouldStop: Boolean = false
+    @Volatile private var shouldStop = false
 
     init {
         isDaemon = true
@@ -26,18 +28,10 @@ class ControlThread(private val model: PomodoroModel) : Thread() {
 
     override fun run() {
         while (!shouldStop) {
-            try {
+            ApplicationManager.getApplication().invokeLater {
                 model.onTimer(System.currentTimeMillis())
-                try {
-                    Thread.sleep(500)
-                } catch (e: InterruptedException) {
-                    throw RuntimeException(e)
-                }
-
-            } catch (e: RuntimeException) {
-                // this thread shouldn't be destroyed in case there are coding errors
-                e.printStackTrace() // TODO report exception
             }
+            Thread.sleep(500)
         }
     }
 

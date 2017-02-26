@@ -40,7 +40,7 @@ data class PomodoroState(
 
     override fun getState() = this
 
-    @Synchronized override fun loadState(persistence: PomodoroState) = XmlSerializerUtil.copyBean(persistence, this)
+    override fun loadState(persistence: PomodoroState) = XmlSerializerUtil.copyBean(persistence, this)
 
     enum class Type {
         /** Pomodoro timer was not started or was stopped during pomodoro or break. */
