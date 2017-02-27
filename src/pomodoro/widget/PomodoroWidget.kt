@@ -98,8 +98,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
         if (showTimeInToolbarWidget) {
-            val timeLeft = model.progressMax - model.state.progress
-            panelWithIcon.text = PomodoroPresenter.formatDuration(timeLeft)
+            panelWithIcon.text = PomodoroPresenter.formatDuration(model.timeLeft)
         } else {
             panelWithIcon.text = ""
         }

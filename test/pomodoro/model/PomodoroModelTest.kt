@@ -70,7 +70,7 @@ class PomodoroModelTest {
             assertState(RUN, progress = 1.minutes, pomodoros = 0)
 
             onUserSwitchToNextState(atMinute(2))
-            assertState(STOP, progress = 2.minutes, pomodoros = 0)
+            assertState(STOP, progress = 0.minutes, pomodoros = 0)
         }
     }
 

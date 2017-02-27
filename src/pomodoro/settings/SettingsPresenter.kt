@@ -126,9 +126,9 @@ class SettingsPresenter constructor(private val settings: Settings = PomodoroCom
         updatingUI = true
 
         settingsForm!!.apply {
-            pomodoroLengthComboBox.model.selectedItem = uiModel.pomodoroDuration.toString()
-            breakLengthComboBox.model.selectedItem = uiModel.breakDuration.toString()
-            longBreakLengthComboBox.model.selectedItem = uiModel.longBreakDuration.toString()
+            pomodoroLengthComboBox.model.selectedItem = uiModel.pomodoroDuration.toMinutes().toString()
+            breakLengthComboBox.model.selectedItem = uiModel.breakDuration.toMinutes().toString()
+            longBreakLengthComboBox.model.selectedItem = uiModel.longBreakDuration.toMinutes().toString()
             longBreakFrequencyComboBox.model.selectedItem = uiModel.longBreakFrequency.toString()
 
             ringVolumeSlider.value = uiModel.ringVolume

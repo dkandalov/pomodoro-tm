@@ -37,7 +37,7 @@ data class PomodoroState(
         @OptionTag(nameAttribute = "startTime", converter = InstantConverter::class) var startTime: Instant = Instant.EPOCH,
         @OptionTag(nameAttribute = "lastUpdateTime", converter = InstantConverter::class) var lastUpdateTime: Instant = Instant.EPOCH,
         @OptionTag(nameAttribute = "pomodorosAmount") var pomodorosAmount: Int = 0,
-        @Transient var progress: Duration = Duration.ZERO
+        @Transient var progress: Duration = Duration.ZERO // TODO Cannot deserialize class pomodoro.model.PomodoroState
 ) : PersistentStateComponent<PomodoroState> {
 
     override fun getState() = this

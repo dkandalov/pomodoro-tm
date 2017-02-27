@@ -40,8 +40,8 @@ class PomodoroPresenter(private val model: PomodoroModel) {
             updateUI(model.state)
         }
         form.pomodorosLabel.addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(event: MouseEvent?) {
-                if (event!!.clickCount >= 2) {
+            override fun mouseClicked(event: MouseEvent) {
+                if (event.clickCount >= 2) {
                     model.resetPomodoros()
                     updateUI(model.state)
                 }
@@ -79,8 +79,7 @@ class PomodoroPresenter(private val model: PomodoroModel) {
             form.progressBar.maximum = model.progressMax.toProgress()
             form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(state.progress.toProgress().toLong()).toInt()
 
-            val timeLeft = model.progressMax - state.progress
-            form.progressBar.string = progressBarPrefix + " " + formatDuration(timeLeft)
+            form.progressBar.string = progressBarPrefix + " " + formatDuration(model.timeLeft)
         }
     }
 
@@ -91,14 +90,13 @@ class PomodoroPresenter(private val model: PomodoroModel) {
         }
 
         fun formatDuration(timeLeft: Duration): String {
-            val min = timeLeft.toMinutes() / 60
-            val sec = timeLeft.seconds
-            return String.format("%02d", min) + ":" + String.format("%02d", sec)
+            val minutes = timeLeft.toMinutes()
+            val seconds = timeLeft.minusMinutes(timeLeft.toMinutes()).seconds
+            return String.format("%02d", minutes) + ":" + String.format("%02d", seconds)
         }
 
         fun Duration.toProgress(): Int {
-            return (this.toMillis() / 1000).toInt()
+            return (toMillis() / 1000).toInt()
         }
     }
-
 }

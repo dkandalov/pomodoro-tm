@@ -56,10 +56,12 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
             }
             RUN -> {
                 type = STOP
+                progress = progressMax
                 wasManuallyStopped = true
             }
             BREAK -> {
                 type = STOP
+                progress = progressMax
                 wasManuallyStopped = true
             }
             else -> throw IllegalStateException()
@@ -105,6 +107,9 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
             BREAK -> settings.breakDuration
             else -> Duration.ZERO
         }
+
+    val timeLeft: Duration
+        get() = progressMax - state.progress
 
     fun resetPomodoros() {
         state.pomodorosAmount = 0
