@@ -31,20 +31,23 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         state.progress = progressMax
     }
 
-    fun onIdeStartup(now: Instant) {
-        if (state.type != STOP) {
-            val timeSincePomodoroStart = Duration.between(state.lastUpdateTime, now)
+    fun onIdeStartup(time: Instant) = state.apply {
+        if (type != STOP) {
+            val timeSincePomodoroStart = Duration.between(lastUpdateTime, time)
             val shouldNotContinuePomodoro = timeSincePomodoroStart > settings.timeoutToContinuePomodoro
             if (shouldNotContinuePomodoro) {
-                state.type = STOP
-                state.lastState = STOP
-                state.startTime = Instant.EPOCH
-                state.progress = Duration.ZERO
+                type = STOP
+                lastState = STOP
+                startTime = Instant.EPOCH
+                progress = Duration.ZERO
+            } else {
+                progress = progressSince(time)
             }
         }
     }
 
     fun onUserSwitchToNextState(time: Instant) = state.apply {
+        onTimer(time)
         var wasManuallyStopped = false
         when (type) {
             STOP -> {
