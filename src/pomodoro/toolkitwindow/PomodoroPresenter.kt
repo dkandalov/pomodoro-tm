@@ -77,25 +77,20 @@ class PomodoroPresenter(private val model: PomodoroModel) {
             form.pomodorosLabel.text = state.pomodorosAmount.toString()
 
             form.progressBar.maximum = model.progressMax.toProgress()
-            form.progressBar.value = hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(state.progress.toProgress().toLong()).toInt()
+            form.progressBar.value = state.progress.toProgress()
 
             form.progressBar.string = progressBarPrefix + " " + formatDuration(model.timeLeft)
         }
     }
 
     companion object {
-        private fun hack_for_jdk1_6_u06__IDEA_9_0_2__winXP(progress: Long): Long {
-            // for some reason JProgressBar doesn't display text when progress is too small to be displayed
-            return if (progress < 10) 10 else progress
-        }
-
         fun formatDuration(timeLeft: Duration): String {
             val minutes = timeLeft.toMinutes()
             val seconds = timeLeft.minusMinutes(timeLeft.toMinutes()).seconds
             return String.format("%02d", minutes) + ":" + String.format("%02d", seconds)
         }
 
-        fun Duration.toProgress(): Int {
+        private fun Duration.toProgress(): Int {
             return (toMillis() / 1000).toInt()
         }
     }
