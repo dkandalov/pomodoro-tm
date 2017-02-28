@@ -17,6 +17,7 @@ import com.intellij.openapi.application.ApplicationManager
 import pomodoro.UIBundle
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
+import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.time.Duration
 import pomodoro.model.time.Time
 import java.awt.event.MouseAdapter
@@ -58,17 +59,17 @@ class PomodoroPresenter(private val model: PomodoroModel) {
 
     private fun updateUI(state: PomodoroState) {
         ApplicationManager.getApplication().invokeLater {
-            when (state.type) {
-                PomodoroState.Type.RUN -> {
+            when (state.mode) {
+                RUN -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     form.controlButton.icon = stopIcon
                     progressBarPrefix = UIBundle.message("toolwindow.prefix_working")
                 }
-                PomodoroState.Type.STOP -> {
+                STOP -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_start")
                     form.controlButton.icon = playIcon
                 }
-                PomodoroState.Type.BREAK -> {
+                BREAK -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     progressBarPrefix = UIBundle.message("toolwindow.button_break")
                 }

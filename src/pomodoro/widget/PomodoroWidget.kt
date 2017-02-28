@@ -22,7 +22,7 @@ import pomodoro.PomodoroComponent
 import pomodoro.UIBundle
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
-import pomodoro.model.PomodoroState.Type.*
+import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.Settings
 import pomodoro.model.time.Time
 import pomodoro.toolkitwindow.PomodoroPresenter
@@ -89,7 +89,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
         return UIBundle.message("statuspanel.tooltip", nextAction, pomodorosAmount)
     }
 
-    private fun nextActionName(model: PomodoroModel) = when (model.state.type) {
+    private fun nextActionName(model: PomodoroModel) = when (model.state.mode) {
         STOP -> UIBundle.message("statuspanel.start")
         RUN -> UIBundle.message("statuspanel.stop")
         BREAK -> UIBundle.message("statuspanel.stop_break")
@@ -108,7 +108,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
 
     private fun getIcon(state: PomodoroState): ImageIcon {
         val underDarcula = UIUtil.isUnderDarcula()
-        return when (state.type) {
+        return when (state.mode) {
             STOP -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
             RUN -> if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
             BREAK -> if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon

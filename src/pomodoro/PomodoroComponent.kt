@@ -31,8 +31,8 @@ import com.intellij.openapi.wm.WindowManager
 import pomodoro.modalwindow.ModalDialog
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
-import pomodoro.model.PomodoroState.Type.BREAK
-import pomodoro.model.PomodoroState.Type.STOP
+import pomodoro.model.PomodoroState.Mode.BREAK
+import pomodoro.model.PomodoroState.Mode.STOP
 import pomodoro.model.Settings
 import pomodoro.model.TimeSource
 import pomodoro.model.time.Time
@@ -85,12 +85,12 @@ class PomodoroComponent : ApplicationComponent {
         init {
             model.addUpdateListener(this, object : PomodoroModel.Listener {
                 override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
-                    when (state.type) {
-                        STOP -> if (state.lastState == BREAK && !wasManuallyStopped) {
+                    when (state.mode) {
+                        STOP -> if (state.lastMode == BREAK && !wasManuallyStopped) {
                             ringSound.play(settings.ringVolume)
                             if (settings.isBlockDuringBreak) unblockIntelliJ()
                         }
-                        BREAK -> if (state.lastState != BREAK) {
+                        BREAK -> if (state.lastMode != BREAK) {
                             ringSound.play(settings.ringVolume)
                             if (settings.isPopupEnabled) showPopupNotification()
                             if (settings.isBlockDuringBreak) blockIntelliJ()

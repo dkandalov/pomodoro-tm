@@ -20,9 +20,7 @@ import com.intellij.util.xmlb.Converter
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.OptionTag
 import com.intellij.util.xmlb.annotations.Transient
-import pomodoro.model.PomodoroState.Type
-import pomodoro.model.PomodoroState.Type.BREAK
-import pomodoro.model.PomodoroState.Type.RUN
+import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.time.Duration
 import pomodoro.model.time.Time
 
@@ -32,8 +30,8 @@ import pomodoro.model.time.Time
  */
 @State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
 data class PomodoroState(
-        @Transient var type: Type = Type.STOP,
-        @OptionTag(nameAttribute = "lastState", converter = EnumConverter::class) var lastState: Type = Type.STOP,
+        @Transient var mode: Mode = STOP,
+        @OptionTag(nameAttribute = "lastState", converter = ModeConverter::class) var lastMode: Mode = STOP,
         @OptionTag(nameAttribute = "startTime", converter = TimeConverter::class) var startTime: Time = Time.ZERO,
         @OptionTag(nameAttribute = "lastUpdateTime", converter = TimeConverter::class) var lastUpdateTime: Time = Time.ZERO,
         @OptionTag(nameAttribute = "pomodorosAmount") var pomodorosAmount: Int = 0,
@@ -44,7 +42,7 @@ data class PomodoroState(
 
     override fun loadState(persistence: PomodoroState) = XmlSerializerUtil.copyBean(persistence, this)
 
-    enum class Type {
+    enum class Mode {
         /** Pomodoro timer was not started or was stopped during pomodoro or break. */
         STOP,
         /** Pomodoro in progress. */
@@ -58,13 +56,13 @@ data class PomodoroState(
         override fun fromString(value: String) = Time(epochMilli = value.toLong())
     }
 
-    private class EnumConverter : Converter<Type>() {
-        override fun toString(t: Type) = t.name
-        override fun fromString(value: String): Type? = when (value) {
-            "STOP" -> Type.STOP
+    private class ModeConverter : Converter<Mode>() {
+        override fun toString(t: Mode) = t.name
+        override fun fromString(value: String): Mode? = when (value) {
+            "STOP" -> STOP
             "RUN" -> RUN
             "BREAK" -> BREAK
-            else -> Type.valueOf(value)
+            else -> Mode.valueOf(value)
         }
     }
 }

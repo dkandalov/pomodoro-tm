@@ -16,7 +16,7 @@ package pomodoro.model
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
-import pomodoro.model.PomodoroState.Type.*
+import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.time.Duration
 import pomodoro.model.time.Time
 import pomodoro.model.time.minutes
@@ -120,8 +120,8 @@ class PomodoroModelTest {
     }
 
     companion object {
-        private fun PomodoroModel.assertState(stateType: PomodoroState.Type, progress: Duration, pomodoros: Int) {
-            assertThat(state.type, equalTo(stateType))
+        private fun PomodoroModel.assertState(stateMode: PomodoroState.Mode, progress: Duration, pomodoros: Int) {
+            assertThat(state.mode, equalTo(stateMode))
             assertThat(state.progress, equalTo(progress))
             assertThat(state.pomodorosAmount, equalTo(pomodoros))
         }
