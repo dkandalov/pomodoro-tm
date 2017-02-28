@@ -14,8 +14,8 @@
 package pomodoro.model
 
 import pomodoro.model.PomodoroState.Type.*
-import java.time.Duration
-import java.time.Instant
+import pomodoro.model.time.Duration
+import pomodoro.model.time.Time
 import java.util.*
 
 
@@ -31,14 +31,14 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         state.progress = progressMax
     }
 
-    fun onIdeStartup(time: Instant) = state.apply {
+    fun onIdeStartup(time: Time) = state.apply {
         if (type != STOP) {
             val timeSincePomodoroStart = Duration.between(lastUpdateTime, time)
             val shouldNotContinuePomodoro = timeSincePomodoroStart > settings.timeoutToContinuePomodoro
             if (shouldNotContinuePomodoro) {
                 type = STOP
                 lastState = STOP
-                startTime = Instant.EPOCH
+                startTime = Time.ZERO
                 progress = Duration.ZERO
             } else {
                 progress = progressSince(time)
@@ -46,7 +46,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         }
     }
 
-    fun onUserSwitchToNextState(time: Instant) = state.apply {
+    fun onUserSwitchToNextState(time: Time) = state.apply {
         onTimer(time)
         var wasManuallyStopped = false
         when (type) {
@@ -69,7 +69,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         onTimer(time, wasManuallyStopped)
     }
 
-    fun onTimer(time: Instant, wasManuallyStopped: Boolean = false) = state.apply {
+    fun onTimer(time: Time, wasManuallyStopped: Boolean = false) = state.apply {
         when (type) {
             RUN -> {
                 progress = progressSince(time)
@@ -120,7 +120,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         listeners.put(key, listener)
     }
 
-    private fun progressSince(time: Instant): Duration {
+    private fun progressSince(time: Time): Duration {
         fun Duration.capAt(max: Duration) = if (this > max) max else this
         return Duration.between(state.startTime, time).capAt(progressMax)
     }
@@ -131,4 +131,4 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
 }
 
 val Number.minutes: Duration
-    get() = Duration.ofMinutes(toLong())
+    get() = Duration(minutes = toInt())

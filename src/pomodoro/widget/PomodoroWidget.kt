@@ -24,10 +24,10 @@ import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
 import pomodoro.model.PomodoroState.Type.*
 import pomodoro.model.Settings
+import pomodoro.model.time.Time
 import pomodoro.toolkitwindow.PomodoroPresenter
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import java.time.Instant
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
@@ -57,7 +57,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
         })
         panelWithIcon.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(e: MouseEvent?) {
-                model.onUserSwitchToNextState(Instant.now())
+                model.onUserSwitchToNextState(Time.now())
             }
 
             override fun mouseEntered(e: MouseEvent?) {

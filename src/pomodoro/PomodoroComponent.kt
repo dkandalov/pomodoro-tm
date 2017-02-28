@@ -35,9 +35,9 @@ import pomodoro.model.PomodoroState
 import pomodoro.model.PomodoroState.Type.BREAK
 import pomodoro.model.PomodoroState.Type.STOP
 import pomodoro.model.Settings
+import pomodoro.model.time.Time
 import pomodoro.toolkitwindow.PomodoroToolWindows
 import pomodoro.widget.PomodoroWidget
-import java.time.Instant
 
 class PomodoroComponent : ApplicationComponent {
     private lateinit var controlThread: ControlThread
@@ -47,7 +47,7 @@ class PomodoroComponent : ApplicationComponent {
         val settings = settings
 
         model = PomodoroModel(settings, ServiceManager.getService(PomodoroState::class.java))
-        model.onIdeStartup(Instant.now())
+        model.onIdeStartup(Time.now())
 
         val toolWindows = PomodoroToolWindows()
         settings.addChangeListener(toolWindows)

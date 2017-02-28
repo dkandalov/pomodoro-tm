@@ -17,10 +17,10 @@ import com.intellij.openapi.application.ApplicationManager
 import pomodoro.UIBundle
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
+import pomodoro.model.time.Duration
+import pomodoro.model.time.Time
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import java.time.Duration
-import java.time.Instant
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
@@ -36,7 +36,7 @@ class PomodoroPresenter(private val model: PomodoroModel) {
 
     init {
         form.controlButton.addActionListener {
-            model.onUserSwitchToNextState(Instant.now())
+            model.onUserSwitchToNextState(Time.now())
             updateUI(model.state)
         }
         form.pomodorosLabel.addMouseListener(object : MouseAdapter() {
@@ -85,13 +85,13 @@ class PomodoroPresenter(private val model: PomodoroModel) {
 
     companion object {
         fun formatDuration(timeLeft: Duration): String {
-            val minutes = timeLeft.toMinutes()
-            val seconds = timeLeft.minusMinutes(timeLeft.toMinutes()).seconds
+            val minutes = timeLeft.minutes
+            val seconds = (timeLeft - Duration(timeLeft.minutes)).seconds
             return String.format("%02d", minutes) + ":" + String.format("%02d", seconds)
         }
 
         private fun Duration.toProgress(): Int {
-            return (toMillis() / 1000).toInt()
+            return (millis / 1000).toInt()
         }
     }
 }

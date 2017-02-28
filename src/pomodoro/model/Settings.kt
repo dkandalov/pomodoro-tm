@@ -20,7 +20,7 @@ import com.intellij.util.xmlb.Converter
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.OptionTag
 import pomodoro.model.Settings.Companion.defaultPomodoroDuration
-import java.time.Duration
+import pomodoro.model.time.Duration
 import java.util.*
 
 @State(name = "PomodoroSettings", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
@@ -66,8 +66,8 @@ data class Settings(
     }
 
     class MinutesConverter : Converter<Duration>() {
-        override fun toString(t: Duration) = t.toMinutes().toString()
-        override fun fromString(value: String) = Duration.ofMinutes(value.toLong())!!
+        override fun toString(t: Duration) = t.minutes.toString()
+        override fun fromString(value: String) = Duration(minutes = value.toInt())
     }
 
     interface ChangeListener {
@@ -75,9 +75,9 @@ data class Settings(
     }
 
     companion object {
-        val defaultPomodoroDuration = Duration.ofMinutes(25)!!
-        val defaultBreakDuration = Duration.ofMinutes(5)!!
-        val defaultLongBreakDuration = Duration.ofMinutes(20)!!
+        val defaultPomodoroDuration = Duration(minutes = 25)
+        val defaultBreakDuration = Duration(minutes = 5)
+        val defaultLongBreakDuration = Duration(minutes = 20)
         const val defaultLongBreakFrequency = 4
     }
 }

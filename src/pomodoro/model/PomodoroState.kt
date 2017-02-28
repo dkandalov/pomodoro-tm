@@ -23,8 +23,8 @@ import com.intellij.util.xmlb.annotations.Transient
 import pomodoro.model.PomodoroState.Type
 import pomodoro.model.PomodoroState.Type.BREAK
 import pomodoro.model.PomodoroState.Type.RUN
-import java.time.Duration
-import java.time.Instant
+import pomodoro.model.time.Duration
+import pomodoro.model.time.Time
 
 /**
  * Class for persisting pomodoro state.
@@ -34,10 +34,10 @@ import java.time.Instant
 data class PomodoroState(
         @Transient var type: Type = Type.STOP,
         @OptionTag(nameAttribute = "lastState", converter = EnumConverter::class) var lastState: Type = Type.STOP,
-        @OptionTag(nameAttribute = "startTime", converter = InstantConverter::class) var startTime: Instant = Instant.EPOCH,
-        @OptionTag(nameAttribute = "lastUpdateTime", converter = InstantConverter::class) var lastUpdateTime: Instant = Instant.EPOCH,
+        @OptionTag(nameAttribute = "startTime", converter = TimeConverter::class) var startTime: Time = Time.ZERO,
+        @OptionTag(nameAttribute = "lastUpdateTime", converter = TimeConverter::class) var lastUpdateTime: Time = Time.ZERO,
         @OptionTag(nameAttribute = "pomodorosAmount") var pomodorosAmount: Int = 0,
-        @Transient var progress: Duration = Duration.ZERO // TODO Cannot deserialize class pomodoro.model.PomodoroState
+        @Transient var progress: Duration = Duration.ZERO
 ) : PersistentStateComponent<PomodoroState> {
 
     override fun getState() = this
@@ -53,9 +53,9 @@ data class PomodoroState(
         BREAK
     }
 
-    private class InstantConverter : Converter<Instant>() {
-        override fun toString(t: Instant) = t.toEpochMilli().toString()
-        override fun fromString(value: String) = Instant.ofEpochMilli(value.toLong()) ?: Instant.EPOCH!!
+    private class TimeConverter : Converter<Time>() {
+        override fun toString(t: Time) = t.epochMilli.toString()
+        override fun fromString(value: String) = Time(epochMilli = value.toLong())
     }
 
     private class EnumConverter : Converter<Type>() {

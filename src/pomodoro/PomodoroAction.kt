@@ -16,12 +16,11 @@ package pomodoro
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
-import java.lang.System.currentTimeMillis
-import java.time.Instant
+import pomodoro.model.time.Time
 
 class PomodoroAction : AnAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java) ?: return
-        pomodoroComponent.model.onUserSwitchToNextState(Instant.now())
+        pomodoroComponent.model.onUserSwitchToNextState(Time.now())
     }
 }

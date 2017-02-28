@@ -17,9 +17,8 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
 import pomodoro.model.PomodoroState.Type.*
-import java.time.Duration
-import java.time.Instant
-import java.util.concurrent.TimeUnit.MINUTES
+import pomodoro.model.time.Duration
+import pomodoro.model.time.Time
 
 class PomodoroModelTest {
 
@@ -126,7 +125,7 @@ class PomodoroModelTest {
             assertThat(state.pomodorosAmount, equalTo(pomodoros))
         }
 
-        private fun atMinute(n: Long) = Instant.ofEpochMilli(MINUTES.toMillis(n))
+        private fun atMinute(n: Long) = Time.ZERO + Duration(minutes = n)
 
         private fun settings(pomodoroDuration: Long, breakDuration: Long) = Settings(
             pomodoroDuration = pomodoroDuration.minutes,
