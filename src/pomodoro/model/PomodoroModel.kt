@@ -84,6 +84,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
                 progress = progressSince(time)
                 if (time >= startTime + progressMax) {
                     type = STOP
+                    progress = progressMax
                 }
             }
             STOP -> if (lastState == STOP) {

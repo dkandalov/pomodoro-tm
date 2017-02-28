@@ -87,7 +87,7 @@ class PomodoroModelTest {
             assertState(BREAK, progress = 1.minutes, pomodoros = 1)
 
             onTimer(atMinute(3))
-            assertState(STOP, progress = 2.minutes, pomodoros = 1)
+            assertState(STOP, progress = 0.minutes, pomodoros = 1)
         }
     }
 
