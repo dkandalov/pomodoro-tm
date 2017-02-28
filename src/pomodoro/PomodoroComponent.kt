@@ -29,18 +29,18 @@ import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.openapi.wm.WindowManager
 import pomodoro.modalwindow.ModalDialog
-import pomodoro.model.ControlThread
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
 import pomodoro.model.PomodoroState.Type.BREAK
 import pomodoro.model.PomodoroState.Type.STOP
 import pomodoro.model.Settings
+import pomodoro.model.TimeSource
 import pomodoro.model.time.Time
 import pomodoro.toolkitwindow.PomodoroToolWindows
 import pomodoro.widget.PomodoroWidget
 
 class PomodoroComponent : ApplicationComponent {
-    private lateinit var controlThread: ControlThread
+    private lateinit var timeSource: TimeSource
     lateinit var model: PomodoroModel private set
 
     override fun initComponent() {
@@ -66,12 +66,11 @@ class PomodoroComponent : ApplicationComponent {
             }
         })
 
-        controlThread = ControlThread(model)
-        controlThread.start()
+        timeSource = TimeSource(listener = { time -> model.onTimer(time) }).start()
     }
 
     override fun disposeComponent() {
-        controlThread.shouldStop()
+        timeSource.stop()
     }
 
     override fun getComponentName(): String {
