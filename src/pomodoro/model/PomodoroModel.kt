@@ -129,6 +129,3 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean)
     }
 }
-
-val Number.minutes: Duration
-    get() = Duration(minutes = toInt())

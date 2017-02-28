@@ -20,7 +20,7 @@ import pomodoro.PomodoroComponent
 import pomodoro.RingSound
 import pomodoro.UIBundle
 import pomodoro.model.Settings
-import pomodoro.model.minutes
+import pomodoro.model.time.minutes
 import java.awt.event.ActionListener
 import javax.swing.JComboBox
 import javax.swing.JComponent

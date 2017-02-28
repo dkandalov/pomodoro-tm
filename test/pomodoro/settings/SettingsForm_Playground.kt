@@ -15,7 +15,7 @@ package pomodoro.settings
 
 import com.intellij.openapi.options.ConfigurationException
 import pomodoro.model.Settings
-import pomodoro.model.minutes
+import pomodoro.model.time.minutes
 import java.awt.Button
 import java.awt.FlowLayout
 import java.awt.event.ActionListener

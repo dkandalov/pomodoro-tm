@@ -19,6 +19,7 @@ import org.junit.Test
 import pomodoro.model.PomodoroState.Type.*
 import pomodoro.model.time.Duration
 import pomodoro.model.time.Time
+import pomodoro.model.time.minutes
 
 class PomodoroModelTest {
 

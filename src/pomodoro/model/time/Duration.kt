@@ -25,3 +25,6 @@ data class Duration(internal val delegate: JavaDuration = JavaDuration.ZERO) : C
         fun between(start: Time, end: Time) = Duration(JavaDuration.between(start.instant, end.instant))
     }
 }
+
+val Number.minutes: Duration
+    get() = Duration(minutes = toInt())
