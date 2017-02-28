@@ -30,10 +30,10 @@ class ControlThread(private val model: PomodoroModel) : Thread() {
 
     override fun run() {
         while (!shouldStop) {
-            val runnable = Runnable {
-                model.onTimer(Time.now())
-            }
-            ApplicationManager.getApplication().invokeLater(runnable, ModalityState.NON_MODAL)
+            ApplicationManager.getApplication().invokeLater(
+                    { model.onTimer(Time.now()) },
+                    ModalityState.any() // Use "any" so that timer is updated even while modal dialog like IDE Settings is open.
+            )
             Thread.sleep(500)
         }
     }
