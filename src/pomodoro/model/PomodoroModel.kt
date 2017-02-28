@@ -121,7 +121,6 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
     }
 
     private fun progressSince(time: Time): Duration {
-        fun Duration.capAt(max: Duration) = if (this > max) max else this
         return Duration.between(state.startTime, time).capAt(progressMax)
     }
 

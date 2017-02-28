@@ -19,6 +19,8 @@ data class Duration(internal val delegate: JavaDuration = JavaDuration.ZERO) : C
 
     operator fun minus(that: Duration): Duration = Duration(delegate - that.delegate)
 
+    fun capAt(max: Duration) = if (this > max) max else this
+
     companion object {
         val ZERO = Duration(0)
 
