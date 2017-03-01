@@ -88,19 +88,20 @@ class PomodoroComponent : ApplicationComponent {
                     when (state.mode) {
                         STOP -> if (state.lastMode == BREAK && !wasManuallyStopped) {
                             ringSound.play(settings.ringVolume)
-                            if (settings.isBlockDuringBreak) unblockIntelliJ()
+                            if (settings.isBlockDuringBreak) unblockIDE()
                         }
                         BREAK -> if (state.lastMode != BREAK) {
                             ringSound.play(settings.ringVolume)
                             if (settings.isPopupEnabled) showPopupNotification()
-                            if (settings.isBlockDuringBreak) blockIntelliJ()
+                            if (settings.isBlockDuringBreak) blockIDE()
                         }
+                        else -> {}
                     }
                 }
             })
         }
 
-        private fun blockIntelliJ() {
+        private fun blockIDE() {
             ApplicationManager.getApplication().invokeLater {
                 val dataContext = DataManager.getInstance().getDataContext(IdeFocusManager.getGlobalInstance().focusOwner)
                 val project = PlatformDataKeys.PROJECT.getData(dataContext)
@@ -111,7 +112,7 @@ class PomodoroComponent : ApplicationComponent {
             }
         }
 
-        private fun unblockIntelliJ() {
+        private fun unblockIDE() {
             if (modalDialog == null) return  // can happen if user turns on this option during break
             modalDialog!!.hide()
         }
