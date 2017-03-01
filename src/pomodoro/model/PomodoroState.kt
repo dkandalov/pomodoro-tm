@@ -35,7 +35,8 @@ data class PomodoroState(
         @OptionTag(nameAttribute = "startTime", converter = TimeConverter::class) var startTime: Time = Time.ZERO,
         @OptionTag(nameAttribute = "lastUpdateTime", converter = TimeConverter::class) var lastUpdateTime: Time = Time.ZERO,
         @OptionTag(nameAttribute = "pomodorosAmount") var pomodorosAmount: Int = 0,
-        @Transient var progress: Duration = Duration.ZERO
+        @Transient var progress: Duration = Duration.ZERO,
+        var pomodorosTillLongBreak: Int = Settings.defaultLongBreakFrequency
 ) : PersistentStateComponent<PomodoroState> {
 
     override fun getState() = this

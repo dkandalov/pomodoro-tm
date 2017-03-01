@@ -91,9 +91,36 @@ class PomodoroModelTest {
         }
     }
 
+    @Test fun `long break after four pomodoros`() {
+        PomodoroModel(settings(2, 1), PomodoroState()).apply {
+            assertState(STOP, progress = 0.minutes, pomodoros = 0)
+
+            onUserSwitchToNextState(atMinute(0))
+            onTimer(atMinute(2))
+            assertState(BREAK, progress = 0.minutes, pomodoros = 1)
+
+            onUserSwitchToNextState(atMinute(3))
+            onTimer(atMinute(5))
+            assertState(BREAK, progress = 0.minutes, pomodoros = 2)
+
+            onUserSwitchToNextState(atMinute(6))
+            onTimer(atMinute(8))
+            assertState(BREAK, progress = 0.minutes, pomodoros = 3)
+
+            onUserSwitchToNextState(atMinute(9))
+            onTimer(atMinute(11))
+            assertState(BREAK, progress = 0.minutes, pomodoros = 4)
+            onTimer(atMinute(12))
+            assertState(BREAK, progress = 1.minutes, pomodoros = 4)
+            onTimer(atMinute(13))
+            assertState(BREAK, progress = 2.minutes, pomodoros = 4)
+            onTimer(atMinute(14))
+            assertState(BREAK, progress = 3.minutes, pomodoros = 4)
+        }
+    }
+
     @Test fun `after idea restart continue from saved state and finish pomodoro`() {
-        val settings = Settings(25.minutes)
-        PomodoroModel(settings, PomodoroState(RUN, RUN, atMinute(-20), atMinute(-1))).apply {
+        PomodoroModel(settings(25, 2), PomodoroState(RUN, RUN, atMinute(-20), atMinute(-1))).apply {
             onIdeStartup(atMinute(0))
             assertState(RUN, progress = 20.minutes, pomodoros = 0)
 

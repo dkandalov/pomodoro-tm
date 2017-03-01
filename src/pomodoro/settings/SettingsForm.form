@@ -209,7 +209,7 @@
               <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text value="minute(s) every"/>
+              <text value="minute(s) after"/>
             </properties>
           </component>
           <component id="abac2" class="javax.swing.JComboBox" binding="longBreakFrequencyComboBox">
@@ -219,13 +219,14 @@
             <properties>
               <editable value="true"/>
               <model>
+                <item value="2"/>
                 <item value="3"/>
                 <item value="4"/>
                 <item value="5"/>
                 <item value="6"/>
               </model>
               <opaque value="false"/>
-              <selectedIndex value="1"/>
+              <selectedIndex value="2"/>
             </properties>
           </component>
           <component id="b00ad" class="javax.swing.JLabel">

@@ -18,7 +18,7 @@ import pomodoro.model.time.Duration
 import pomodoro.model.time.Time
 import java.util.*
 
-
+// TODO when settings changes think about how change is applied
 class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
     /**
      * Use WeakHashMap to make it simpler to automatically remove listeners.
@@ -29,6 +29,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
 
     init {
         state.progress = progressMax
+        state.pomodorosTillLongBreak = settings.longBreakFrequency
     }
 
     fun onIdeStartup(time: Time) = state.apply {
@@ -58,6 +59,9 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
                 mode = STOP
                 progress = progressMax
                 wasManuallyStopped = true
+                if (pomodorosTillLongBreak == 0) {
+                    pomodorosTillLongBreak = settings.longBreakFrequency
+                }
             }
             BREAK -> {
                 mode = STOP
@@ -78,6 +82,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
                     startTime = time
                     progress = progressSince(time)
                     pomodorosAmount++
+                    pomodorosTillLongBreak--
                 }
             }
             BREAK -> {
@@ -105,7 +110,11 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
     val progressMax: Duration
         get() = when (state.mode) {
             RUN -> settings.pomodoroDuration
-            BREAK -> settings.breakDuration
+            BREAK -> if (state.pomodorosTillLongBreak == 0) {
+                settings.longBreakDuration
+            } else {
+                settings.breakDuration
+            }
             else -> Duration.ZERO
         }
 
