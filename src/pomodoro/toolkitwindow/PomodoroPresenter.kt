@@ -65,15 +65,14 @@ class PomodoroPresenter(private val model: PomodoroModel) {
                     form.controlButton.icon = stopIcon
                     progressBarPrefix = UIBundle.message("toolwindow.prefix_working")
                 }
-                STOP -> {
-                    form.controlButton.text = UIBundle.message("toolwindow.button_start")
-                    form.controlButton.icon = playIcon
-                }
                 BREAK -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     progressBarPrefix = UIBundle.message("toolwindow.button_break")
                 }
-                else -> throw IllegalStateException()
+                STOP -> {
+                    form.controlButton.text = UIBundle.message("toolwindow.button_start")
+                    form.controlButton.icon = playIcon
+                }
             }
             form.pomodorosLabel.text = state.pomodorosAmount.toString()
 

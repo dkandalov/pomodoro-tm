@@ -51,10 +51,6 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         onTimer(time)
         var wasManuallyStopped = false
         when (mode) {
-            STOP -> {
-                mode = RUN
-                startTime = time
-            }
             RUN -> {
                 mode = STOP
                 progress = progressMax
@@ -68,7 +64,10 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
                 progress = progressMax
                 wasManuallyStopped = true
             }
-            else -> throw IllegalStateException()
+            STOP -> {
+                mode = RUN
+                startTime = time
+            }
         }
         onTimer(time, wasManuallyStopped)
     }
@@ -97,13 +96,8 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
             }
         }
 
-        for (listener in listeners.values) {
-            listener.onStateChange(state, wasManuallyStopped)
-        }
+        listeners.values.forEach { it.onStateChange(this, wasManuallyStopped) }
 
-        if (lastMode != mode) {
-            lastMode = mode
-        }
         lastMode = mode
     }
 

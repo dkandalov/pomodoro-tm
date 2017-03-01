@@ -61,8 +61,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
             }
 
             override fun mouseEntered(e: MouseEvent?) {
-                val tooltipText = tooltipText(model)
-                statusBar.info = tooltipText
+                statusBar.info = tooltipText(model)
             }
 
             override fun mouseExited(e: MouseEvent?) {
@@ -75,13 +74,9 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
         this.statusBar = statusBar
     }
 
-    override fun getComponent(): JComponent {
-        return panelWithIcon
-    }
+    override fun getComponent(): JComponent = panelWithIcon
 
-    override fun copy(): StatusBarWidget {
-        return PomodoroWidget()
-    }
+    override fun copy() = PomodoroWidget()
 
     private fun tooltipText(model: PomodoroModel): String {
         val nextAction = nextActionName(model)
@@ -90,10 +85,9 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
     }
 
     private fun nextActionName(model: PomodoroModel) = when (model.state.mode) {
-        STOP -> UIBundle.message("statuspanel.start")
         RUN -> UIBundle.message("statuspanel.stop")
         BREAK -> UIBundle.message("statuspanel.stop_break")
-        else -> ""
+        STOP -> UIBundle.message("statuspanel.start")
     }
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
@@ -109,16 +103,13 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
     private fun getIcon(state: PomodoroState): ImageIcon {
         val underDarcula = UIUtil.isUnderDarcula()
         return when (state.mode) {
-            STOP -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
             RUN -> if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
             BREAK -> if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon
-            else -> throw IllegalStateException()
+            STOP -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
         }
     }
 
-    override fun getPresentation(type: StatusBarWidget.PlatformType): StatusBarWidget.WidgetPresentation? {
-        return null
-    }
+    override fun getPresentation(type: StatusBarWidget.PlatformType) = null
 
     override fun dispose() {}
 

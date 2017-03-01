@@ -44,12 +44,12 @@ data class PomodoroState(
     override fun loadState(persistence: PomodoroState) = XmlSerializerUtil.copyBean(persistence, this)
 
     enum class Mode {
-        /** Pomodoro timer was not started or was stopped during pomodoro or break. */
-        STOP,
         /** Pomodoro in progress. */
         RUN,
         /** Pomodoro during break. Can only happen after completing a pomodoro. */
-        BREAK
+        BREAK,
+        /** Pomodoro timer was not started or was stopped during pomodoro or break. */
+        STOP
     }
 
     private class TimeConverter : Converter<Time>() {
@@ -60,9 +60,9 @@ data class PomodoroState(
     private class ModeConverter : Converter<Mode>() {
         override fun toString(t: Mode) = t.name
         override fun fromString(value: String): Mode? = when (value) {
-            "STOP" -> STOP
             "RUN" -> RUN
             "BREAK" -> BREAK
+            "STOP" -> STOP
             else -> Mode.valueOf(value)
         }
     }
