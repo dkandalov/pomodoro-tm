@@ -28,7 +28,7 @@ import pomodoro.model.time.Time
  * Class for persisting pomodoro state.
  * It was not implemented as part of [Settings] class because instances of this class cannot be directly changed by user.
  */
-@State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
+@State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.state.xml")))
 data class PomodoroState(
         @Transient var mode: Mode = STOP,
         @OptionTag(nameAttribute = "lastState", converter = ModeConverter::class) var lastMode: Mode = STOP,
