@@ -1,4 +1,4 @@
-### Pomodoro Timer IntelliJ plugin
+## Pomodoro Timer IntelliJ plugin
 
 This plugin is [pomodoro timer](http://www.pomodorotechnique.com) for IntelliJ IDEs. 
 How to use it:
@@ -10,7 +10,7 @@ There are two UI with timer: widget in the bottom right of IDE window and toolwi
 Which one is used can be configured in `IDE settings -> Other Settings -> Pomodoro`.
 
 
-### Why?
+## Why?
 Pomodoro timer is great for keeping yourself focused on particular task and avoiding distractions for a period of time.
 It's also useful to make sure that you do take breaks every now and then.
 And finally, it can be used for tracking how much time is spent on each task.
@@ -19,13 +19,13 @@ There doesn't seem to be many good apps simulating pomodoro timers (especially c
 So, this plugin was created.
 
 
-### Screenshots
+## Screenshots
 ![widget](https://raw.githubusercontent.com/dkandalov/pomodoro-tm/master/widget.png)
 
 ![settings](https://raw.githubusercontent.com/dkandalov/pomodoro-tm/master/settings.png)
 
 
-### Credits
+## Credits
 Original version of the plugin by [Alex Ivanov](https://twitter.com/alexMq0).
 
 Widget icons are reused from great pomodoro timer app for OSX by [Ugo Landini](http://www.ugolandini.com/).
