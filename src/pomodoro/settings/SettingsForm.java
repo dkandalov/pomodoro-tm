@@ -1,5 +1,6 @@
 package pomodoro.settings;
 
+import com.intellij.openapi.ui.ComboBox;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -9,16 +10,16 @@ import java.awt.*;
 import java.util.ResourceBundle;
 
 class SettingsForm {
-	public JComboBox pomodoroLengthComboBox;
-	public JComboBox breakLengthComboBox;
+	public ComboBox pomodoroLengthComboBox;
+	public ComboBox breakLengthComboBox;
 	public JSlider ringVolumeSlider;
 	public JCheckBox popupCheckBox;
 	public JCheckBox blockDuringBreak;
 	private JPanel rootPanel;
 	public JCheckBox showToolWindowCheckbox;
 	public JCheckBox showTimeInToolbarWidgetCheckbox;
-	public JComboBox longBreakLengthComboBox;
-	public JComboBox longBreakFrequencyComboBox;
+	public ComboBox longBreakLengthComboBox;
+	public ComboBox longBreakFrequencyComboBox;
 
 	public JPanel getRootPanel() {
 		return rootPanel;
@@ -55,7 +56,7 @@ class SettingsForm {
 		panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final Spacer spacer3 = new Spacer();
 		panel1.add(spacer3, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-		pomodoroLengthComboBox = new JComboBox();
+		pomodoroLengthComboBox = new ComboBox();
 		pomodoroLengthComboBox.setEditable(true);
 		final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
 		defaultComboBoxModel1.addElement("25");
@@ -73,7 +74,7 @@ class SettingsForm {
 		label3.setDisplayedMnemonic('B');
 		label3.setDisplayedMnemonicIndex(0);
 		panel1.add(label3, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		breakLengthComboBox = new JComboBox();
+		breakLengthComboBox = new ComboBox();
 		breakLengthComboBox.setEditable(true);
 		final DefaultComboBoxModel defaultComboBoxModel2 = new DefaultComboBoxModel();
 		defaultComboBoxModel2.addElement("5");
@@ -126,7 +127,7 @@ class SettingsForm {
 		label10.setDisplayedMnemonic('L');
 		label10.setDisplayedMnemonicIndex(0);
 		panel1.add(label10, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		longBreakLengthComboBox = new JComboBox();
+		longBreakLengthComboBox = new ComboBox();
 		longBreakLengthComboBox.setEditable(true);
 		final DefaultComboBoxModel defaultComboBoxModel3 = new DefaultComboBoxModel();
 		defaultComboBoxModel3.addElement("15");
@@ -139,7 +140,7 @@ class SettingsForm {
 		final JLabel label11 = new JLabel();
 		label11.setText("minute(s) after");
 		panel1.add(label11, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		longBreakFrequencyComboBox = new JComboBox();
+		longBreakFrequencyComboBox = new ComboBox();
 		longBreakFrequencyComboBox.setEditable(true);
 		final DefaultComboBoxModel defaultComboBoxModel4 = new DefaultComboBoxModel();
 		defaultComboBoxModel4.addElement("2");
