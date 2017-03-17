@@ -1,5 +1,6 @@
 package pomodoro.toolkitwindow
 
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import pomodoro.UIBundle
 import pomodoro.model.PomodoroModel
@@ -13,7 +14,7 @@ import java.awt.event.MouseEvent
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
-class PomodoroPresenter(private val model: PomodoroModel) {
+class ToolwindowPresenter(private val model: PomodoroModel) : Disposable {
     private val form = PomodoroForm()
     private var progressBarPrefix = ""
 
@@ -35,7 +36,7 @@ class PomodoroPresenter(private val model: PomodoroModel) {
         })
         updateUI(model.state)
 
-        model.addUpdateListener(this, object : PomodoroModel.Listener {
+        model.addListener(this, object : PomodoroModel.Listener {
             override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
                 updateUI(state)
             }
@@ -66,6 +67,10 @@ class PomodoroPresenter(private val model: PomodoroModel) {
 
             form.progressBar.string = progressBarPrefix + " " + formatDuration(model.timeLeft)
         }
+    }
+
+    override fun dispose() {
+        model.removeListener(this)
     }
 
     companion object {

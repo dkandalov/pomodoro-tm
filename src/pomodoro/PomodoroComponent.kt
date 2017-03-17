@@ -23,11 +23,12 @@ import pomodoro.model.PomodoroState.Mode.STOP
 import pomodoro.model.Settings
 import pomodoro.model.TimeSource
 import pomodoro.model.time.Time
-import pomodoro.toolkitwindow.PomodoroToolWindows
+import pomodoro.toolkitwindow.ToolWindows
 import pomodoro.widget.PomodoroWidget
 
 class PomodoroComponent : ApplicationComponent {
     private lateinit var timeSource: TimeSource
+    private lateinit var userNotifier: UserNotifier
     lateinit var model: PomodoroModel private set
 
     override fun initComponent() {
@@ -36,10 +37,10 @@ class PomodoroComponent : ApplicationComponent {
         model = PomodoroModel(settings, ServiceManager.getService(PomodoroState::class.java))
         model.onIdeStartup(Time.now())
 
-        val toolWindows = PomodoroToolWindows()
+        val toolWindows = ToolWindows()
         settings.addChangeListener(toolWindows)
 
-        UserNotifier(settings, model)
+        userNotifier = UserNotifier(settings, model)
 
         ProjectManager.getInstance().addProjectManagerListener(object : ProjectManagerAdapter() {
             override fun projectOpened(project: Project?) {
@@ -58,6 +59,7 @@ class PomodoroComponent : ApplicationComponent {
 
     override fun disposeComponent() {
         timeSource.stop()
+        userNotifier.dispose()
     }
 
     override fun getComponentName(): String {
@@ -65,12 +67,12 @@ class PomodoroComponent : ApplicationComponent {
     }
 
 
-    private class UserNotifier(settings: Settings, model: PomodoroModel) {
+    private class UserNotifier(settings: Settings, val model: PomodoroModel) {
         private val ringSound = RingSound()
         private var modalDialog: ModalDialog? = null
 
         init {
-            model.addUpdateListener(this, object : PomodoroModel.Listener {
+            model.addListener(this, object : PomodoroModel.Listener {
                 override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
                     when (state.mode) {
                         STOP -> if (state.lastMode == BREAK && !wasManuallyStopped) {
@@ -82,7 +84,8 @@ class PomodoroComponent : ApplicationComponent {
                             if (settings.isPopupEnabled) showPopupNotification()
                             if (settings.isBlockDuringBreak) blockIDE()
                         }
-                        else -> {}
+                        else -> {
+                        }
                     }
                 }
             })
@@ -107,7 +110,7 @@ class PomodoroComponent : ApplicationComponent {
         private fun showPopupNotification() {
             ApplicationManager.getApplication().invokeLater(Runnable {
                 fun hasPomodoroToolWindow(toolWindowManager: ToolWindowManager): Boolean {
-                    return toolWindowManager.toolWindowIds.contains(PomodoroToolWindows.TOOL_WINDOW_ID)
+                    return toolWindowManager.toolWindowIds.contains(ToolWindows.TOOL_WINDOW_ID)
                 }
 
                 val dataContext = DataManager.getInstance().dataContextFromFocus.result
@@ -117,11 +120,15 @@ class PomodoroComponent : ApplicationComponent {
 
                 val toolWindowManager = ToolWindowManager.getInstance(project)
                 if (hasPomodoroToolWindow(toolWindowManager)) {
-                    toolWindowManager.notifyByBalloon(PomodoroToolWindows.TOOL_WINDOW_ID, MessageType.INFO, statusMessage)
+                    toolWindowManager.notifyByBalloon(ToolWindows.TOOL_WINDOW_ID, MessageType.INFO, statusMessage)
                 } else {
                     toolWindowManager.notifyByBalloon("Project", MessageType.INFO, statusMessage)
                 }
             })
+        }
+
+        fun dispose() {
+            model.removeListener(this)
         }
     }
 

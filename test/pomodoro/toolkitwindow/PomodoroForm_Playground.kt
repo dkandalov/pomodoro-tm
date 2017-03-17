@@ -11,7 +11,7 @@ import javax.swing.WindowConstants
 fun main(args: Array<String>) {
     val config = Settings(pomodoroDuration = Duration(1), breakDuration = Duration(1))
     val model = PomodoroModel(config, PomodoroState())
-    val presenter = PomodoroPresenter(model)
+    val presenter = ToolwindowPresenter(model)
     TimeSource({ model.onTimer(it) }).start()
 
     JFrame().apply {

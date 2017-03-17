@@ -7,13 +7,7 @@ import java.util.*
 
 // TODO when settings changes think about how change is applied
 class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
-    /**
-     * Use WeakHashMap to make it simpler to automatically remove listeners.
-     * The most common usage is when there are several IntelliJ windows, UI components subscribe to model and
-     * then window is being closed.
-     */
-    // TODO get rid of WeakHashMap
-    private val listeners = WeakHashMap<Any, Listener>()
+    private val listeners = HashMap<Any, Listener>()
 
     init {
         state.progress = progressMax
@@ -107,15 +101,19 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
         state.pomodorosAmount = 0
     }
 
-    fun addUpdateListener(key: Any, listener: Listener) {
+    fun addListener(key: Any, listener: Listener) {
         listeners.put(key, listener)
+    }
+
+    fun removeListener(key: Any) {
+        listeners.remove(key)
     }
 
     private fun progressSince(time: Time): Duration {
         return Duration.between(state.startTime, time).capAt(progressMax)
     }
-
     interface Listener {
         fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean)
+
     }
 }

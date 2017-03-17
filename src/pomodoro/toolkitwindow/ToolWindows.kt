@@ -4,6 +4,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.project.ProjectManagerListener
+import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.content.ContentFactory
@@ -12,7 +13,7 @@ import pomodoro.UIBundle
 import pomodoro.model.Settings
 import javax.swing.ImageIcon
 
-class PomodoroToolWindows : Settings.ChangeListener {
+class ToolWindows : Settings.ChangeListener {
     init {
         ProjectManager.getInstance().addProjectManagerListener(object : ProjectManagerListener {
             override fun projectOpened(project: Project?) {
@@ -47,13 +48,14 @@ class PomodoroToolWindows : Settings.ChangeListener {
         }
 
         val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java)
-        val presenter = PomodoroPresenter(pomodoroComponent.model)
+        val presenter = ToolwindowPresenter(pomodoroComponent.model)
+        Disposer.register(project, presenter)
 
-        val myToolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM)
-        myToolWindow.icon = pomodoroIcon
+        val toolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM, project)
+        toolWindow.icon = pomodoroIcon
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val content = contentFactory.createContent(presenter.contentPane, UIBundle.message("toolwindow.title"), false)
-        myToolWindow.contentManager.addContent(content)
+        toolWindow.contentManager.addContent(content)
     }
 
     private fun unregisterWindowFrom(project: Project) {
@@ -66,6 +68,6 @@ class PomodoroToolWindows : Settings.ChangeListener {
     companion object {
         const val TOOL_WINDOW_ID = "Pomodoro"
 
-        private val pomodoroIcon = ImageIcon(PomodoroToolWindows::class.java.getResource("/resources/pomodoro-icon.png"))
+        private val pomodoroIcon = ImageIcon(ToolWindows::class.java.getResource("/resources/pomodoro-icon.png"))
     }
 }

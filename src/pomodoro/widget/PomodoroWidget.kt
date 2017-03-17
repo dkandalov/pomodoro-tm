@@ -13,7 +13,7 @@ import pomodoro.model.PomodoroState
 import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.Settings
 import pomodoro.model.time.Time
-import pomodoro.toolkitwindow.PomodoroPresenter
+import pomodoro.toolkitwindow.ToolwindowPresenter
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.ImageIcon
@@ -32,7 +32,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
         val settings = PomodoroComponent.settings
         updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget)
 
-        model.addUpdateListener(panelWithIcon, object : PomodoroModel.Listener {
+        model.addListener(this, object : PomodoroModel.Listener {
             override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
                 ApplicationManager.getApplication().invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) }
             }
@@ -74,7 +74,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
         if (showTimeInToolbarWidget) {
-            panelWithIcon.text = PomodoroPresenter.formatDuration(model.timeLeft)
+            panelWithIcon.text = ToolwindowPresenter.formatDuration(model.timeLeft)
         } else {
             panelWithIcon.text = ""
         }
@@ -93,7 +93,9 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
 
     override fun getPresentation(type: StatusBarWidget.PlatformType) = null
 
-    override fun dispose() {}
+    override fun dispose() {
+        model.removeListener(this)
+    }
 
     override fun ID() = "Pomodoro"
 
