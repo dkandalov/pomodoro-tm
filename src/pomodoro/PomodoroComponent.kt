@@ -1,6 +1,9 @@
 package pomodoro
 
 import com.intellij.ide.DataManager
+import com.intellij.notification.Notification
+import com.intellij.notification.NotificationType
+import com.intellij.notification.Notifications
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.application.ApplicationManager
@@ -9,11 +12,9 @@ import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.project.ProjectManagerAdapter
-import com.intellij.openapi.ui.MessageType
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.wm.IdeFocusManager
 import com.intellij.openapi.wm.StatusBar
-import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.openapi.wm.WindowManager
 import pomodoro.modalwindow.ModalDialog
 import pomodoro.model.PomodoroModel
@@ -67,7 +68,7 @@ class PomodoroComponent : ApplicationComponent {
     }
 
 
-    private class UserNotifier(settings: Settings, val model: PomodoroModel) {
+    private class UserNotifier(settings: Settings, private val model: PomodoroModel) {
         private val ringSound = RingSound()
         private var modalDialog: ModalDialog? = null
 
@@ -84,8 +85,7 @@ class PomodoroComponent : ApplicationComponent {
                             if (settings.isPopupEnabled) showPopupNotification()
                             if (settings.isBlockDuringBreak) blockIDE()
                         }
-                        else -> {
-                        }
+                        else -> {}
                     }
                 }
             })
@@ -108,23 +108,13 @@ class PomodoroComponent : ApplicationComponent {
         }
 
         private fun showPopupNotification() {
-            ApplicationManager.getApplication().invokeLater(Runnable {
-                fun hasPomodoroToolWindow(toolWindowManager: ToolWindowManager): Boolean {
-                    return toolWindowManager.toolWindowIds.contains(ToolWindows.TOOL_WINDOW_ID)
-                }
-
-                val dataContext = DataManager.getInstance().dataContextFromFocus.result
-                val project = PlatformDataKeys.PROJECT.getData(dataContext) ?: return@Runnable
-
-                val statusMessage = UIBundle.message("notification.text")
-
-                val toolWindowManager = ToolWindowManager.getInstance(project)
-                if (hasPomodoroToolWindow(toolWindowManager)) {
-                    toolWindowManager.notifyByBalloon(ToolWindows.TOOL_WINDOW_ID, MessageType.INFO, statusMessage)
-                } else {
-                    toolWindowManager.notifyByBalloon("Project", MessageType.INFO, statusMessage)
-                }
-            })
+            ApplicationManager.getApplication().invokeLater {
+                val groupDisplayId = "Pomodoro Notifications"
+                val title = ""
+                val message = UIBundle.message("notification.text")
+                val notification = Notification(groupDisplayId, title, message, NotificationType.INFORMATION)
+                ApplicationManager.getApplication().messageBus.syncPublisher(Notifications.TOPIC).notify(notification)
+            }
         }
 
         fun dispose() {
