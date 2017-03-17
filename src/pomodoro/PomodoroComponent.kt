@@ -13,6 +13,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.project.ProjectManagerAdapter
 import com.intellij.openapi.util.Disposer
+import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.wm.IdeFocusManager
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.WindowManager
@@ -73,6 +74,14 @@ class PomodoroComponent : ApplicationComponent {
         private var modalDialog: ModalDialog? = null
 
         init {
+            // See https://github.com/dkandalov/friday-mario/issues/3#issuecomment-160421286 and http://keithp.com/blogs/Java-Sound-on-Linux/
+            val clipProperty = System.getProperty("javax.sound.sampled.Clip")
+            if (SystemInfo.isLinux && clipProperty != null && clipProperty == "org.classpath.icedtea.pulseaudio.PulseAudioMixerProvider") {
+                showPopupNotification(
+                        "JDK used by your IDE can lock up or fail to play sounds.<br/>" +
+                        "Please see <a href=\"http://keithp.com/blogs/Java-Sound-on-Linux/\">http://keithp.com/blogs/Java-Sound-on-Linux</a> to fix it.")
+            }
+
             model.addListener(this, object : PomodoroModel.Listener {
                 override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
                     when (state.mode) {
@@ -82,7 +91,7 @@ class PomodoroComponent : ApplicationComponent {
                         }
                         BREAK -> if (state.lastMode != BREAK) {
                             ringSound.play(settings.ringVolume)
-                            if (settings.isPopupEnabled) showPopupNotification()
+                            if (settings.isPopupEnabled) showPopupNotification(UIBundle.message("notification.text"))
                             if (settings.isBlockDuringBreak) blockIDE()
                         }
                         else -> {}
@@ -107,11 +116,10 @@ class PomodoroComponent : ApplicationComponent {
             modalDialog!!.hide()
         }
 
-        private fun showPopupNotification() {
+        private fun showPopupNotification(message: String) {
             ApplicationManager.getApplication().invokeLater {
                 val groupDisplayId = "Pomodoro Notifications"
                 val title = ""
-                val message = UIBundle.message("notification.text")
                 val notification = Notification(groupDisplayId, title, message, NotificationType.INFORMATION)
                 ApplicationManager.getApplication().messageBus.syncPublisher(Notifications.TOPIC).notify(notification)
             }
