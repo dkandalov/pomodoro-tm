@@ -22,8 +22,7 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
 
     fun onIdeStartup(time: Time) = state.apply {
         if (mode != STOP) {
-            val timeSincePomodoroStart = Duration.between(lastUpdateTime, time)
-            val shouldNotContinuePomodoro = timeSincePomodoroStart > settings.timeoutToContinuePomodoro
+            val shouldNotContinuePomodoro = Duration.between(lastUpdateTime, time) > settings.timeoutToContinuePomodoro
             if (shouldNotContinuePomodoro) {
                 mode = STOP
                 lastMode = STOP
@@ -90,6 +89,7 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
         listeners.values.forEach { it.onStateChange(this, wasManuallyStopped) }
 
         lastMode = mode
+        lastUpdateTime = time
     }
 
     val progressMax: Duration
