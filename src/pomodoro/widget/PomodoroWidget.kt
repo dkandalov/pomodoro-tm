@@ -1,5 +1,6 @@
 package pomodoro.widget
 
+import com.intellij.ide.ui.laf.darcula.DarculaLaf.loadIcon
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBar
@@ -20,21 +21,15 @@ import javax.swing.JComponent
 
 
 class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settings.ChangeListener {
-    private val pomodoroIcon = ImageIcon(javaClass.getResource("/resources/pomodoro.png"))
-    private val pomodoroStoppedIcon = ImageIcon(javaClass.getResource("/resources/pomodoroStopped.png"))
-    private val pomodoroBreakIcon = ImageIcon(javaClass.getResource("/resources/pomodoroBreak.png"))
-    private val pomodoroDarculaIcon = ImageIcon(javaClass.getResource("/resources/pomodoro-inverted.png"))
-    private val pomodoroStoppedDarculaIcon = ImageIcon(javaClass.getResource("/resources/pomodoroStopped-inverted.png"))
-    private val pomodoroBreakDarculaIcon = ImageIcon(javaClass.getResource("/resources/pomodoroBreak-inverted.png"))
     private val panelWithIcon = TextPanelWithIcon()
     private lateinit var statusBar: StatusBar
     private val model: PomodoroModel
 
     init {
-        val settings = PomodoroComponent.settings
-
         val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java)!!
         model = pomodoroComponent.model
+
+        val settings = PomodoroComponent.settings
         updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget)
 
         model.addUpdateListener(panelWithIcon, object : PomodoroModel.Listener {
@@ -104,5 +99,16 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
 
     override fun onChange(settings: Settings) {
         updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget)
+    }
+
+    companion object {
+        private val pomodoroIcon = loadIcon("/resources/pomodoro.png")
+        private val pomodoroStoppedIcon = loadIcon("/resources/pomodoroStopped.png")
+        private val pomodoroBreakIcon = loadIcon("/resources/pomodoroBreak.png")
+        private val pomodoroDarculaIcon = loadIcon("/resources/pomodoro-inverted.png")
+        private val pomodoroStoppedDarculaIcon = loadIcon("/resources/pomodoroStopped-inverted.png")
+        private val pomodoroBreakDarculaIcon = loadIcon("/resources/pomodoroBreak-inverted.png")
+
+        private fun loadIcon(filePath: String) = ImageIcon(PomodoroWidget::class.java.getResource(filePath))
     }
 }

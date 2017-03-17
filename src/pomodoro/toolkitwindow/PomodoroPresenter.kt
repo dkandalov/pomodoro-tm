@@ -7,15 +7,13 @@ import pomodoro.model.PomodoroState
 import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.time.Duration
 import pomodoro.model.time.Time
+import pomodoro.widget.PomodoroWidget
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
 class PomodoroPresenter(private val model: PomodoroModel) {
-    private val playIcon = ImageIcon(javaClass.getResource("/resources/play-icon.png"))
-    private val stopIcon = ImageIcon(javaClass.getResource("/resources/stop-icon.png"))
-
     private val form = PomodoroForm()
     private var progressBarPrefix = ""
 
@@ -71,6 +69,9 @@ class PomodoroPresenter(private val model: PomodoroModel) {
     }
 
     companion object {
+        private val playIcon = loadIcon("/resources/play-icon.png")
+        private val stopIcon = loadIcon("/resources/stop-icon.png")
+
         fun formatDuration(timeLeft: Duration): String {
             val minutes = timeLeft.minutes
             val seconds = (timeLeft - Duration(timeLeft.minutes)).seconds
@@ -80,5 +81,7 @@ class PomodoroPresenter(private val model: PomodoroModel) {
         private fun Duration.toProgress(): Int {
             return (millis / 1000).toInt()
         }
+
+        private fun loadIcon(filePath: String) = ImageIcon(PomodoroWidget::class.java.getResource(filePath))
     }
 }

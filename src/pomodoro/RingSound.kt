@@ -3,10 +3,6 @@ package pomodoro
 import java.applet.Applet
 
 class RingSound {
-    private val ringSound1 = Applet.newAudioClip(javaClass.getResource("/resources/ring.wav"))
-    private val ringSound2 = Applet.newAudioClip(javaClass.getResource("/resources/ring2.wav"))
-    private val ringSound3 = Applet.newAudioClip(javaClass.getResource("/resources/ring3.wav"))
-
     fun play(ringVolume: Int) {
         if (ringVolume == 0) return
 
@@ -16,5 +12,13 @@ class RingSound {
             else throw IllegalStateException()
 
         audioClip.play()
+    }
+
+    companion object {
+        private val ringSound1 = loadSound("/resources/ring.wav")
+        private val ringSound2 = loadSound("/resources/ring2.wav")
+        private val ringSound3 = loadSound("/resources/ring3.wav")
+
+        private fun loadSound(filePath: String) = Applet.newAudioClip(RingSound::class.java.getResource(filePath))
     }
 }

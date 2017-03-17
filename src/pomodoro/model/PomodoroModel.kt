@@ -12,6 +12,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
      * The most common usage is when there are several IntelliJ windows, UI components subscribe to model and
      * then window is being closed.
      */
+    // TODO get rid of WeakHashMap
     private val listeners = WeakHashMap<Any, Listener>()
 
     init {
