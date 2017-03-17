@@ -11,20 +11,19 @@
         </br>
         How to use it:
         <ol>
-            <li>Choose a task to be accomplished and start pomodoro timer.</li>
+            <li>Choose a task to be accomplished and start pomodoro timer (Ctrl+Shift+P or Cmd+Shift+P).</li>
             <li>Work on the task until the timer rings. If distracted during pomodoro, restart timer.</li>
-            <li>Take a short break.</li>
-            <li>Every 4 Pomodoros take a longer break.</li>
+            <li>Take a break until the timer rings again.</li>
         </ol>
-        See also <a href="https://github.com/dkandalov/pomodoro-tm">GitHub page</a>.
+        For more details see <a href="https://github.com/dkandalov/pomodoro-tm">plugin page on GitHub</a>.
         </body>
         </html>
         ]]>
     </description>
 
     <!-- http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
-    <!-- since IJ 15 -->
-    <idea-version since-build="143"/>
+    <!-- Since IJ 2016.1 it has Kotlin support. -->
+    <idea-version since-build="145"/>
 
     <!-- Make plugin available to all IntelliJ IDEs
          http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
