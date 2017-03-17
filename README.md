@@ -1,9 +1,34 @@
-### This is pomodoro timer plugin for IntelliJ IDEs
+### Pomodoro Timer IntelliJ plugin
 
-See http://www.pomodorotechnique.com for description of pomodoro technique.
+This plugin is [pomodoro timer](http://www.pomodorotechnique.com) for IntelliJ IDEs.
 
-Please create/up-vote github issue if you need proper readme here :)
+How to use it:
+ - Choose a task to be accomplished and start pomodoro timer (`Ctrl+Shift+P` or `Cmd+Shift+P`).
+ - Work on the task until the timer rings. If distracted during pomodoro, restart timer.
+ - Take a break until the timer rings again.
+
+There are two UI with timer: widget in the bottom right of IDE window and toolwindow.
+Which one is used can be configured in `IDE settings -> Other Settings -> Pomodoro`.
+
+
+### Why?
+Pomodoro timer is great for keeping yourself focused on particular task and avoiding distractions for a period of time.
+It's also useful to make sure that you do take breaks every now and then.
+And finally, it can be used for tracking how much time is spent on each task.
+
+There doesn't seem to be many good apps simulating pomodoro timers (especially cross-platform).
+So, this plugin was created.
+
+
+### Screenshots
+![widget](https://raw.githubusercontent.com/dkandalov/pomodoro-tm/master/widget.png)
+
+![toolwindow](https://raw.githubusercontent.com/dkandalov/pomodoro-tm/master/toolwindow.png)
+
+![settings](https://raw.githubusercontent.com/dkandalov/pomodoro-tm/master/settings.png)
 
 
 ### Credits
-Originally written by https://twitter.com/alexMq0
+Original version of the plugin by [Alex Ivanov](https://twitter.com/alexMq0).
+
+Widget icons are reused from great pomodoro timer app for OSX by [Ugo Landini](http://www.ugolandini.com/).
