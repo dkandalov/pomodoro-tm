@@ -1,7 +1,6 @@
 ### Pomodoro Timer IntelliJ plugin
 
-This plugin is [pomodoro timer](http://www.pomodorotechnique.com) for IntelliJ IDEs.
-
+This plugin is [pomodoro timer](http://www.pomodorotechnique.com) for IntelliJ IDEs. 
 How to use it:
  - Choose a task to be accomplished and start pomodoro timer (`Ctrl+Shift+P` or `Cmd+Shift+P`).
  - Work on the task until the timer rings. If distracted during pomodoro, restart timer.
@@ -22,8 +21,6 @@ So, this plugin was created.
 
 ### Screenshots
 ![widget](https://raw.githubusercontent.com/dkandalov/pomodoro-tm/master/widget.png)
-
-![toolwindow](https://raw.githubusercontent.com/dkandalov/pomodoro-tm/master/toolwindow.png)
 
 ![settings](https://raw.githubusercontent.com/dkandalov/pomodoro-tm/master/settings.png)
 
