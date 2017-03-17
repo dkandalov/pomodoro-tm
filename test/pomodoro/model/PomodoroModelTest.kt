@@ -27,7 +27,6 @@ class PomodoroModelTest {
         }
     }
 
-
     @Test fun `do two pomodoros`() {
         PomodoroModel(settings(2, 1), PomodoroState()).apply {
             assertState(STOP, progress = 0.minutes, pomodoros = 0)
@@ -133,6 +132,37 @@ class PomodoroModelTest {
         }
     }
 
+    @Test fun `when settings change, apply them only after the end of pomodoro`() {
+        val settings = settings(2, 1)
+        val newSettings = settings(3, 1)
+
+        PomodoroModel(settings, PomodoroState()).apply {
+            assertState(STOP, progress = 0.minutes, pomodoros = 0)
+
+            onUserSwitchToNextState(atMinute(0))
+            assertState(RUN, progress = 0.minutes, pomodoros = 0)
+            settings.loadState(newSettings) // <-- update settings during first pomodoro
+            onTimer(atMinute(1))
+            assertState(RUN, progress = 1.minutes, pomodoros = 0)
+
+            onTimer(atMinute(2))
+            assertState(BREAK, progress = 0.minutes, pomodoros = 1)
+            onTimer(atMinute(3))
+            assertState(STOP, progress = 0.minutes, pomodoros = 1)
+
+            onUserSwitchToNextState(atMinute(4))
+            assertState(RUN, progress = 0.minutes, pomodoros = 1)
+            onTimer(atMinute(5))
+            assertState(RUN, progress = 1.minutes, pomodoros = 1)
+            onTimer(atMinute(6))
+            assertState(RUN, progress = 2.minutes, pomodoros = 1)
+
+            onTimer(atMinute(7))
+            assertState(BREAK, progress = 0.minutes, pomodoros = 2)
+        }
+
+    }
+
     companion object {
         private fun PomodoroModel.assertState(stateMode: PomodoroState.Mode, progress: Duration, pomodoros: Int) {
             assertThat(state.mode, equalTo(stateMode))
@@ -148,4 +178,3 @@ class PomodoroModelTest {
         )
     }
 }
-

@@ -34,9 +34,9 @@ class ToolWindows : Settings.ChangeListener {
         })
     }
 
-    override fun onChange(settings: Settings) {
+    override fun onChange(newSettings: Settings) {
         for (project in ProjectManager.getInstance().openProjects) {
-            if (settings.isShowToolWindow) registerWindowFor(project)
+            if (newSettings.isShowToolWindow) registerWindowFor(project)
             else unregisterWindowFrom(project)
         }
     }

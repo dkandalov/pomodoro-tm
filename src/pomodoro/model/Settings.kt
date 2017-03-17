@@ -41,14 +41,14 @@ data class Settings(
         changeListeners.remove(changeListener)
     }
 
-    override fun getState(): Settings? {
+    override fun getState(): Settings {
         return this
     }
 
     override fun loadState(settings: Settings) {
         XmlSerializerUtil.copyBean(settings, this)
         for (changeListener in changeListeners) {
-            changeListener.onChange(this)
+            changeListener.onChange(this.copy())
         }
     }
 
@@ -58,7 +58,7 @@ data class Settings(
     }
 
     interface ChangeListener {
-        fun onChange(settings: Settings)
+        fun onChange(newSettings: Settings)
     }
 
     companion object {

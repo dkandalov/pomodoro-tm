@@ -5,11 +5,17 @@ import pomodoro.model.time.Duration
 import pomodoro.model.time.Time
 import java.util.*
 
-// TODO when settings changes think about how change is applied
-class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
+class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
     private val listeners = HashMap<Any, Listener>()
+    private var settings = originalSettings.copy()
+    private var updatedSettings = settings
 
     init {
+        originalSettings.addChangeListener(object : Settings.ChangeListener {
+            override fun onChange(newSettings: Settings) {
+                updatedSettings = newSettings
+            }
+        })
         state.progress = progressMax
         state.pomodorosTillLongBreak = settings.longBreakFrequency
     }
@@ -31,6 +37,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
 
     fun onUserSwitchToNextState(time: Time) = state.apply {
         onTimer(time)
+        settings = updatedSettings
         var wasManuallyStopped = false
         when (mode) {
             RUN -> {
@@ -60,6 +67,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
                 progress = progressSince(time)
                 if (time >= startTime + progressMax) {
                     mode = BREAK
+                    settings = updatedSettings
                     startTime = time
                     progress = progressSince(time)
                     pomodorosAmount++
@@ -70,6 +78,7 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
                 progress = progressSince(time)
                 if (time >= startTime + progressMax) {
                     mode = STOP
+                    settings = updatedSettings
                     progress = progressMax
                 }
             }
@@ -112,8 +121,8 @@ class PomodoroModel(private val settings: Settings, var state: PomodoroState) {
     private fun progressSince(time: Time): Duration {
         return Duration.between(state.startTime, time).capAt(progressMax)
     }
+
     interface Listener {
         fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean)
-
     }
 }

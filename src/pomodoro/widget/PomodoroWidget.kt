@@ -99,8 +99,8 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
 
     override fun ID() = "Pomodoro"
 
-    override fun onChange(settings: Settings) {
-        updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget)
+    override fun onChange(newSettings: Settings) {
+        updateWidgetPanel(model, panelWithIcon, newSettings.isShowTimeInToolbarWidget)
     }
 
     companion object {
