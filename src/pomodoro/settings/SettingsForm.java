@@ -116,7 +116,7 @@ class SettingsForm {
 		showToolWindowCheckbox.setText("");
 		panel1.add(showToolWindowCheckbox, new GridConstraints(6, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label9 = new JLabel();
-		label9.setText("Show time in toolbar:");
+		label9.setText("Show timer in toolbar:");
 		panel1.add(label9, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		showTimeInToolbarWidgetCheckbox = new JCheckBox();
 		showTimeInToolbarWidgetCheckbox.setText("");
