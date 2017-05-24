@@ -104,7 +104,7 @@ class PomodoroComponent : ApplicationComponent {
             ApplicationManager.getApplication().invokeLater {
                 val dataContext = DataManager.getInstance().getDataContext(IdeFocusManager.getGlobalInstance().focusOwner)
                 val project = PlatformDataKeys.PROJECT.getData(dataContext)
-                val window = WindowManager.getInstance().getFrame(project)
+                val window = WindowManager.getInstance().getFrame(project)!!
 
                 modalDialog = ModalDialog(window)
                 modalDialog!!.show()
