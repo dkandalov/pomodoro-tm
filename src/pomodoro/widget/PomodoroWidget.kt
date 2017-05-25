@@ -37,17 +37,9 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
             }
         })
         panelWithIcon.addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent?) {
-                model.onUserSwitchToNextState(Time.now())
-            }
-
-            override fun mouseEntered(e: MouseEvent?) {
-                statusBar.info = tooltipText(model)
-            }
-
-            override fun mouseExited(e: MouseEvent?) {
-                statusBar.info = ""
-            }
+            override fun mouseClicked(e: MouseEvent?) { model.onUserSwitchToNextState(Time.now()) }
+            override fun mouseEntered(e: MouseEvent?) { statusBar.info = tooltipText(model) }
+            override fun mouseExited(e: MouseEvent?) { statusBar.info = "" }
         })
     }
 
@@ -72,18 +64,14 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
     }
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
-        if (showTimeInToolbarWidget) {
-            panelWithIcon.text = ToolwindowPresenter.formatDuration(model.timeLeft)
-        } else {
-            panelWithIcon.text = ""
-        }
-        panelWithIcon.setIcon(getIcon(model.state))
+        panelWithIcon.text = if (showTimeInToolbarWidget) ToolwindowPresenter.formatDuration(model.timeLeft) else ""
+        panelWithIcon.icon = model.state.icon()
         panelWithIcon.repaint()
     }
 
-    private fun getIcon(state: PomodoroState): ImageIcon {
+    private fun PomodoroState.icon(): ImageIcon {
         val underDarcula = UIUtil.isUnderDarcula()
-        return when (state.mode) {
+        return when (mode) {
             RUN -> if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
             BREAK -> if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon
             STOP -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon

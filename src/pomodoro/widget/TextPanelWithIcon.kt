@@ -9,21 +9,25 @@ import java.awt.*
  * Based on [com.intellij.openapi.wm.impl.status.TextPanel.WithIconAndArrows]
  */
 internal class TextPanelWithIcon : TextPanel() {
-    private var myIcon: Icon? = null
+    private val gap = 2
+
+    var icon: Icon? = null
+        set(value) { field = value }
 
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
         if (text == null) return
 
-        myIcon?.paintIcon(this, g,
-                insets.left - GAP - iconWidth(),
-                bounds.height / 2 - iconWidth() / 2
+        icon?.paintIcon(
+            this, g,
+            insets.left - gap - iconWidth(),
+            bounds.height / 2 - iconWidth() / 2
         )
     }
 
     override fun getInsets(): Insets {
         val insets = super.getInsets()
-        insets.left += iconWidth() + GAP * 2
+        insets.left += iconWidth() + gap * 2
         return insets
     }
 
@@ -32,13 +36,5 @@ internal class TextPanelWithIcon : TextPanel() {
         return Dimension(preferredSize.width + iconWidth(), preferredSize.height)
     }
 
-    fun setIcon(icon: Icon?) {
-        myIcon = icon
-    }
-
-    private fun iconWidth() = myIcon?.iconWidth ?: 0
-
-    companion object {
-        private const val GAP = 2
-    }
+    private fun iconWidth() = icon?.iconWidth ?: 0
 }

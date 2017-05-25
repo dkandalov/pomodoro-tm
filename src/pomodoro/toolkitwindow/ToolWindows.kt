@@ -5,7 +5,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.project.ProjectManagerListener
 import com.intellij.openapi.util.Disposer
-import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.content.ContentFactory
@@ -45,20 +44,17 @@ class ToolWindows : Settings.ChangeListener {
 
     private fun registerWindowFor(project: Project) {
         val toolWindowManager = ToolWindowManager.getInstance(project)
-        if (toolWindowManager.getToolWindow(TOOL_WINDOW_ID) != null) {
-            return
-        }
+        if (toolWindowManager.getToolWindow(TOOL_WINDOW_ID) != null) return
 
         val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java)
         val presenter = ToolwindowPresenter(pomodoroComponent.model)
         Disposer.register(project, presenter)
 
-        val toolWindow: ToolWindow
-        toolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM, project, true, true)
-        toolWindow.icon = pomodoroIcon
+        val toolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM, project, true, true).apply {}
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val content = contentFactory.createContent(presenter.contentPane, UIBundle.message("toolwindow.title"), false)
         toolWindow.contentManager.addContent(content)
+        toolWindow.icon = pomodoroIcon
     }
 
     private fun unregisterWindowFrom(project: Project) {
@@ -69,7 +65,7 @@ class ToolWindows : Settings.ChangeListener {
     }
 
     companion object {
-        const val TOOL_WINDOW_ID = "Pomodoro"
+        private const val TOOL_WINDOW_ID = "Pomodoro"
 
         private val pomodoroIcon = ImageIcon(ToolWindows::class.java.getResource("/resources/pomodoro-icon.png"))
     }

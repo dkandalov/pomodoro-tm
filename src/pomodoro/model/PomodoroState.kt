@@ -17,13 +17,13 @@ import pomodoro.model.time.Time
  */
 @State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.state.xml")))
 data class PomodoroState(
-        @Transient var mode: Mode = STOP,
-        @OptionTag(nameAttribute = "lastState", converter = ModeConverter::class) var lastMode: Mode = STOP,
-        @OptionTag(nameAttribute = "startTime", converter = TimeConverter::class) var startTime: Time = Time.ZERO,
-        @OptionTag(nameAttribute = "lastUpdateTime", converter = TimeConverter::class) var lastUpdateTime: Time = Time.ZERO,
-        @OptionTag(nameAttribute = "pomodorosAmount") var pomodorosAmount: Int = 0,
-        @Transient var progress: Duration = Duration.ZERO,
-        var pomodorosTillLongBreak: Int = Settings.defaultLongBreakFrequency
+    @Transient var mode: Mode = STOP,
+    @OptionTag(nameAttribute = "lastState", converter = ModeConverter::class) var lastMode: Mode = STOP,
+    @OptionTag(nameAttribute = "startTime", converter = TimeConverter::class) var startTime: Time = Time.ZERO,
+    @OptionTag(nameAttribute = "lastUpdateTime", converter = TimeConverter::class) var lastUpdateTime: Time = Time.ZERO,
+    @OptionTag(nameAttribute = "pomodorosAmount") var pomodorosAmount: Int = 0,
+    @Transient var progress: Duration = Duration.ZERO,
+    var pomodorosTillLongBreak: Int = Settings.defaultLongBreakFrequency
 ) : PersistentStateComponent<PomodoroState> {
 
     override fun getState() = this
