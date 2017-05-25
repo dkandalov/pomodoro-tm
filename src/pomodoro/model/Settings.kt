@@ -1,6 +1,7 @@
 package pomodoro.model
 
 import com.intellij.openapi.components.PersistentStateComponent
+import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.Converter
@@ -66,5 +67,8 @@ data class Settings(
         val defaultBreakDuration = Duration(minutes = 5)
         val defaultLongBreakDuration = Duration(minutes = 20)
         const val defaultLongBreakFrequency = 4
+
+        val instance: Settings
+            get() = ServiceManager.getService(Settings::class.java)
     }
 }

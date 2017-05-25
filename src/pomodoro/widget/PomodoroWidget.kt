@@ -1,6 +1,5 @@
 package pomodoro.widget
 
-import com.intellij.ide.ui.laf.darcula.DarculaLaf.loadIcon
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBar
@@ -29,7 +28,7 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
         val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java)!!
         model = pomodoroComponent.model
 
-        val settings = PomodoroComponent.settings
+        val settings = Settings.instance
         updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget)
 
         model.addListener(this, object : PomodoroModel.Listener {

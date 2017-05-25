@@ -5,6 +5,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.project.ProjectManagerListener
 import com.intellij.openapi.util.Disposer
+import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowAnchor
 import com.intellij.openapi.wm.ToolWindowManager
 import com.intellij.ui.content.ContentFactory
@@ -18,7 +19,7 @@ class ToolWindows : Settings.ChangeListener {
         ProjectManager.getInstance().addProjectManagerListener(object : ProjectManagerListener {
             override fun projectOpened(project: Project?) {
                 if (project == null) return
-                if (PomodoroComponent.settings.isShowToolWindow) {
+                if (Settings.instance.isShowToolWindow) {
                     registerWindowFor(project)
                 }
             }
@@ -51,7 +52,12 @@ class ToolWindows : Settings.ChangeListener {
         val presenter = ToolwindowPresenter(pomodoroComponent.model)
         Disposer.register(project, presenter)
 
-        val toolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM, project)
+        val toolWindow: ToolWindow
+        try {
+            toolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM, project, true, true)
+        } catch(e: Exception) {
+            throw e
+        }
         toolWindow.icon = pomodoroIcon
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val content = contentFactory.createContent(presenter.contentPane, UIBundle.message("toolwindow.title"), false)

@@ -3,7 +3,6 @@ package pomodoro.settings
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.options.SearchableConfigurable
 import org.jetbrains.annotations.Nls
-import pomodoro.PomodoroComponent
 import pomodoro.RingSound
 import pomodoro.UIBundle
 import pomodoro.model.Settings
@@ -13,7 +12,7 @@ import javax.swing.JComboBox
 import javax.swing.JComponent
 import javax.swing.event.ChangeListener
 
-class SettingsPresenter constructor(private val settings: Settings = PomodoroComponent.settings) : SearchableConfigurable {
+class SettingsPresenter constructor(private val settings: Settings = Settings.instance) : SearchableConfigurable {
     private var settingsForm: SettingsForm? = null
     private lateinit var uiModel: Settings
     private var updatingUI: Boolean = false

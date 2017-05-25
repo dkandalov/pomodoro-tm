@@ -34,7 +34,7 @@ class PomodoroComponent : ApplicationComponent {
     lateinit var model: PomodoroModel private set
 
     override fun initComponent() {
-        val settings = settings
+        val settings = Settings.instance
 
         model = PomodoroModel(settings, ServiceManager.getService(PomodoroState::class.java))
         model.onIdeStartup(Time.now())
@@ -46,8 +46,7 @@ class PomodoroComponent : ApplicationComponent {
 
         ProjectManager.getInstance().addProjectManagerListener(object : ProjectManagerAdapter() {
             override fun projectOpened(project: Project?) {
-                if (project == null) return
-                val statusBar = statusBarFor(project)
+                val statusBar = project?.statusBar() ?: return
                 val widget = PomodoroWidget()
                 statusBar.addWidget(widget, "before Position", project)
                 settings.addChangeListener(widget)
@@ -131,11 +130,6 @@ class PomodoroComponent : ApplicationComponent {
     }
 
     companion object {
-        val settings: Settings
-            get() = ServiceManager.getService(Settings::class.java)
-
-        private fun statusBarFor(project: Project): StatusBar {
-            return WindowManager.getInstance().getStatusBar(project)
-        }
+        private fun Project.statusBar(): StatusBar? = WindowManager.getInstance().getStatusBar(this)
     }
 }
