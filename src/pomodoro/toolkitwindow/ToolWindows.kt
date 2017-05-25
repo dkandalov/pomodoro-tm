@@ -16,22 +16,23 @@ import javax.swing.ImageIcon
 
 class ToolWindows : Settings.ChangeListener {
     init {
-        ProjectManager.getInstance().addProjectManagerListener(object : ProjectManagerListener {
+        val connection = ApplicationManager.getApplication().messageBus.connect()
+        connection.subscribe(ProjectManager.TOPIC, object: ProjectManagerListener {
             override fun projectOpened(project: Project?) {
                 if (project == null) return
-                if (Settings.instance.isShowToolWindow) {
-                    registerWindowFor(project)
+                ApplicationManager.getApplication().invokeLater {
+                    if (Settings.instance.isShowToolWindow) {
+                        registerWindowFor(project)
+                    }
                 }
             }
 
             override fun projectClosed(project: Project?) {
                 if (project == null) return
-                unregisterWindowFrom(project)
+                ApplicationManager.getApplication().invokeLater {
+                    unregisterWindowFrom(project)
+                }
             }
-
-            override fun canCloseProject(project: Project?) = true
-
-            override fun projectClosing(project: Project?) {}
         })
     }
 
@@ -53,11 +54,7 @@ class ToolWindows : Settings.ChangeListener {
         Disposer.register(project, presenter)
 
         val toolWindow: ToolWindow
-        try {
-            toolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM, project, true, true)
-        } catch(e: Exception) {
-            throw e
-        }
+        toolWindow = toolWindowManager.registerToolWindow(TOOL_WINDOW_ID, false, ToolWindowAnchor.BOTTOM, project, true, true)
         toolWindow.icon = pomodoroIcon
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val content = contentFactory.createContent(presenter.contentPane, UIBundle.message("toolwindow.title"), false)

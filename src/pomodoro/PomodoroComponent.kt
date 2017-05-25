@@ -11,7 +11,7 @@ import com.intellij.openapi.components.ApplicationComponent
 import com.intellij.openapi.components.ServiceManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
-import com.intellij.openapi.project.ProjectManagerAdapter
+import com.intellij.openapi.project.ProjectManagerListener
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.wm.IdeFocusManager
@@ -44,14 +44,19 @@ class PomodoroComponent : ApplicationComponent {
 
         userNotifier = UserNotifier(settings, model)
 
-        ProjectManager.getInstance().addProjectManagerListener(object : ProjectManagerAdapter() {
+        val connection = ApplicationManager.getApplication().messageBus.connect()
+        connection.subscribe(ProjectManager.TOPIC, object: ProjectManagerListener {
             override fun projectOpened(project: Project?) {
-                val statusBar = project?.statusBar() ?: return
-                val widget = PomodoroWidget()
-                statusBar.addWidget(widget, "before Position", project)
-                settings.addChangeListener(widget)
+                if (project == null) return
+                ApplicationManager.getApplication().invokeLater {
+                    project.statusBar()?.let {
+                        val widget = PomodoroWidget()
+                        it.addWidget(widget, "before Position", project)
+                        settings.addChangeListener(widget)
 
-                Disposer.register(project, Disposable { settings.removeChangeListener(widget) })
+                        Disposer.register(project, Disposable { settings.removeChangeListener(widget) })
+                    }
+                }
             }
         })
 
@@ -129,7 +134,5 @@ class PomodoroComponent : ApplicationComponent {
         }
     }
 
-    companion object {
-        private fun Project.statusBar(): StatusBar? = WindowManager.getInstance().getStatusBar(this)
-    }
+    private fun Project.statusBar(): StatusBar? = WindowManager.getInstance().getStatusBar(this)
 }
