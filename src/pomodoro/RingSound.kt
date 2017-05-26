@@ -4,14 +4,14 @@ import java.applet.Applet
 
 class RingSound {
     fun play(ringVolume: Int) {
-        if (ringVolume == 0) return
-
-        val audioClip = if (ringVolume == 1) ringSound1
-            else if (ringVolume == 2) ringSound2
-            else if (ringVolume == 3) ringSound3
-            else throw IllegalStateException()
-
-        audioClip.play()
+        val audioClip = when (ringVolume) {
+            0 -> null
+            1 -> ringSound1
+            2 -> ringSound2
+            3 -> ringSound3
+            else -> error("")
+        }
+        audioClip?.play()
     }
 
     companion object {

@@ -83,9 +83,7 @@ class ToolwindowPresenter(private val model: PomodoroModel) : Disposable {
             return String.format("%02d", minutes) + ":" + String.format("%02d", seconds)
         }
 
-        private fun Duration.toProgress(): Int {
-            return (millis / 1000).toInt()
-        }
+        private fun Duration.toProgress(): Int = (millis / 1000).toInt()
 
         private fun loadIcon(filePath: String) = ImageIcon(PomodoroWidget::class.java.getResource(filePath))
     }

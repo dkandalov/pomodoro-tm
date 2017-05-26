@@ -68,9 +68,7 @@ class PomodoroComponent : ApplicationComponent {
         userNotifier.dispose()
     }
 
-    override fun getComponentName(): String {
-        return "Pomodoro"
-    }
+    override fun getComponentName() = "Pomodoro"
 
 
     private class UserNotifier(settings: Settings, private val model: PomodoroModel) {

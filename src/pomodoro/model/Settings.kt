@@ -11,7 +11,7 @@ import pomodoro.model.Settings.Companion.defaultPomodoroDuration
 import pomodoro.model.time.Duration
 import java.util.*
 
-@State(name = "PomodoroSettings", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.settings.xml")))
+@State(name = "PomodoroSettings", storages = arrayOf(Storage("pomodoro.settings.xml")))
 data class Settings(
         @OptionTag(nameAttribute = "pomodoroLengthInMinutes", converter = MinutesConverter::class)
         var pomodoroDuration: Duration = defaultPomodoroDuration,

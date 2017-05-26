@@ -118,9 +118,8 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
         listeners.remove(key)
     }
 
-    private fun progressSince(time: Time): Duration {
-        return Duration.between(state.startTime, time).capAt(progressMax)
-    }
+    private fun progressSince(time: Time): Duration =
+        Duration.between(state.startTime, time).capAt(progressMax)
 
     interface Listener {
         fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean)
