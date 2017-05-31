@@ -1,7 +1,7 @@
 <idea-plugin>
     <name>Pomodoro-tm</name>
     <description>Pomodoro timer</description>
-    <version>0.51</version>
+    <version>0.52</version>
     <vendor url="http://github.com/dkandalov/pomodoro-tm">Dmitry Kandalov</vendor>
     <description>
         <![CDATA[
