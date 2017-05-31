@@ -58,6 +58,12 @@ class PomodoroComponent : ApplicationComponent {
                     }
                 }
             }
+
+            override fun projectClosing(project: Project?) {}
+
+            override fun projectClosed(project: Project?) {}
+
+            override fun projectClosingBeforeSave(project: Project) {}
         })
 
         timeSource = TimeSource(listener = { time -> model.onTimer(time) }).start()

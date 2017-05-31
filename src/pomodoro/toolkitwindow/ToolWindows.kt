@@ -26,12 +26,14 @@ class ToolWindows : Settings.ChangeListener {
                 }
             }
 
-            override fun projectClosed(project: Project?) {
+            override fun projectClosing(project: Project?) {
                 if (project == null) return
-                ApplicationManager.getApplication().invokeLater {
-                    unregisterWindowFrom(project)
-                }
+                unregisterWindowFrom(project)
             }
+
+            override fun projectClosed(project: Project?) {}
+
+            override fun projectClosingBeforeSave(project: Project) {}
         })
     }
 
