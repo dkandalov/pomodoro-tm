@@ -42,9 +42,7 @@ data class Settings(
         changeListeners.remove(changeListener)
     }
 
-    override fun getState(): Settings {
-        return this
-    }
+    override fun getState() = this
 
     override fun loadState(settings: Settings) {
         XmlSerializerUtil.copyBean(settings, this)
@@ -54,7 +52,7 @@ data class Settings(
     }
 
     class MinutesConverter : Converter<Duration>() {
-        override fun toString(t: Duration) = t.minutes.toString()
+        override fun toString(mode: Duration) = mode.minutes.toString()
         override fun fromString(value: String) = Duration(minutes = value.toInt())
     }
 

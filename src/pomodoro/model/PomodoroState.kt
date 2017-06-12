@@ -13,16 +13,16 @@ import pomodoro.model.time.Time
 
 /**
  * Class for persisting pomodoro state.
- * It was not implemented as part of [Settings] class because instances of this class cannot be directly changed by user.
+ * It is not part of [Settings] class because instances of this class cannot be directly changed by user.
  */
-@State(name = "PomodoroState", storages = arrayOf(Storage(id = "other", file = "\$APP_CONFIG$/pomodoro.state.xml")))
+@State(name = "PomodoroState", storages = arrayOf(Storage(file = "pomodoro.state.xml")))
 data class PomodoroState(
     @Transient var mode: Mode = STOP,
     @OptionTag(nameAttribute = "lastState", converter = ModeConverter::class) var lastMode: Mode = STOP,
-    @OptionTag(nameAttribute = "startTime", converter = TimeConverter::class) var startTime: Time = Time.ZERO,
-    @OptionTag(nameAttribute = "lastUpdateTime", converter = TimeConverter::class) var lastUpdateTime: Time = Time.ZERO,
+    @OptionTag(nameAttribute = "startTime", converter = TimeConverter::class) var startTime: Time = Time.zero,
+    @OptionTag(nameAttribute = "lastUpdateTime", converter = TimeConverter::class) var lastUpdateTime: Time = Time.zero,
     @OptionTag(nameAttribute = "pomodorosAmount") var pomodorosAmount: Int = 0,
-    @Transient var progress: Duration = Duration.ZERO,
+    @Transient var progress: Duration = Duration.zero,
     var pomodorosTillLongBreak: Int = Settings.defaultLongBreakFrequency
 ) : PersistentStateComponent<PomodoroState> {
 
@@ -40,12 +40,12 @@ data class PomodoroState(
     }
 
     private class TimeConverter : Converter<Time>() {
-        override fun toString(t: Time) = t.epochMilli.toString()
+        override fun toString(mode: Time) = mode.epochMilli.toString()
         override fun fromString(value: String) = Time(epochMilli = value.toLong())
     }
 
     private class ModeConverter : Converter<Mode>() {
-        override fun toString(t: Mode) = t.name
+        override fun toString(mode: Mode) = mode.name
         override fun fromString(value: String): Mode? = when (value) {
             "RUN" -> RUN
             "BREAK" -> BREAK

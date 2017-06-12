@@ -160,7 +160,6 @@ class PomodoroModelTest {
             onTimer(atMinute(7))
             assertState(BREAK, progress = 0.minutes, pomodoros = 2)
         }
-
     }
 
     companion object {
@@ -170,7 +169,7 @@ class PomodoroModelTest {
             assertThat(state.pomodorosAmount, equalTo(pomodoros))
         }
 
-        private fun atMinute(n: Long) = Time.ZERO + Duration(minutes = n)
+        private fun atMinute(n: Long) = Time.zero + Duration(minutes = n)
 
         private fun settings(pomodoroDuration: Long, breakDuration: Long) = Settings(
             pomodoroDuration = pomodoroDuration.minutes,

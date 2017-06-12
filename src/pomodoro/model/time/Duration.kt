@@ -22,7 +22,7 @@ data class Duration(internal val delegate: JavaDuration = JavaDuration.ZERO) : C
     fun capAt(max: Duration) = if (this > max) max else this
 
     companion object {
-        val ZERO = Duration(0)
+        val zero = Duration(0)
 
         fun between(start: Time, end: Time) = Duration(JavaDuration.between(start.instant, end.instant))
     }

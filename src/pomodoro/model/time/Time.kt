@@ -12,7 +12,7 @@ data class Time(internal val instant: Instant = Instant.EPOCH) : Comparable<Time
     operator fun plus(duration: Duration) = Time(instant + duration.delegate)
 
     companion object {
-        val ZERO = Time(Instant.EPOCH)
+        val zero = Time(Instant.EPOCH)
 
         fun now() = Time(Instant.now())
     }

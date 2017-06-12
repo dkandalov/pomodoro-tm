@@ -26,8 +26,8 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
             if (shouldNotContinuePomodoro) {
                 mode = STOP
                 lastMode = STOP
-                startTime = Time.ZERO
-                progress = Duration.ZERO
+                startTime = Time.zero
+                progress = Duration.zero
             } else {
                 progress = progressSince(time)
             }
@@ -100,7 +100,7 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
             } else {
                 settings.breakDuration
             }
-            else -> Duration.ZERO
+            else -> Duration.zero
         }
 
     val timeLeft: Duration
