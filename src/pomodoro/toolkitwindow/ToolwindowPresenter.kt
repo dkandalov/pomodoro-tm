@@ -46,16 +46,16 @@ class ToolwindowPresenter(private val model: PomodoroModel) : Disposable {
     private fun updateUI(state: PomodoroState) {
         ApplicationManager.getApplication().invokeLater {
             when (state.mode) {
-                RUN -> {
+                Run -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     form.controlButton.icon = stopIcon
                     progressBarPrefix = UIBundle.message("toolwindow.prefix_working")
                 }
-                BREAK -> {
+                Break -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     progressBarPrefix = UIBundle.message("toolwindow.button_break")
                 }
-                STOP -> {
+                Stop -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_start")
                     form.controlButton.icon = playIcon
                 }

@@ -58,9 +58,9 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
     }
 
     private fun nextActionName(model: PomodoroModel) = when (model.state.mode) {
-        RUN -> UIBundle.message("statuspanel.stop")
-        BREAK -> UIBundle.message("statuspanel.stop_break")
-        STOP -> UIBundle.message("statuspanel.start")
+        Run -> UIBundle.message("statuspanel.stop")
+        Break -> UIBundle.message("statuspanel.stop_break")
+        Stop -> UIBundle.message("statuspanel.start")
     }
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
@@ -72,9 +72,9 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
     private fun PomodoroState.icon(): ImageIcon {
         val underDarcula = UIUtil.isUnderDarcula()
         return when (mode) {
-            RUN -> if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
-            BREAK -> if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon
-            STOP -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
+            Run -> if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
+            Break -> if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon
+            Stop -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
         }
     }
 

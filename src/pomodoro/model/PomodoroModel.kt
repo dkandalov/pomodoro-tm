@@ -21,11 +21,11 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
     }
 
     fun onIdeStartup(time: Time) = state.apply {
-        if (mode != STOP) {
+        if (mode != Stop) {
             val shouldNotContinuePomodoro = Duration.between(lastUpdateTime, time) > settings.timeoutToContinuePomodoro
             if (shouldNotContinuePomodoro) {
-                mode = STOP
-                lastMode = STOP
+                mode = Stop
+                lastMode = Stop
                 startTime = Time.zero
                 progress = Duration.zero
             } else {
@@ -39,21 +39,21 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
         settings = updatedSettings
         var wasManuallyStopped = false
         when (mode) {
-            RUN -> {
-                mode = STOP
+            Run -> {
+                mode = Stop
                 progress = progressMax
                 wasManuallyStopped = true
                 if (pomodorosTillLongBreak == 0) {
                     pomodorosTillLongBreak = settings.longBreakFrequency
                 }
             }
-            BREAK -> {
-                mode = STOP
+            Break -> {
+                mode = Stop
                 progress = progressMax
                 wasManuallyStopped = true
             }
-            STOP -> {
-                mode = RUN
+            Stop -> {
+                mode = Run
                 startTime = time
             }
         }
@@ -62,10 +62,10 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
 
     fun onTimer(time: Time, wasManuallyStopped: Boolean = false) = state.apply {
         when (mode) {
-            RUN -> {
+            Run -> {
                 progress = progressSince(time)
                 if (time >= startTime + progressMax) {
-                    mode = BREAK
+                    mode = Break
                     settings = updatedSettings
                     startTime = time
                     progress = progressSince(time)
@@ -73,15 +73,15 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
                     pomodorosTillLongBreak--
                 }
             }
-            BREAK -> {
+            Break -> {
                 progress = progressSince(time)
                 if (time >= startTime + progressMax) {
-                    mode = STOP
+                    mode = Stop
                     settings = updatedSettings
                     progress = progressMax
                 }
             }
-            STOP -> if (lastMode == STOP) {
+            Stop -> if (lastMode == Stop) {
                 return@apply
             }
         }
@@ -94,8 +94,8 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
 
     val progressMax: Duration
         get() = when (state.mode) {
-            RUN -> settings.pomodoroDuration
-            BREAK -> if (state.pomodorosTillLongBreak == 0) {
+            Run -> settings.pomodoroDuration
+            Break -> if (state.pomodorosTillLongBreak == 0) {
                 settings.longBreakDuration
             } else {
                 settings.breakDuration

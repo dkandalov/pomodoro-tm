@@ -17,8 +17,8 @@ import pomodoro.model.time.Time
  */
 @State(name = "PomodoroState", storages = arrayOf(Storage(file = "pomodoro.state.xml")))
 data class PomodoroState(
-    @Transient var mode: Mode = STOP,
-    @OptionTag(nameAttribute = "lastState", converter = ModeConverter::class) var lastMode: Mode = STOP,
+    @Transient var mode: Mode = Stop,
+    @OptionTag(nameAttribute = "lastState", converter = ModeConverter::class) var lastMode: Mode = Stop,
     @OptionTag(nameAttribute = "startTime", converter = TimeConverter::class) var startTime: Time = Time.zero,
     @OptionTag(nameAttribute = "lastUpdateTime", converter = TimeConverter::class) var lastUpdateTime: Time = Time.zero,
     @OptionTag(nameAttribute = "pomodorosAmount") var pomodorosAmount: Int = 0,
@@ -32,11 +32,11 @@ data class PomodoroState(
 
     enum class Mode {
         /** Pomodoro in progress. */
-        RUN,
+        Run,
         /** Pomodoro during break. Can only happen after completing a pomodoro. */
-        BREAK,
+        Break,
         /** Pomodoro timer was not started or was stopped during pomodoro or break. */
-        STOP
+        Stop
     }
 
     private class TimeConverter : Converter<Time>() {
@@ -45,12 +45,12 @@ data class PomodoroState(
     }
 
     private class ModeConverter : Converter<Mode>() {
-        override fun toString(mode: Mode) = mode.name
-        override fun fromString(value: String): Mode? = when (value) {
-            "RUN" -> RUN
-            "BREAK" -> BREAK
-            "STOP" -> STOP
-            else -> Mode.valueOf(value)
+        override fun toString(mode: Mode) = mode.name.toUpperCase()
+        override fun fromString(value: String) = when (value.toUpperCase()) {
+            "RUN" -> Run
+            "BREAK" -> Break
+            "STOP" -> Stop
+            else -> error("Unknown mode: '$value'")
         }
     }
 }
