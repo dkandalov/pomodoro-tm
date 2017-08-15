@@ -28,13 +28,14 @@ class ModalDialog(window: Window) {
 
         UIUtil.suppressFocusStealing(window)
 
-        val form = ModalForm(model)
-        jDialog.isModal = true
-        jDialog.isUndecorated = true
-        jDialog.contentPane = form.rootPanel
-        jDialog.addKeyListener(keyAdapter)
-        jDialog.pack()
-        jDialog.setLocationRelativeTo(window)
+        jDialog.apply {
+            isModal = true
+            isUndecorated = true
+            contentPane = ModalForm(model).rootPanel
+            addKeyListener(keyAdapter)
+            pack()
+            setLocationRelativeTo(window)
+        }
     }
 
     fun show() {

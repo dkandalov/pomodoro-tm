@@ -7,7 +7,6 @@ import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.Converter
 import com.intellij.util.xmlb.XmlSerializerUtil
 import com.intellij.util.xmlb.annotations.OptionTag
-import pomodoro.model.Settings.Companion.defaultPomodoroDuration
 import pomodoro.model.time.Duration
 import java.util.*
 

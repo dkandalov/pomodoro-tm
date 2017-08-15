@@ -52,9 +52,7 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
         settingsForm = null
     }
 
-    override fun isModified(): Boolean {
-        return uiModel != settings
-    }
+    override fun isModified() = uiModel != settings
 
     @Throws(ConfigurationException::class)
     override fun apply() {
@@ -129,18 +127,15 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
         updatingUI = false
     }
 
-    private fun uiResourcesDisposed(): Boolean {
-        // ActionEvent might occur after disposeUIResources() was invoked
-        return settingsForm == null
-    }
+    // ActionEvent might occur after disposeUIResources() was invoked
+    private fun uiResourcesDisposed() = settingsForm == null
 
-    @Nls private fun ringVolumeTooltip(uiModel: Settings): String {
+    @Nls private fun ringVolumeTooltip(uiModel: Settings) =
         if (uiModel.ringVolume == 0) {
-            return UIBundle.message("settings.ringSlider.noSoundTooltip")
+            UIBundle.message("settings.ringSlider.noSoundTooltip")
         } else {
-            return UIBundle.message("settings.ringSlider.volumeTooltip", uiModel.ringVolume)
+            UIBundle.message("settings.ringSlider.volumeTooltip", uiModel.ringVolume)
         }
-    }
 
     @Nls override fun getDisplayName() = UIBundle.message("settings.title")
 
@@ -154,12 +149,12 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
         private const val MIN_TIME_INTERVAL = 1
         private const val MAX_TIME_INTERVAL = 240
 
-        private fun selectedItemAsInteger(comboBox: JComboBox<*>): Int {
+        private fun selectedItemAsInteger(comboBox: JComboBox): Int {
             val s = (comboBox.selectedItem as String).trim { it <= ' ' }
             val value = s.toInt()
-            if (value < MIN_TIME_INTERVAL) return MIN_TIME_INTERVAL
-            if (value > MAX_TIME_INTERVAL) return MAX_TIME_INTERVAL
-            return value
+            return if (value < MIN_TIME_INTERVAL) MIN_TIME_INTERVAL
+            else if (value > MAX_TIME_INTERVAL) MAX_TIME_INTERVAL
+            else value
         }
     }
 }

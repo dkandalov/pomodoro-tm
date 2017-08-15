@@ -96,12 +96,32 @@ class ModalForm {
 		rootPanel.setMinimumSize(new Dimension(460, 360));
 		rootPanel.setPreferredSize(new Dimension(460, 360));
 		messageLabel = new JLabel();
-		messageLabel.setFont(new Font(messageLabel.getFont().getName(), Font.BOLD, messageLabel.getFont().getSize()));
+		Font messageLabelFont = this.$$$getFont$$$(null, Font.BOLD, -1, messageLabel.getFont());
+		if (messageLabelFont != null) messageLabel.setFont(messageLabelFont);
 		messageLabel.setForeground(new Color(-3355444));
 		messageLabel.setHorizontalTextPosition(11);
 		messageLabel.setInheritsPopupMenu(false);
 		this.$$$loadLabelText$$$(messageLabel, ResourceBundle.getBundle("resources/messages").getString("modalwindow.text"));
 		rootPanel.add(messageLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(0, 0), null, null, 0, false));
+	}
+
+	/**
+	 * @noinspection ALL
+	 */
+	private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
+		if (currentFont == null) return null;
+		String resultName;
+		if (fontName == null) {
+			resultName = currentFont.getName();
+		} else {
+			Font testFont = new Font(fontName, Font.PLAIN, 10);
+			if (testFont.canDisplay('a') && testFont.canDisplay('1')) {
+				resultName = fontName;
+			} else {
+				resultName = currentFont.getName();
+			}
+		}
+		return new Font(resultName, style >= 0 ? style : currentFont.getStyle(), size >= 0 ? size : currentFont.getSize());
 	}
 
 	/**
