@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/dkandalov/pomodoro-tm.svg?branch=master)](https://travis-ci.org/dkandalov/pomodoro-tm)
+
+
 ## Pomodoro Timer IntelliJ plugin
 
 This plugin is [pomodoro timer](http://www.pomodorotechnique.com) for IntelliJ IDEs. 
