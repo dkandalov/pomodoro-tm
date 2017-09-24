@@ -12,9 +12,9 @@ import java.util.*
  */
 object UIBundle {
     private var ourBundle: Reference<ResourceBundle>? = null
-    @NonNls private const val PATH_TO_BUNDLE = "resources.messages"
+    @NonNls private const val PATH_TO_BUNDLE = "messages"
 
-    @JvmStatic fun message(@PropertyKey(resourceBundle = "resources.messages") key: String, vararg params: Any): String =
+    @JvmStatic fun message(@PropertyKey(resourceBundle = "messages") key: String, vararg params: Any): String =
         CommonBundle.message(bundle, key, *params)
 
     private val bundle: ResourceBundle

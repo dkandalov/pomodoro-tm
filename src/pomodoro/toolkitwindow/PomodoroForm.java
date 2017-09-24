@@ -103,8 +103,8 @@ class PomodoroForm {
 		final Spacer spacer2 = new Spacer();
 		panel1.add(spacer2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
 		controlButton = new JButton();
-		controlButton.setIcon(new ImageIcon(getClass().getResource("/resources/play-icon.png")));
-		this.$$$loadButtonText$$$(controlButton, ResourceBundle.getBundle("resources/messages").getString("toolwindow.button_start"));
+		controlButton.setIcon(new ImageIcon(getClass().getResource("/play-icon.png")));
+		this.$$$loadButtonText$$$(controlButton, ResourceBundle.getBundle("messages").getString("toolwindow.button_start"));
 		panel1.add(controlButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final Spacer spacer3 = new Spacer();
 		panel1.add(spacer3, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
@@ -115,7 +115,7 @@ class PomodoroForm {
 		final Spacer spacer4 = new Spacer();
 		panel1.add(spacer4, new GridConstraints(0, 5, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
 		final JLabel label1 = new JLabel();
-		this.$$$loadLabelText$$$(label1, ResourceBundle.getBundle("resources/messages").getString("toolwindow.pomodoro_amount"));
+		this.$$$loadLabelText$$$(label1, ResourceBundle.getBundle("messages").getString("toolwindow.pomodoro_amount"));
 		panel1.add(label1, new GridConstraints(0, 3, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 	}
 

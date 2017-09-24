@@ -74,8 +74,8 @@ class ToolwindowPresenter(private val model: PomodoroModel) : Disposable {
     }
 
     companion object {
-        private val playIcon = loadIcon("/resources/play-icon.png")
-        private val stopIcon = loadIcon("/resources/stop-icon.png")
+        private val playIcon = loadIcon("/play-icon.png")
+        private val stopIcon = loadIcon("/stop-icon.png")
 
         fun formatDuration(timeLeft: Duration): String {
             val minutes = timeLeft.minutes

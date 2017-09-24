@@ -101,7 +101,7 @@ class ModalForm {
 		messageLabel.setForeground(new Color(-3355444));
 		messageLabel.setHorizontalTextPosition(11);
 		messageLabel.setInheritsPopupMenu(false);
-		this.$$$loadLabelText$$$(messageLabel, ResourceBundle.getBundle("resources/messages").getString("modalwindow.text"));
+		this.$$$loadLabelText$$$(messageLabel, ResourceBundle.getBundle("messages").getString("modalwindow.text"));
 		rootPanel.add(messageLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, new Dimension(0, 0), null, null, 0, false));
 	}
 

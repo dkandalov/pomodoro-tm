@@ -23,7 +23,7 @@
           <foreground color="-3355444"/>
           <horizontalTextPosition value="11"/>
           <inheritsPopupMenu value="false"/>
-          <text resource-bundle="resources/messages" key="modalwindow.text"/>
+          <text resource-bundle="messages" key="modalwindow.text"/>
         </properties>
       </component>
     </children>

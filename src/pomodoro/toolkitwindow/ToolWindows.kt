@@ -69,6 +69,6 @@ class ToolWindows : Settings.ChangeListener {
     companion object {
         private const val TOOL_WINDOW_ID = "Pomodoro"
 
-        private val pomodoroIcon = ImageIcon(ToolWindows::class.java.getResource("/resources/pomodoro-icon.png"))
+        private val pomodoroIcon = ImageIcon(ToolWindows::class.java.getResource("/pomodoro-icon.png"))
     }
 }

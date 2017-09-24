@@ -117,7 +117,7 @@
             </constraints>
             <properties>
               <text value="Show popup notification:"/>
-              <toolTipText resource-bundle="resources/messages" key="settings.popup.tooltip"/>
+              <toolTipText resource-bundle="messages" key="settings.popup.tooltip"/>
             </properties>
           </component>
           <component id="9fdf8" class="javax.swing.JCheckBox" binding="popupCheckBox">
@@ -126,7 +126,7 @@
             </constraints>
             <properties>
               <text value=""/>
-              <toolTipText resource-bundle="resources/messages" key="settings.popup.tooltip"/>
+              <toolTipText resource-bundle="messages" key="settings.popup.tooltip"/>
             </properties>
           </component>
           <component id="29825" class="javax.swing.JLabel">
@@ -135,7 +135,7 @@
             </constraints>
             <properties>
               <text value="Block IDE during break:"/>
-              <toolTipText resource-bundle="resources/messages" key="settings.blockCheckbox.tooltip"/>
+              <toolTipText resource-bundle="messages" key="settings.blockCheckbox.tooltip"/>
             </properties>
           </component>
           <component id="21abe" class="javax.swing.JCheckBox" binding="blockDuringBreak">
@@ -145,7 +145,7 @@
             <properties>
               <actionCommand value=""/>
               <doubleBuffered value="true"/>
-              <toolTipText resource-bundle="resources/messages" key="settings.blockCheckbox.tooltip"/>
+              <toolTipText resource-bundle="messages" key="settings.blockCheckbox.tooltip"/>
             </properties>
           </component>
           <component id="53c9c" class="javax.swing.JLabel">
