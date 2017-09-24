@@ -1,0 +1,8 @@
+language: java
+jdk: oraclejdk8
+
+env:
+  - POMODORO_PLUGIN_IDEA_VERSION=IC-172.3757.29
+  - POMODORO_PLUGIN_IDEA_VERSION=LATEST-EAP-SNAPSHOT
+
+script: ./gradlew check buildPlugin --info
