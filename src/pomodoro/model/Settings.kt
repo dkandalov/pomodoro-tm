@@ -22,7 +22,8 @@ data class Settings(
         var ringVolume: Int = 1,
         var isPopupEnabled: Boolean = true,
         var isShowToolWindow: Boolean = false,
-        var isShowTimeInToolbarWidget: Boolean = true
+        var isShowTimeInToolbarWidget: Boolean = true,
+        var startNewPomodoroAfterBreak: Boolean = false
 ) : PersistentStateComponent<Settings> {
     /**
      * If IntelliJ shuts down during pomodoro and then restarts, pomodoro can be continued.

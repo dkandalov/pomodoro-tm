@@ -1,9 +1,10 @@
 package pomodoro.widget
 
 import com.intellij.openapi.wm.impl.status.TextPanel
-
-import javax.swing.*
-import java.awt.*
+import java.awt.Dimension
+import java.awt.Graphics
+import java.awt.Insets
+import javax.swing.Icon
 
 /**
  * Based on [com.intellij.openapi.wm.impl.status.TextPanel.WithIconAndArrows]
@@ -12,7 +13,6 @@ internal class TextPanelWithIcon : TextPanel() {
     private val gap = 2
 
     var icon: Icon? = null
-        set(value) { field = value }
 
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)

@@ -44,6 +44,7 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
             ringVolumeSlider.addChangeListener(changeListener)
             showToolWindowCheckbox.addChangeListener(changeListener)
             showTimeInToolbarWidgetCheckbox.addChangeListener(changeListener)
+            startNewPomodoroAfterBreak.addChangeListener(changeListener)
         }
     }
 
@@ -100,6 +101,7 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
         uiModel.isPopupEnabled = settingsForm!!.popupCheckBox.isSelected
         uiModel.isShowToolWindow = settingsForm!!.showToolWindowCheckbox.isSelected
         uiModel.isShowTimeInToolbarWidget = settingsForm!!.showTimeInToolbarWidgetCheckbox.isSelected
+        uiModel.startNewPomodoroAfterBreak = settingsForm!!.startNewPomodoroAfterBreak.isSelected
     }
 
     private fun updateUI() {
@@ -119,6 +121,7 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
             popupCheckBox.isSelected = uiModel.isPopupEnabled
             showToolWindowCheckbox.isSelected = uiModel.isShowToolWindow
             showTimeInToolbarWidgetCheckbox.isSelected = uiModel.isShowTimeInToolbarWidget
+            startNewPomodoroAfterBreak.isSelected = uiModel.startNewPomodoroAfterBreak
         }
 
         updatingUI = false

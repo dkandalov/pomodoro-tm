@@ -19,6 +19,7 @@ class SettingsForm {
 	public JCheckBox showTimeInToolbarWidgetCheckbox;
 	public ComboBox longBreakLengthComboBox;
 	public ComboBox longBreakFrequencyComboBox;
+	public JCheckBox startNewPomodoroAfterBreak;
 
 	public JPanel getRootPanel() {
 		return rootPanel;

@@ -11,7 +11,7 @@ import pomodoro.model.time.minutes
 class PomodoroModelTest {
 
     @Test fun `do one pomodoro`() {
-        PomodoroModel(settings(2, 1), PomodoroState()).apply {
+        PomodoroModel(settings(pomodoroDuration = 2, breakDuration = 1), PomodoroState()).apply {
             assertState(Stop, progress = 0.minutes, pomodoros = 0)
 
             onUserSwitchToNextState(atMinute(0))
@@ -28,7 +28,7 @@ class PomodoroModelTest {
     }
 
     @Test fun `do two pomodoros`() {
-        PomodoroModel(settings(2, 1), PomodoroState()).apply {
+        PomodoroModel(settings(pomodoroDuration = 2, breakDuration = 1), PomodoroState()).apply {
             assertState(Stop, progress = 0.minutes, pomodoros = 0)
 
             onUserSwitchToNextState(atMinute(0))
@@ -46,7 +46,7 @@ class PomodoroModelTest {
     }
 
     @Test fun `stop during pomodoro`() {
-        PomodoroModel(settings(5, 1), PomodoroState()).apply {
+        PomodoroModel(settings(pomodoroDuration = 5, breakDuration = 1), PomodoroState()).apply {
             assertState(Stop, progress = 0.minutes, pomodoros = 0)
 
             onUserSwitchToNextState(atMinute(0))
@@ -60,15 +60,14 @@ class PomodoroModelTest {
         }
     }
 
-    @Test fun `auto stop after break`() {
-        PomodoroModel(settings(1, 2), PomodoroState()).apply {
+    @Test fun `timer automatically stops after break`() {
+        PomodoroModel(settings(pomodoroDuration = 1, breakDuration = 2), PomodoroState()).apply {
             assertState(Stop, progress = 0.minutes, pomodoros = 0)
 
             onUserSwitchToNextState(atMinute(0))
 
             onTimer(atMinute(1))
             assertState(Break, progress = 0.minutes, pomodoros = 1)
-
             onTimer(atMinute(2))
             assertState(Break, progress = 1.minutes, pomodoros = 1)
 
@@ -77,8 +76,27 @@ class PomodoroModelTest {
         }
     }
 
+    @Test fun `new pomodoro is automatically started after break`() {
+        val settings = settings(pomodoroDuration = 1, breakDuration = 2).apply {
+            startNewPomodoroAfterBreak = true
+        }
+        PomodoroModel(settings, PomodoroState()).apply {
+            assertState(Stop, progress = 0.minutes, pomodoros = 0)
+
+            onUserSwitchToNextState(atMinute(0))
+
+            onTimer(atMinute(1))
+            assertState(Break, progress = 0.minutes, pomodoros = 1)
+            onTimer(atMinute(2))
+            assertState(Break, progress = 1.minutes, pomodoros = 1)
+
+            onTimer(atMinute(3))
+            assertState(Run, progress = 1.minutes, pomodoros = 1)
+        }
+    }
+
     @Test fun `long break after four pomodoros`() {
-        PomodoroModel(settings(2, 1), PomodoroState()).apply {
+        PomodoroModel(settings(pomodoroDuration = 2, breakDuration = 1), PomodoroState()).apply {
             assertState(Stop, progress = 0.minutes, pomodoros = 0)
 
             onUserSwitchToNextState(atMinute(0))
@@ -106,7 +124,8 @@ class PomodoroModelTest {
     }
 
     @Test fun `after idea restart continue from saved state and finish pomodoro`() {
-        PomodoroModel(settings(25, 2), PomodoroState(Run, Run, atMinute(-20), atMinute(-1))).apply {
+        val settings = settings(pomodoroDuration = 25, breakDuration = 2)
+        PomodoroModel(settings, PomodoroState(Run, Run, atMinute(-20), atMinute(-1))).apply {
             onIdeStartup(atMinute(0))
             assertState(Run, progress = 20.minutes, pomodoros = 0)
 
@@ -119,22 +138,24 @@ class PomodoroModelTest {
     }
 
     @Test fun `after idea restart should not continue from last state if a lot of time has passed`() {
+        val settings = settings(pomodoroDuration = 25, breakDuration = 2)
+        
         // last state was Run
-        PomodoroModel(settings(25, 2), PomodoroState(Run, Run, atMinute(-60), atMinute(-20))).apply {
+        PomodoroModel(settings, PomodoroState(Run, Run, atMinute(-60), atMinute(-20))).apply {
             onIdeStartup(atMinute(0))
             assertState(Stop, progress = 0.minutes, pomodoros = 0)
         }
 
         // last state was Break
-        PomodoroModel(settings(25, 2), PomodoroState(Break, Break, atMinute(-60), atMinute(-20))).apply {
+        PomodoroModel(settings, PomodoroState(Break, Break, atMinute(-60), atMinute(-20))).apply {
             onIdeStartup(atMinute(0))
             assertState(Stop, progress = 0.minutes, pomodoros = 0)
         }
     }
 
     @Test fun `when settings change, apply them only after the end of pomodoro`() {
-        val settings = settings(2, 1)
-        val newSettings = settings(3, 1)
+        val settings = settings(pomodoroDuration = 2, breakDuration = 1)
+        val newSettings = settings(pomodoroDuration = 3, breakDuration = 1)
 
         PomodoroModel(settings, PomodoroState()).apply {
             assertState(Stop, progress = 0.minutes, pomodoros = 0)
@@ -171,9 +192,10 @@ class PomodoroModelTest {
 
         private fun atMinute(n: Long) = Time.zero + Duration(minutes = n)
 
-        private fun settings(pomodoroDuration: Long, breakDuration: Long) = Settings(
-            pomodoroDuration = pomodoroDuration.minutes,
-            breakDuration = breakDuration.minutes
-        )
+        private fun settings(pomodoroDuration: Long, breakDuration: Long) =
+            Settings(
+                pomodoroDuration = pomodoroDuration.minutes,
+                breakDuration = breakDuration.minutes
+            )
     }
 }
