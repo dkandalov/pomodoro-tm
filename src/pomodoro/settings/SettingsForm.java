@@ -14,7 +14,6 @@ class SettingsForm {
 	public ComboBox breakLengthComboBox;
 	public JSlider ringVolumeSlider;
 	public JCheckBox popupCheckBox;
-	public JCheckBox blockDuringBreak;
 	private JPanel rootPanel;
 	public JCheckBox showToolWindowCheckbox;
 	public JCheckBox showTimeInToolbarWidgetCheckbox;
@@ -105,11 +104,6 @@ class SettingsForm {
 		label7.setText("Block IDE during break:");
 		label7.setToolTipText(ResourceBundle.getBundle("messages").getString("settings.blockCheckbox.tooltip"));
 		panel1.add(label7, new GridConstraints(7, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-		blockDuringBreak = new JCheckBox();
-		blockDuringBreak.setActionCommand("");
-		blockDuringBreak.setDoubleBuffered(true);
-		blockDuringBreak.setToolTipText(ResourceBundle.getBundle("messages").getString("settings.blockCheckbox.tooltip"));
-		panel1.add(blockDuringBreak, new GridConstraints(7, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 		final JLabel label8 = new JLabel();
 		label8.setText("Show tool window:");
 		panel1.add(label8, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));

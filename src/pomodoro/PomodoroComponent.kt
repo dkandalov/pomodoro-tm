@@ -1,11 +1,9 @@
 package pomodoro
 
-import com.intellij.ide.DataManager
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
 import com.intellij.openapi.Disposable
-import com.intellij.openapi.actionSystem.PlatformDataKeys
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.ApplicationComponent
 import com.intellij.openapi.components.ServiceManager
@@ -14,10 +12,8 @@ import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.project.ProjectManagerListener
 import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.SystemInfo
-import com.intellij.openapi.wm.IdeFocusManager
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.WindowManager
-import pomodoro.modalwindow.ModalDialog
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
 import pomodoro.model.PomodoroState.Mode.Break
@@ -79,7 +75,6 @@ class PomodoroComponent : ApplicationComponent {
 
     private class UserNotifier(settings: Settings, private val model: PomodoroModel) {
         private val ringSound = RingSound()
-        private var modalDialog: ModalDialog? = null
 
         init {
             // See https://github.com/dkandalov/friday-mario/issues/3#issuecomment-160421286 and http://keithp.com/blogs/Java-Sound-on-Linux/
@@ -95,33 +90,15 @@ class PomodoroComponent : ApplicationComponent {
                     when (state.mode) {
                         Stop -> if (state.lastMode == Break && !wasManuallyStopped) {
                             ringSound.play(settings.ringVolume)
-                            if (settings.isBlockDuringBreak) unblockIDE()
                         }
                         Break -> if (state.lastMode != Break) {
                             ringSound.play(settings.ringVolume)
                             if (settings.isPopupEnabled) showPopupNotification(UIBundle.message("notification.text"))
-                            if (settings.isBlockDuringBreak) blockIDE()
                         }
                         else -> {}
                     }
                 }
             })
-        }
-
-        private fun blockIDE() {
-            ApplicationManager.getApplication().invokeLater {
-                val dataContext = DataManager.getInstance().getDataContext(IdeFocusManager.getGlobalInstance().focusOwner)
-                val project = PlatformDataKeys.PROJECT.getData(dataContext)
-                val window = WindowManager.getInstance().getFrame(project)!!
-
-                modalDialog = ModalDialog(window)
-                modalDialog!!.show()
-            }
-        }
-
-        private fun unblockIDE() {
-            if (modalDialog == null) return  // can happen if user turns on this option during break
-            modalDialog!!.hide()
         }
 
         private fun showPopupNotification(message: String) {

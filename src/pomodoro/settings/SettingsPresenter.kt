@@ -41,7 +41,6 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
             longBreakLengthComboBox.addActionListener(actionListener)
             longBreakFrequencyComboBox.addActionListener(actionListener)
             popupCheckBox.addChangeListener(changeListener)
-            blockDuringBreak.addChangeListener(changeListener)
             ringVolumeSlider.addChangeListener(changeListener)
             showToolWindowCheckbox.addChangeListener(changeListener)
             showTimeInToolbarWidgetCheckbox.addChangeListener(changeListener)
@@ -99,7 +98,6 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
         }
 
         uiModel.isPopupEnabled = settingsForm!!.popupCheckBox.isSelected
-        uiModel.isBlockDuringBreak = settingsForm!!.blockDuringBreak.isSelected
         uiModel.isShowToolWindow = settingsForm!!.showToolWindowCheckbox.isSelected
         uiModel.isShowTimeInToolbarWidget = settingsForm!!.showTimeInToolbarWidgetCheckbox.isSelected
     }
@@ -119,7 +117,6 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
             ringVolumeSlider.toolTipText = ringVolumeTooltip(uiModel)
 
             popupCheckBox.isSelected = uiModel.isPopupEnabled
-            blockDuringBreak.isSelected = uiModel.isBlockDuringBreak
             showToolWindowCheckbox.isSelected = uiModel.isShowToolWindow
             showTimeInToolbarWidgetCheckbox.isSelected = uiModel.isShowTimeInToolbarWidget
         }
