@@ -76,6 +76,7 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
             Break -> {
                 progress = progressSince(time)
                 if (time >= startTime + progressMax) {
+                    settings = updatedSettings
                     if (settings.startNewPomodoroAfterBreak) {
                         mode = Run
                         startTime = time
@@ -83,7 +84,6 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
                         mode = Stop
                     }
                     progress = progressMax
-                    settings = updatedSettings
                 }
             }
             Stop -> if (lastMode == Stop) {
