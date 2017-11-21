@@ -12,14 +12,14 @@ import pomodoro.model.PomodoroState
 import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.Settings
 import pomodoro.model.time.Time
-import pomodoro.toolkitwindow.ToolwindowPresenter
+import pomodoro.toolkitwindow.ToolwindowPresenter.Companion.formatDuration
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
 
-class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settings.ChangeListener {
+class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Settings.ChangeListener {
     private val panelWithIcon = TextPanelWithIcon()
     private lateinit var statusBar: StatusBar
     private val model: PomodoroModel
@@ -36,9 +36,9 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
                 ApplicationManager.getApplication().invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) }
             }
         })
-        panelWithIcon.addMouseListener(object : MouseAdapter() {
+        panelWithIcon.addMouseListener(object: MouseAdapter() {
             override fun mouseClicked(e: MouseEvent?) { model.onUserSwitchToNextState(Time.now()) }
-            override fun mouseEntered(e: MouseEvent?) { statusBar.info = tooltipText(model) }
+            override fun mouseEntered(e: MouseEvent?) { statusBar.info = statusBarTooltip(model) }
             override fun mouseExited(e: MouseEvent?) { statusBar.info = "" }
         })
     }
@@ -51,12 +51,6 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
 
     override fun copy() = PomodoroWidget()
 
-    private fun tooltipText(model: PomodoroModel): String {
-        val nextAction = nextActionName(model)
-        val pomodorosAmount = model.state.pomodorosAmount
-        return UIBundle.message("statuspanel.tooltip", nextAction, pomodorosAmount)
-    }
-
     private fun nextActionName(model: PomodoroModel) = when (model.state.mode) {
         Run -> UIBundle.message("statuspanel.stop")
         Break -> UIBundle.message("statuspanel.stop_break")
@@ -64,10 +58,16 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
     }
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
-        panelWithIcon.text = if (showTimeInToolbarWidget) ToolwindowPresenter.formatDuration(model.timeLeft) else ""
+        panelWithIcon.text = if (showTimeInToolbarWidget) formatDuration(model.timeLeft) else ""
+        panelWithIcon.toolTipText = widgetTooltip(model)
         panelWithIcon.icon = model.state.icon()
         panelWithIcon.repaint()
     }
+
+    private fun statusBarTooltip(model: PomodoroModel) =
+        UIBundle.message("statuspanel.tooltip", nextActionName(model), model.state.pomodorosAmount)
+
+    private fun widgetTooltip(model: PomodoroModel) = UIBundle.message("statuspanel.widget_tooltip", nextActionName(model))
 
     private fun PomodoroState.icon(): ImageIcon {
         val underDarcula = UIUtil.isUnderDarcula()

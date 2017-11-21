@@ -9,7 +9,7 @@ import javax.swing.Icon
 /**
  * Based on [com.intellij.openapi.wm.impl.status.TextPanel.WithIconAndArrows]
  */
-internal class TextPanelWithIcon : TextPanel() {
+internal class TextPanelWithIcon: TextPanel() {
     private val gap = 2
 
     var icon: Icon? = null
