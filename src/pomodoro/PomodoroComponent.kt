@@ -16,8 +16,7 @@ import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.WindowManager
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
-import pomodoro.model.PomodoroState.Mode.Break
-import pomodoro.model.PomodoroState.Mode.Stop
+import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.Settings
 import pomodoro.model.TimeSource
 import pomodoro.model.time.Time
@@ -38,7 +37,7 @@ class PomodoroComponent : ApplicationComponent {
         val toolWindows = ToolWindows()
         settings.addChangeListener(toolWindows)
 
-        userNotifier = UserNotifier(settings, model)
+        userNotifier = UserNotifier(model)
 
         val connection = ApplicationManager.getApplication().messageBus.connect()
         connection.subscribe(ProjectManager.TOPIC, object: ProjectManagerListener {
@@ -73,7 +72,7 @@ class PomodoroComponent : ApplicationComponent {
     override fun getComponentName() = "Pomodoro"
 
 
-    private class UserNotifier(settings: Settings, private val model: PomodoroModel) {
+    private class UserNotifier(private val model: PomodoroModel) {
         private val ringSound = RingSound()
 
         init {
@@ -87,7 +86,12 @@ class PomodoroComponent : ApplicationComponent {
 
             model.addListener(this, object : PomodoroModel.Listener {
                 override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
+                    val settings = Settings.instance
                     when (state.mode) {
+                        Run -> if (state.lastMode == Break && settings.startNewPomodoroAfterBreak) {
+                            ringSound.play(settings.ringVolume)
+                            if (settings.isPopupEnabled) showPopupNotification(UIBundle.message("notification.pomodoro_start"))
+                        }
                         Stop -> if (state.lastMode == Break && !wasManuallyStopped) {
                             ringSound.play(settings.ringVolume)
                         }
@@ -95,7 +99,6 @@ class PomodoroComponent : ApplicationComponent {
                             ringSound.play(settings.ringVolume)
                             if (settings.isPopupEnabled) showPopupNotification(UIBundle.message("notification.text"))
                         }
-                        else -> {}
                     }
                 }
             })
