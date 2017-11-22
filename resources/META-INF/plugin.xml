@@ -1,7 +1,7 @@
 <idea-plugin>
     <name>Pomodoro-tm</name>
     <description>Pomodoro timer</description>
-    <version>0.6</version>
+    <version>0.60</version>
     <vendor url="http://github.com/dkandalov/pomodoro-tm">Dmitry Kandalov</vendor>
     <description>
         <![CDATA[
@@ -20,6 +20,16 @@
         </html>
         ]]>
     </description>
+    <change-notes>
+        <![CDATA[<html><body>
+        <ul>
+            Version 0.60:
+            <li>option to automatically start new pomodoro after break</li>
+            <li>removed modal dialog during pomodoro break (because it didn't work properly and was a questionable idea)</li>
+        </ul>
+        </body></html>
+        ]]>
+    </change-notes>
 
     <!-- http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
     <!-- Since IJ 2016.1 it has Kotlin support. -->
