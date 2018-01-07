@@ -33,11 +33,11 @@ dependencies {
 java.sourceSets {
     "main" {
         java.srcDirs("./src")
-        kotlin().srcDirs("./src")
+        kotlin.srcDirs("./src")
         resources.srcDirs("./resources")
     }
     "test" {
-        kotlin().srcDirs("./test")
+        kotlin.srcDirs("./test")
     }
 }
 
@@ -63,4 +63,4 @@ intellij {
     updateSinceUntilBuild = false
 }
 
-fun Any.kotlin() = withConvention(KotlinSourceSet::class) { kotlin }
+val Any.kotlin: SourceDirectorySet get() = withConvention(KotlinSourceSet::class) { kotlin }
