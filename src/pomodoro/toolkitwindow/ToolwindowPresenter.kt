@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
-class ToolwindowPresenter(private val model: PomodoroModel) : Disposable {
+class ToolwindowPresenter(private val model: PomodoroModel): Disposable {
     private val form = PomodoroForm()
     private var progressBarPrefix = ""
 
@@ -26,7 +26,7 @@ class ToolwindowPresenter(private val model: PomodoroModel) : Disposable {
             model.onUserSwitchToNextState(Time.now())
             updateUI(model.state)
         }
-        form.pomodorosLabel.addMouseListener(object : MouseAdapter() {
+        form.pomodorosLabel.addMouseListener(object: MouseAdapter() {
             override fun mouseClicked(event: MouseEvent) {
                 if (event.clickCount >= 2) {
                     model.resetPomodoros()
@@ -36,7 +36,7 @@ class ToolwindowPresenter(private val model: PomodoroModel) : Disposable {
         })
         updateUI(model.state)
 
-        model.addListener(this, object : PomodoroModel.Listener {
+        model.addListener(this, object: PomodoroModel.Listener {
             override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
                 updateUI(state)
             }
@@ -46,7 +46,7 @@ class ToolwindowPresenter(private val model: PomodoroModel) : Disposable {
     private fun updateUI(state: PomodoroState) {
         ApplicationManager.getApplication().invokeLater {
             when (state.mode) {
-                Run -> {
+                Run   -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     form.controlButton.icon = stopIcon
                     progressBarPrefix = UIBundle.message("toolwindow.prefix_working")
@@ -55,7 +55,7 @@ class ToolwindowPresenter(private val model: PomodoroModel) : Disposable {
                     form.controlButton.text = UIBundle.message("toolwindow.button_stop")
                     progressBarPrefix = UIBundle.message("toolwindow.button_break")
                 }
-                Stop -> {
+                Stop  -> {
                     form.controlButton.text = UIBundle.message("toolwindow.button_start")
                     form.controlButton.icon = playIcon
                 }

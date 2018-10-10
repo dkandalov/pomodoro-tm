@@ -4,6 +4,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
+import com.intellij.openapi.wm.StatusBarWidget.WidgetPresentation
 import com.intellij.util.ui.UIUtil
 import pomodoro.PomodoroComponent
 import pomodoro.UIBundle
@@ -31,7 +32,7 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
         val settings = Settings.instance
         updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget)
 
-        model.addListener(this, object : PomodoroModel.Listener {
+        model.addListener(this, object: PomodoroModel.Listener {
             override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
                 ApplicationManager.getApplication().invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) }
             }
@@ -52,9 +53,9 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
     override fun copy() = PomodoroWidget()
 
     private fun nextActionName(model: PomodoroModel) = when (model.state.mode) {
-        Run -> UIBundle.message("statuspanel.stop")
+        Run   -> UIBundle.message("statuspanel.stop")
         Break -> UIBundle.message("statuspanel.stop_break")
-        Stop -> UIBundle.message("statuspanel.start")
+        Stop  -> UIBundle.message("statuspanel.start")
     }
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
@@ -72,13 +73,13 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
     private fun PomodoroState.icon(): ImageIcon {
         val underDarcula = UIUtil.isUnderDarcula()
         return when (mode) {
-            Run -> if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
+            Run   -> if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
             Break -> if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon
-            Stop -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
+            Stop  -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
         }
     }
 
-    override fun getPresentation(type: StatusBarWidget.PlatformType) = null
+    override fun getPresentation(type: StatusBarWidget.PlatformType): WidgetPresentation? = null
 
     override fun dispose() {
         model.removeListener(this)

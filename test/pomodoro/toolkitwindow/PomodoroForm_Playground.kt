@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
     val config = Settings(pomodoroDuration = Duration(1), breakDuration = Duration(1))
     val model = PomodoroModel(config, PomodoroState())
     val presenter = ToolwindowPresenter(model)
-    TimeSource({ model.onTimer(it) }).start()
+    TimeSource { model.onTimer(it) }.start()
 
     JFrame().apply {
         contentPane = presenter.contentPane
