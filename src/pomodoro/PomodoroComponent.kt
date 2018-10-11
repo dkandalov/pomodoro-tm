@@ -41,8 +41,7 @@ class PomodoroComponent : ApplicationComponent {
 
         val connection = ApplicationManager.getApplication().messageBus.connect()
         connection.subscribe(ProjectManager.TOPIC, object: ProjectManagerListener {
-            override fun projectOpened(project: Project?) {
-                if (project == null) return
+            override fun projectOpened(project: Project) {
                 ApplicationManager.getApplication().invokeLater {
                     project.statusBar()?.let {
                         val widget = PomodoroWidget()
@@ -54,9 +53,9 @@ class PomodoroComponent : ApplicationComponent {
                 }
             }
 
-            override fun projectClosing(project: Project?) {}
+            override fun projectClosing(project: Project) {}
 
-            override fun projectClosed(project: Project?) {}
+            override fun projectClosed(project: Project) {}
 
             override fun projectClosingBeforeSave(project: Project) {}
         })
