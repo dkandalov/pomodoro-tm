@@ -17,8 +17,7 @@ class ToolWindows : Settings.ChangeListener {
     init {
         val connection = ApplicationManager.getApplication().messageBus.connect()
         connection.subscribe(ProjectManager.TOPIC, object: ProjectManagerListener {
-            override fun projectOpened(project: Project?) {
-                if (project == null) return
+            override fun projectOpened(project: Project) {
                 ApplicationManager.getApplication().invokeLater {
                     if (Settings.instance.isShowToolWindow) {
                         registerWindowFor(project)
@@ -26,12 +25,11 @@ class ToolWindows : Settings.ChangeListener {
                 }
             }
 
-            override fun projectClosing(project: Project?) {
-                if (project == null) return
+            override fun projectClosing(project: Project) {
                 unregisterWindowFrom(project)
             }
 
-            override fun projectClosed(project: Project?) {}
+            override fun projectClosed(project: Project) {}
 
             override fun projectClosingBeforeSave(project: Project) {}
         })
