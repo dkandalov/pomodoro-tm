@@ -29,6 +29,6 @@ So, this plugin was created.
 
 
 ## Credits
-Original version of the plugin by [Alex Ivanov](https://twitter.com/alexMq0).
+The original version of the plugin was written by [Alex Ivanov](https://twitter.com/alexMq0) sometime in 2010.
 
-Widget icons are reused from great pomodoro timer app for OSX by [Ugo Landini](http://www.ugolandini.com/).
+Widget icons are reused from the great pomodoro timer app for OSX (which is no longer available) by [Ugo Landini](https://twitter.com/ugolandini).
