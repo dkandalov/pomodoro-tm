@@ -1,4 +1,5 @@
 import org.gradle.api.JavaVersion.VERSION_1_8
+import org.gradle.api.internal.HasConvention
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
@@ -29,13 +30,16 @@ dependencies {
     testCompile("junit:junit:4.12")
 }
 
-java.sourceSets {
-    "main" {
+fun sourceRoots(block: SourceSetContainer.() -> Unit) = sourceSets.apply(block)
+val SourceSet.kotlin: SourceDirectorySet get() = (this as HasConvention).convention.getPlugin<KotlinSourceSet>().kotlin
+
+sourceRoots {
+    getByName("main") {
         java.srcDirs("./src")
         kotlin.srcDirs("./src")
         resources.srcDirs("./resources")
     }
-    "test" {
+    getByName("test") {
         kotlin.srcDirs("./test")
     }
 }
