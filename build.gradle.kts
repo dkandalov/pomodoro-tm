@@ -1,5 +1,4 @@
 import org.gradle.api.JavaVersion.VERSION_1_8
-import org.gradle.api.internal.HasConvention
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
 import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
@@ -15,7 +14,7 @@ plugins {
     java
     idea
     kotlin("jvm") version "1.1.1"
-    id("org.jetbrains.intellij") version "0.2.17"
+    id("org.jetbrains.intellij") version "0.4.10"
 }
 java {
     sourceCompatibility = VERSION_1_8
