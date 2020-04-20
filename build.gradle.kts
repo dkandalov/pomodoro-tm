@@ -1,4 +1,3 @@
-import org.gradle.api.JavaVersion.VERSION_1_8
 import org.gradle.api.internal.HasConvention
 import org.jetbrains.kotlin.gradle.dsl.Coroutines
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
@@ -14,12 +13,8 @@ buildscript {
 plugins {
     java
     idea
-    kotlin("jvm") version "1.1.1"
-    id("org.jetbrains.intellij") version "0.4.10"
-}
-java {
-    sourceCompatibility = VERSION_1_8
-    targetCompatibility = VERSION_1_8
+    kotlin("jvm") version "1.3.70"
+    id("org.jetbrains.intellij") version "0.4.18"
 }
 
 repositories {
@@ -46,9 +41,9 @@ sourceRoots {
 
 tasks.withType<KotlinJvmCompile> {
     kotlinOptions {
-        jvmTarget = "1.8"
-        apiVersion = "1.1"
-        languageVersion = "1.1"
+        jvmTarget = "11"
+        apiVersion = "1.3"
+        languageVersion = "1.3"
     }
 }
 
@@ -57,7 +52,11 @@ kotlin {
 }
 
 intellij {
-    val ideVersion = System.getenv().getOrDefault("POMODORO_PLUGIN_IDEA_VERSION", "IC-172.3757.29")
+    // See https://www.jetbrains.com/intellij-repository/releases
+    val ideVersion = System.getenv().getOrDefault("IJ_VERSION",
+        "201.6668.113"
+//        "LATEST-EAP-SNAPSHOT"
+    )
     println("Using ide version: $ideVersion")
     version = ideVersion
     pluginName = "pomodoro"
