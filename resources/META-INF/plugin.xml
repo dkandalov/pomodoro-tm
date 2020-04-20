@@ -4,8 +4,6 @@
     <vendor url="http://github.com/dkandalov/pomodoro-tm">Dmitry Kandalov</vendor>
     <description>
         <![CDATA[
-        <html>
-        <body>
         Time management plugin for <a href="http://pomodorotechnique.com">Pomodoro Technique</a>.
         </br>
         How to use it:
@@ -15,20 +13,8 @@
             <li>Take a break until the timer rings again.</li>
         </ol>
         For more details see <a href="https://github.com/dkandalov/pomodoro-tm">plugin page on GitHub</a>.
-        </body>
-        </html>
         ]]>
     </description>
-    <change-notes>
-        <![CDATA[<html><body>
-        <ul>
-            Version 0.60:
-            <li>option to automatically start new pomodoro after break</li>
-            <li>removed modal dialog during pomodoro break (because it didn't work properly and was a questionable idea)</li>
-        </ul>
-        </body></html>
-        ]]>
-    </change-notes>
 
     <!-- http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
     <idea-version since-build="201.6668.113"/>
@@ -44,7 +30,8 @@
     </application-components>
 
     <actions>
-        <action id="Start/stop pomodoro" class="pomodoro.PomodoroAction" text="Start/Stop Pomodoro" description="Start or stop pomodoro timer">
+        <action id="Start/stop pomodoro" class="pomodoro.PomodoroAction" text="Start/Stop Pomodoro"
+                description="Start or stop pomodoro timer">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift P"/>
         </action>
     </actions>
