@@ -79,7 +79,7 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
         }
     }
 
-    override fun getPresentation(type: StatusBarWidget.PlatformType): WidgetPresentation? = null
+    override fun getPresentation(): WidgetPresentation? = null
 
     override fun dispose() {
         model.removeListener(this)

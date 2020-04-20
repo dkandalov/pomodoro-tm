@@ -54,7 +54,7 @@ class ToolWindows : Settings.ChangeListener {
         val contentFactory = ContentFactory.SERVICE.getInstance()
         val content = contentFactory.createContent(presenter.contentPane, UIBundle.message("toolwindow.title"), false)
         toolWindow.contentManager.addContent(content)
-        toolWindow.icon = pomodoroIcon
+        toolWindow.setIcon(pomodoroIcon)
     }
 
     private fun unregisterWindowFrom(project: Project) {

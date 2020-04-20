@@ -10,7 +10,7 @@ import com.intellij.util.xmlb.annotations.OptionTag
 import pomodoro.model.time.Duration
 import java.util.*
 
-@State(name = "PomodoroSettings", storages = arrayOf(Storage("pomodoro.settings.xml")))
+@State(name = "PomodoroSettings", storages = [Storage("pomodoro.settings.xml")])
 data class Settings(
         @OptionTag(nameAttribute = "pomodoroLengthInMinutes", converter = MinutesConverter::class)
         var pomodoroDuration: Duration = defaultPomodoroDuration,

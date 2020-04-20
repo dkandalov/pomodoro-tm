@@ -1,6 +1,6 @@
 package pomodoro
 
-import com.intellij.CommonBundle
+import com.intellij.AbstractBundle
 import org.jetbrains.annotations.NonNls
 import org.jetbrains.annotations.PropertyKey
 import java.lang.ref.Reference
@@ -15,7 +15,7 @@ object UIBundle {
     @NonNls private const val PATH_TO_BUNDLE = "messages"
 
     @JvmStatic fun message(@PropertyKey(resourceBundle = "messages") key: String, vararg params: Any): String =
-        CommonBundle.message(bundle, key, *params)
+        AbstractBundle.message(bundle, key, *params)
 
     private val bundle: ResourceBundle
         get() {
@@ -23,7 +23,7 @@ object UIBundle {
             if (ourBundle != null) bundle = ourBundle!!.get()
             if (bundle == null) {
                 bundle = ResourceBundle.getBundle(PATH_TO_BUNDLE)
-                ourBundle = SoftReference<ResourceBundle>(bundle)
+                ourBundle = SoftReference(bundle)
             }
             return bundle!!
         }

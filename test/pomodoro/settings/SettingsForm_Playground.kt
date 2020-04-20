@@ -9,7 +9,7 @@ import java.awt.event.ActionListener
 import javax.swing.JFrame
 import javax.swing.WindowConstants
 
-fun main(args: Array<String>) {
+fun main() {
     val settings = Settings(pomodoroDuration = 123.minutes)
     val presenter = SettingsPresenter(settings)
     val component = presenter.createComponent()

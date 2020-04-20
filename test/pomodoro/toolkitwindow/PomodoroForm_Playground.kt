@@ -8,7 +8,7 @@ import pomodoro.model.time.Duration
 import javax.swing.JFrame
 import javax.swing.WindowConstants
 
-fun main(args: Array<String>) {
+fun main() {
     val config = Settings(pomodoroDuration = Duration(1), breakDuration = Duration(1))
     val model = PomodoroModel(config, PomodoroState())
     val presenter = ToolwindowPresenter(model)
