@@ -20,7 +20,7 @@ fun main() {
 
         // add additional buttons for manual testing
         contentPane.layout = FlowLayout()
-        contentPane.add(createButton("<Apply>", ActionListener {
+        contentPane.add(createButton("<Apply>") {
             try {
                 println("modified: " + presenter.isModified)
                 println(settings)
@@ -29,13 +29,13 @@ fun main() {
             } catch (e: ConfigurationException) {
                 e.printStackTrace()
             }
-        }))
-        contentPane.add(createButton("<Reset>", ActionListener {
+        })
+        contentPane.add(createButton("<Reset>") {
             println("modified: " + presenter.isModified)
             println(settings)
             presenter.reset()
             println(settings)
-        }))
+        })
 
         title = presenter.displayName
         defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE

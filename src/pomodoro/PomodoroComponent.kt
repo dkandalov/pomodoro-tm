@@ -3,10 +3,9 @@ package pomodoro
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
-import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.ApplicationComponent
-import com.intellij.openapi.components.ServiceManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
 import com.intellij.openapi.project.ProjectManagerListener
@@ -31,7 +30,7 @@ class PomodoroComponent : ApplicationComponent {
     override fun initComponent() {
         val settings = Settings.instance
 
-        model = PomodoroModel(settings, ServiceManager.getService(PomodoroState::class.java))
+        model = PomodoroModel(settings, service())
         model.onIdeStartup(Time.now())
 
         val toolWindows = ToolWindows()
@@ -48,7 +47,7 @@ class PomodoroComponent : ApplicationComponent {
                         it.addWidget(widget, "before Position", project)
                         settings.addChangeListener(widget)
 
-                        Disposer.register(project, Disposable { settings.removeChangeListener(widget) })
+                        Disposer.register(project) { settings.removeChangeListener(widget) }
                     }
                 }
             }

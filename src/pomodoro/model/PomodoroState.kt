@@ -15,7 +15,7 @@ import pomodoro.model.time.Time
  * Class for persisting pomodoro state.
  * It is not part of [Settings] class because instances of this class cannot be directly changed by user.
  */
-@State(name = "PomodoroState", storages = [Storage(file = "pomodoro.state.xml")])
+@State(name = "PomodoroState", storages = [Storage("pomodoro.state.xml")])
 data class PomodoroState(
     @Transient var mode: Mode = Stop,
     @OptionTag(nameAttribute = "lastState", converter = ModeConverter::class) var lastMode: Mode = Stop,
@@ -45,8 +45,8 @@ data class PomodoroState(
     }
 
     private class ModeConverter : Converter<Mode>() {
-        override fun toString(mode: Mode) = mode.name.toUpperCase()
-        override fun fromString(value: String) = when (value.toUpperCase()) {
+        override fun toString(mode: Mode) = mode.name.uppercase()
+        override fun fromString(value: String) = when (value.uppercase()) {
             "RUN" -> Run
             "BREAK" -> Break
             "STOP" -> Stop
