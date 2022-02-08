@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 plugins {
     idea
     java
-    kotlin("jvm") version "1.5.30"
+    kotlin("jvm") version "1.5.10"
     id("org.jetbrains.intellij") version "1.3.0"
 }
 
@@ -45,8 +45,8 @@ configure<IntelliJPluginExtension> {
     version.set(
         System.getenv().getOrDefault(
             "IJ_VERSION",
-//        "201.6668.113"
-            "LATEST-EAP-SNAPSHOT"
+            "212.4746.92" // with kotlin 1.5.10 support
+//            "LATEST-EAP-SNAPSHOT"
         )
     )
     pluginName.set("pomodoro")
