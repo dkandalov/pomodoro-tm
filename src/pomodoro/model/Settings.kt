@@ -18,7 +18,6 @@ data class Settings(
         var longBreakFrequency: Int = defaultLongBreakFrequency,
         var ringVolume: Int = 1,
         var isPopupEnabled: Boolean = true,
-        var isShowToolWindow: Boolean = false,
         var isShowTimeInToolbarWidget: Boolean = true,
         var startNewPomodoroAfterBreak: Boolean = false
 ) : PersistentStateComponent<Settings> {

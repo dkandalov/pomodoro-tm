@@ -42,7 +42,6 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
             longBreakFrequencyComboBox.addActionListener(actionListener)
             popupCheckBox.addChangeListener(changeListener)
             ringVolumeSlider.addChangeListener(changeListener)
-            showToolWindowCheckbox.addChangeListener(changeListener)
             showTimeInToolbarWidgetCheckbox.addChangeListener(changeListener)
             startNewPomodoroAfterBreak.addChangeListener(changeListener)
         }
@@ -99,7 +98,6 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
         }
 
         uiModel.isPopupEnabled = settingsForm!!.popupCheckBox.isSelected
-        uiModel.isShowToolWindow = settingsForm!!.showToolWindowCheckbox.isSelected
         uiModel.isShowTimeInToolbarWidget = settingsForm!!.showTimeInToolbarWidgetCheckbox.isSelected
         uiModel.startNewPomodoroAfterBreak = settingsForm!!.startNewPomodoroAfterBreak.isSelected
     }
@@ -119,7 +117,6 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
             ringVolumeSlider.toolTipText = ringVolumeTooltip(uiModel)
 
             popupCheckBox.isSelected = uiModel.isPopupEnabled
-            showToolWindowCheckbox.isSelected = uiModel.isShowToolWindow
             showTimeInToolbarWidgetCheckbox.isSelected = uiModel.isShowTimeInToolbarWidget
             startNewPomodoroAfterBreak.isSelected = uiModel.startNewPomodoroAfterBreak
         }

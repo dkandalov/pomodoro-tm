@@ -19,7 +19,6 @@ import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.Settings
 import pomodoro.model.TimeSource
 import pomodoro.model.time.Time
-import pomodoro.toolkitwindow.ToolWindows
 import pomodoro.widget.PomodoroWidget
 
 class PomodoroComponent : ApplicationComponent {
@@ -32,9 +31,6 @@ class PomodoroComponent : ApplicationComponent {
 
         model = PomodoroModel(settings, service())
         model.onIdeStartup(Time.now())
-
-        val toolWindows = ToolWindows()
-        settings.addChangeListener(toolWindows)
 
         userNotifier = UserNotifier(model)
 
