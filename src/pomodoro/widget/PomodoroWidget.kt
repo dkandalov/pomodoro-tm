@@ -39,7 +39,7 @@ class PomodoroWidgetFactory : StatusBarWidgetFactory {
     override fun canBeEnabledOn(statusBar: StatusBar) = true
 }
 
-class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Settings.ChangeListener {
+class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settings.ChangeListener {
     private val panelWithIcon = TextPanelWithIcon()
     private lateinit var statusBar: StatusBar
     private val model = service<PomodoroService>().model
@@ -55,7 +55,8 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
         })
         panelWithIcon.addMouseListener(object : MouseAdapter() {
             override fun mouseClicked(event: MouseEvent?) {
-                if (event != null && event.isAltDown) {
+                if (event == null) return
+                if (event.isAltDown) {
                     val popup = JBPopupFactory.getInstance().createActionGroupPopup(
                         null,
                         DefaultActionGroup(listOf(StartOrStopPomodoro(), ResetPomodorosCounter())),
@@ -66,7 +67,7 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
                     val dimension = popup.content.preferredSize
                     val point = Point(0, -dimension.height)
                     popup.show(RelativePoint(event.component, point))
-                } else {
+                } else if (event.button == MouseEvent.BUTTON1) {
                     model.onUserSwitchToNextState(Time.now())
                 }
             }
