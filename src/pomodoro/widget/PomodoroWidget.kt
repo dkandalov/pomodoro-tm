@@ -130,9 +130,9 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
         private val pomodoroIcon = loadIcon("/pomodoro.png")
         private val pomodoroStoppedIcon = loadIcon("/pomodoroStopped.png")
         private val pomodoroBreakIcon = loadIcon("/pomodoroBreak.png")
-        private val pomodoroDarculaIcon = loadIcon("/pomodoro-inverted.png")
-        private val pomodoroStoppedDarculaIcon = loadIcon("/pomodoroStopped-inverted.png")
-        private val pomodoroBreakDarculaIcon = loadIcon("/pomodoroBreak-inverted.png")
+        private val pomodoroDarculaIcon = loadIcon("/pomodoro_dark.png")
+        private val pomodoroStoppedDarculaIcon = loadIcon("/pomodoroStopped_dark.png")
+        private val pomodoroBreakDarculaIcon = loadIcon("/pomodoroBreak_dark.png")
 
         private fun loadIcon(filePath: String) = ImageIcon(PomodoroWidget::class.java.getResource(filePath))
     }
