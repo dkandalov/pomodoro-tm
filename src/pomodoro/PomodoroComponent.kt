@@ -7,10 +7,7 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
-import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.SystemInfo
-import com.intellij.openapi.wm.StatusBar
-import com.intellij.openapi.wm.WindowManager
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
 import pomodoro.model.PomodoroState.Mode.*
@@ -20,20 +17,9 @@ import pomodoro.model.time.Time
 
 @Service
 class PomodoroComponent : Disposable {
-    private val timeSource: TimeSource
-    private val userNotifier: UserNotifier
-    val model: PomodoroModel
-
-    init {
-        val settings = service<Settings>()
-
-        model = PomodoroModel(settings, service())
-        model.onIdeStartup(Time.now())
-
-        userNotifier = UserNotifier(model)
-
-        timeSource = TimeSource(listener = { time -> model.onTimer(time) }).start()
-    }
+    val model = PomodoroModel(service(), service()).also { it.onIdeStartup(Time.now()) }
+    private val userNotifier = UserNotifier(model)
+    private val timeSource = TimeSource(listener = { time -> model.onTimer(time) }).start()
 
     override fun dispose() {
         timeSource.stop()
@@ -86,6 +72,4 @@ class PomodoroComponent : Disposable {
             model.removeListener(this)
         }
     }
-
-    private fun Project.statusBar(): StatusBar? = WindowManager.getInstance().getStatusBar(this)
 }

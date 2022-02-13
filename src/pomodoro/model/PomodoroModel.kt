@@ -101,11 +101,8 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
         get() = when (state.mode) {
             Run   -> settings.pomodoroDuration
             Break ->
-                if (state.pomodorosTillLongBreak == 0) {
-                    settings.longBreakDuration
-                } else {
-                    settings.breakDuration
-                }
+                if (state.pomodorosTillLongBreak == 0) settings.longBreakDuration
+                else settings.breakDuration
             else  -> Duration.zero
         }
 

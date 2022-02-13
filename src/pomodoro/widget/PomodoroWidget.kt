@@ -6,7 +6,6 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
-import com.intellij.openapi.wm.StatusBarWidget.WidgetPresentation
 import com.intellij.openapi.wm.StatusBarWidgetFactory
 import com.intellij.util.ui.UIUtil
 import pomodoro.PomodoroComponent
@@ -94,8 +93,6 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
             Stop  -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
         }
     }
-
-    override fun getPresentation(): WidgetPresentation? = null
 
     override fun dispose() {
         model.removeListener(this)
