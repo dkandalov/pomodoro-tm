@@ -14,8 +14,8 @@ import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
 import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.Settings
+import pomodoro.model.time.Duration
 import pomodoro.model.time.Time
-import pomodoro.toolkitwindow.ToolwindowPresenter.Companion.formatDuration
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.ImageIcon
@@ -74,7 +74,7 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
     }
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
-        panelWithIcon.text = if (showTimeInToolbarWidget) formatDuration(model.timeLeft) else ""
+        panelWithIcon.text = if (showTimeInToolbarWidget) model.timeLeft.formatted() else ""
         panelWithIcon.toolTipText = widgetTooltip(model)
         panelWithIcon.icon = model.state.icon()
         panelWithIcon.repaint()
@@ -102,6 +102,12 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
 
     override fun onChange(newSettings: Settings) {
         updateWidgetPanel(model, panelWithIcon, newSettings.isShowTimeInToolbarWidget)
+    }
+
+    private fun Duration.formatted(): String {
+        val formattedMinutes = String.format("%02d", minutes)
+        val formattedSeconds = String.format("%02d", (this - Duration(minutes)).seconds)
+        return "$formattedMinutes:$formattedSeconds"
     }
 
     companion object {
