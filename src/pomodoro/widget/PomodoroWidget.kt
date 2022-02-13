@@ -50,7 +50,7 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
             }
 
             override fun mouseEntered(e: MouseEvent?) {
-                statusBar.info = statusBarTooltip(model)
+                statusBar.info = UIBundle.message("statuspanel.tooltip", nextActionName(model), model.state.pomodorosAmount)
             }
 
             override fun mouseExited(e: MouseEvent?) {
@@ -75,23 +75,13 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
 
     private fun updateWidgetPanel(model: PomodoroModel, panelWithIcon: TextPanelWithIcon, showTimeInToolbarWidget: Boolean) {
         panelWithIcon.text = if (showTimeInToolbarWidget) model.timeLeft.formatted() else ""
-        panelWithIcon.toolTipText = widgetTooltip(model)
-        panelWithIcon.icon = model.state.icon()
-        panelWithIcon.repaint()
-    }
-
-    private fun statusBarTooltip(model: PomodoroModel) =
-        UIBundle.message("statuspanel.tooltip", nextActionName(model), model.state.pomodorosAmount)
-
-    private fun widgetTooltip(model: PomodoroModel) = UIBundle.message("statuspanel.widget_tooltip", nextActionName(model))
-
-    private fun PomodoroState.icon(): ImageIcon {
-        val underDarcula = UIUtil.isUnderDarcula()
-        return when (mode) {
-            Run   -> if (underDarcula) pomodoroDarculaIcon else pomodoroIcon
-            Break -> if (underDarcula) pomodoroBreakDarculaIcon else pomodoroBreakIcon
-            Stop  -> if (underDarcula) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
+        panelWithIcon.toolTipText = UIBundle.message("statuspanel.widget_tooltip", nextActionName(model))
+        panelWithIcon.icon = when (model.state.mode) {
+            Run   -> if (UIUtil.isUnderDarcula()) pomodoroDarculaIcon else pomodoroIcon
+            Break -> if (UIUtil.isUnderDarcula()) pomodoroBreakDarculaIcon else pomodoroBreakIcon
+            Stop  -> if (UIUtil.isUnderDarcula()) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
         }
+        panelWithIcon.repaint()
     }
 
     override fun dispose() {
