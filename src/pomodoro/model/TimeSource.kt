@@ -2,29 +2,26 @@ package pomodoro.model
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ModalityState
+import com.intellij.util.concurrency.AppExecutorUtil
 import pomodoro.model.time.Time
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
-/**
- * (Note that [com.intellij.openapi.actionSystem.ActionManager.addTimerListener] won't work as a timer callback)
- */
 class TimeSource(private val listener: (Time) -> Unit) {
-    @Volatile private var shouldStop = false
+    private var future: ScheduledFuture<*>? = null
 
     fun start(): TimeSource {
-        val application = ApplicationManager.getApplication()
-        application.executeOnPooledThread {
-            while (!shouldStop) {
-                application.invokeLater(
-                        { listener(Time.now()) },
-                        ModalityState.any() // Use "any" so that timer is updated even while modal dialog like IDE Settings is open.
-                )
-                Thread.sleep(500)
-            }
+        val runnable = {
+            ApplicationManager.getApplication().invokeLater(
+                { listener(Time.now()) },
+                ModalityState.any() // Use "any" so that timer is updated even while modal dialog like IDE Settings is open.
+            )
         }
+        future = AppExecutorUtil.getAppScheduledExecutorService().scheduleWithFixedDelay(runnable, 0, 500L, MILLISECONDS)
         return this
     }
 
     fun stop() {
-        shouldStop = true
+        future?.cancel(true)
     }
 }
