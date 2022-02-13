@@ -15,9 +15,9 @@ class StartOrStopPomodoro : AnAction(), DumbAware {
     override fun update(event: AnActionEvent) {
         val mode = service<PomodoroService>().model.state.mode
         event.presentation.text = when (mode) {
-            PomodoroState.Mode.Run   -> "Stop Pomodoro"
-            PomodoroState.Mode.Break -> "Stop Pomodoro"
-            PomodoroState.Mode.Stop  -> "Start Pomodoro"
+            PomodoroState.Mode.Run   -> "Stop Pomodoro Timer"
+            PomodoroState.Mode.Break -> "Stop Pomodoro Timer"
+            PomodoroState.Mode.Stop  -> "Start Pomodoro Timer"
         }
     }
 }

@@ -24,7 +24,7 @@
     <depends>com.intellij.modules.platform</depends>
 
     <actions>
-        <action id="StartOrStopPomodoro" class="pomodoro.StartOrStopPomodoro" text="Start/Stop Pomodoro"
+        <action id="StartOrStopPomodoro" class="pomodoro.StartOrStopPomodoro" text="Start/Stop Pomodoro Timer"
                 description="Start or stop pomodoro timer">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl shift P"/>
         </action>
