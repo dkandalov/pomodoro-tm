@@ -2,10 +2,12 @@ package pomodoro.widget
 
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.openapi.wm.StatusBarWidget.WidgetPresentation
+import com.intellij.openapi.wm.StatusBarWidgetFactory
 import com.intellij.util.ui.UIUtil
 import pomodoro.PomodoroComponent
 import pomodoro.UIBundle
@@ -20,6 +22,14 @@ import java.awt.event.MouseEvent
 import javax.swing.ImageIcon
 import javax.swing.JComponent
 
+class PomodoroWidgetFactory : StatusBarWidgetFactory {
+    override fun getId() = "Pomodoro"
+    override fun getDisplayName() = "Pomodoro"
+    override fun isAvailable(project: Project) = true
+    override fun createWidget(project: Project) = PomodoroWidget()
+    override fun disposeWidget(widget: StatusBarWidget) = widget.dispose()
+    override fun canBeEnabledOn(statusBar: StatusBar) = true
+}
 
 class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Settings.ChangeListener {
     private val panelWithIcon = TextPanelWithIcon()

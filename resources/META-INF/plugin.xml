@@ -34,5 +34,6 @@
         <applicationService serviceImplementation="pomodoro.model.Settings"/>
         <applicationService serviceImplementation="pomodoro.model.PomodoroState"/>
         <applicationConfigurable instance="pomodoro.settings.SettingsPresenter"/>
+        <statusBarWidgetFactory implementation="pomodoro.widget.PomodoroWidgetFactory"/>
     </extensions>
 </idea-plugin>

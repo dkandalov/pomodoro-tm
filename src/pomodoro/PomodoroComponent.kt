@@ -8,9 +8,6 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
-import com.intellij.openapi.project.ProjectManager
-import com.intellij.openapi.project.ProjectManagerListener
-import com.intellij.openapi.util.Disposer
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.WindowManager
@@ -20,7 +17,6 @@ import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.Settings
 import pomodoro.model.TimeSource
 import pomodoro.model.time.Time
-import pomodoro.widget.PomodoroWidget
 
 @Service
 class PomodoroComponent : Disposable {
@@ -35,21 +31,6 @@ class PomodoroComponent : Disposable {
         model.onIdeStartup(Time.now())
 
         userNotifier = UserNotifier(model)
-
-        ApplicationManager.getApplication().messageBus.connect()
-            .subscribe(ProjectManager.TOPIC, object : ProjectManagerListener {
-                override fun projectOpened(project: Project) {
-                    ApplicationManager.getApplication().invokeLater {
-                        project.statusBar()?.let {
-                            val widget = PomodoroWidget()
-                            it.addWidget(widget, "before Position", project)
-                            settings.addChangeListener(widget)
-
-                            Disposer.register(project) { settings.removeChangeListener(widget) }
-                        }
-                    }
-                }
-            })
 
         timeSource = TimeSource(listener = { time -> model.onTimer(time) }).start()
     }
