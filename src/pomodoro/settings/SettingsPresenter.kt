@@ -3,7 +3,6 @@ package pomodoro.settings
 import com.intellij.openapi.components.service
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.options.SearchableConfigurable
-import org.jetbrains.annotations.Nls
 import pomodoro.RingSound
 import pomodoro.UIBundle
 import pomodoro.model.Settings
@@ -128,14 +127,14 @@ class SettingsPresenter constructor(private val settings: Settings = service()):
     // ActionEvent might occur after disposeUIResources() was invoked
     private fun uiResourcesDisposed() = settingsForm == null
 
-    @Nls private fun ringVolumeTooltip(uiModel: Settings) =
+    private fun ringVolumeTooltip(uiModel: Settings) =
         if (uiModel.ringVolume == 0) {
             UIBundle.message("settings.ringSlider.noSoundTooltip")
         } else {
             UIBundle.message("settings.ringSlider.volumeTooltip", uiModel.ringVolume)
         }
 
-    @Nls override fun getDisplayName() = UIBundle.message("settings.title")
+    override fun getDisplayName() = UIBundle.message("settings.title")
 
     override fun getId() = "Pomodoro"
 

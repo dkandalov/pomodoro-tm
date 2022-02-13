@@ -8,7 +8,7 @@ import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.openapi.wm.StatusBarWidgetFactory
 import com.intellij.util.ui.UIUtil
-import pomodoro.PomodoroComponent
+import pomodoro.PomodoroService
 import pomodoro.UIBundle
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
@@ -33,7 +33,7 @@ class PomodoroWidgetFactory : StatusBarWidgetFactory {
 class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Settings.ChangeListener {
     private val panelWithIcon = TextPanelWithIcon()
     private lateinit var statusBar: StatusBar
-    private val model = service<PomodoroComponent>().model
+    private val model = service<PomodoroService>().model
 
     init {
         val settings = service<Settings>()

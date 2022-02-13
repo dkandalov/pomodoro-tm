@@ -8,6 +8,6 @@ import pomodoro.model.time.Time
 
 class PomodoroAction : AnAction(), DumbAware {
     override fun actionPerformed(event: AnActionEvent) {
-        service<PomodoroComponent>().model.onUserSwitchToNextState(Time.now())
+        service<PomodoroService>().model.onUserSwitchToNextState(Time.now())
     }
 }
