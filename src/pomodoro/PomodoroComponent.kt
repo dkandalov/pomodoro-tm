@@ -79,7 +79,7 @@ class PomodoroComponent : ApplicationComponent {
             if (SystemInfo.isLinux && clipProperty != null && clipProperty == "org.classpath.icedtea.pulseaudio.PulseAudioMixerProvider") {
                 showPopupNotification(
                         "JDK used by your IDE can lock up or fail to play sounds.<br/>" +
-                        "Please see <a href=\"http://keithp.com/blogs/Java-Sound-on-Linux/\">http://keithp.com/blogs/Java-Sound-on-Linux</a> to fix it.")
+                        "Please see <a href=\"https://keithp.com/blogs/Java-Sound-on-Linux\">https://keithp.com/blogs/Java-Sound-on-Linux</a> to fix it.")
             }
 
             model.addListener(this, object : PomodoroModel.Listener {
