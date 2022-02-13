@@ -23,12 +23,6 @@
          http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
-    <application-components>
-        <component>
-            <implementation-class>pomodoro.PomodoroComponent</implementation-class>
-        </component>
-    </application-components>
-
     <actions>
         <action id="Start/stop pomodoro" class="pomodoro.PomodoroAction" text="Start/Stop Pomodoro"
                 description="Start or stop pomodoro timer">

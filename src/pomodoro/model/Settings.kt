@@ -60,8 +60,5 @@ data class Settings(
         val defaultBreakDuration = Duration(minutes = 5)
         val defaultLongBreakDuration = Duration(minutes = 20)
         const val defaultLongBreakFrequency = 4
-
-        val instance: Settings
-            get() = service()
     }
 }

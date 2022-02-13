@@ -1,5 +1,6 @@
 package pomodoro.settings
 
+import com.intellij.openapi.components.service
 import com.intellij.openapi.options.ConfigurationException
 import com.intellij.openapi.options.SearchableConfigurable
 import org.jetbrains.annotations.Nls
@@ -12,7 +13,7 @@ import javax.swing.JComboBox
 import javax.swing.JComponent
 import javax.swing.event.ChangeListener
 
-class SettingsPresenter constructor(private val settings: Settings = Settings.instance): SearchableConfigurable {
+class SettingsPresenter constructor(private val settings: Settings = service()): SearchableConfigurable {
     private var settingsForm: SettingsForm? = null
     private lateinit var uiModel: Settings
     private var updatingUI: Boolean = false

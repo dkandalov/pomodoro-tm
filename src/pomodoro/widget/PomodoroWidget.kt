@@ -1,6 +1,7 @@
 package pomodoro.widget
 
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.components.service
 import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
@@ -23,24 +24,29 @@ import javax.swing.JComponent
 class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Settings.ChangeListener {
     private val panelWithIcon = TextPanelWithIcon()
     private lateinit var statusBar: StatusBar
-    private val model: PomodoroModel
+    private val model = service<PomodoroComponent>().model
 
     init {
-        val pomodoroComponent = ApplicationManager.getApplication().getComponent(PomodoroComponent::class.java)!!
-        model = pomodoroComponent.model
-
-        val settings = Settings.instance
+        val settings = service<Settings>()
         updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget)
 
-        model.addListener(this, object: PomodoroModel.Listener {
+        model.addListener(this, object : PomodoroModel.Listener {
             override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
                 ApplicationManager.getApplication().invokeLater { updateWidgetPanel(model, panelWithIcon, settings.isShowTimeInToolbarWidget) }
             }
         })
-        panelWithIcon.addMouseListener(object: MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent?) { model.onUserSwitchToNextState(Time.now()) }
-            override fun mouseEntered(e: MouseEvent?) { statusBar.info = statusBarTooltip(model) }
-            override fun mouseExited(e: MouseEvent?) { statusBar.info = "" }
+        panelWithIcon.addMouseListener(object : MouseAdapter() {
+            override fun mouseClicked(e: MouseEvent?) {
+                model.onUserSwitchToNextState(Time.now())
+            }
+
+            override fun mouseEntered(e: MouseEvent?) {
+                statusBar.info = statusBarTooltip(model)
+            }
+
+            override fun mouseExited(e: MouseEvent?) {
+                statusBar.info = ""
+            }
         })
     }
 

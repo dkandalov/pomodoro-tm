@@ -3,8 +3,9 @@ package pomodoro
 import com.intellij.notification.Notification
 import com.intellij.notification.NotificationType
 import com.intellij.notification.Notifications
+import com.intellij.openapi.Disposable
 import com.intellij.openapi.application.ApplicationManager
-import com.intellij.openapi.components.ApplicationComponent
+import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManager
@@ -21,13 +22,14 @@ import pomodoro.model.TimeSource
 import pomodoro.model.time.Time
 import pomodoro.widget.PomodoroWidget
 
-class PomodoroComponent : ApplicationComponent {
-    private lateinit var timeSource: TimeSource
-    private lateinit var userNotifier: UserNotifier
-    lateinit var model: PomodoroModel private set
+@Service
+class PomodoroComponent : Disposable {
+    private val timeSource: TimeSource
+    private val userNotifier: UserNotifier
+    val model: PomodoroModel
 
-    override fun initComponent() {
-        val settings = Settings.instance
+    init {
+        val settings = service<Settings>()
 
         model = PomodoroModel(settings, service())
         model.onIdeStartup(Time.now())
@@ -52,13 +54,10 @@ class PomodoroComponent : ApplicationComponent {
         timeSource = TimeSource(listener = { time -> model.onTimer(time) }).start()
     }
 
-    override fun disposeComponent() {
+    override fun dispose() {
         timeSource.stop()
         userNotifier.dispose()
     }
-
-    override fun getComponentName() = "Pomodoro"
-
 
     private class UserNotifier(private val model: PomodoroModel) {
         private val ringSound = RingSound()
@@ -75,7 +74,7 @@ class PomodoroComponent : ApplicationComponent {
 
             model.addListener(this, object : PomodoroModel.Listener {
                 override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
-                    val settings = Settings.instance
+                    val settings = service<Settings>()
                     when (state.mode) {
                         Run   -> if (state.lastMode == Break && settings.startNewPomodoroAfterBreak) {
                             ringSound.play(settings.ringVolume)
