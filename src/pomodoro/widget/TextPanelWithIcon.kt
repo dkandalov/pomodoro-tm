@@ -31,10 +31,5 @@ internal class TextPanelWithIcon: TextPanel() {
         return insets
     }
 
-    override fun getPreferredSize(): Dimension {
-        val preferredSize = super.getPreferredSize()
-        return Dimension(preferredSize.width + iconWidth(), preferredSize.height)
-    }
-
     private fun iconWidth() = icon?.iconWidth ?: 0
 }
