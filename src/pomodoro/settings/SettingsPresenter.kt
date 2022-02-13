@@ -136,11 +136,7 @@ class SettingsPresenter constructor(private val settings: Settings = Settings.in
 
     @Nls override fun getDisplayName() = UIBundle.message("settings.title")
 
-    override fun getHelpTopic(): String? = null
-
     override fun getId() = "Pomodoro"
-
-    override fun enableSearch(option: String?): Runnable? = null
 
     companion object {
         private const val MIN_TIME_INTERVAL = 1

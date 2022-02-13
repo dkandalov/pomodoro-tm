@@ -34,26 +34,20 @@ class PomodoroComponent : ApplicationComponent {
 
         userNotifier = UserNotifier(model)
 
-        val connection = ApplicationManager.getApplication().messageBus.connect()
-        connection.subscribe(ProjectManager.TOPIC, object: ProjectManagerListener {
-            override fun projectOpened(project: Project) {
-                ApplicationManager.getApplication().invokeLater {
-                    project.statusBar()?.let {
-                        val widget = PomodoroWidget()
-                        it.addWidget(widget, "before Position", project)
-                        settings.addChangeListener(widget)
+        ApplicationManager.getApplication().messageBus.connect()
+            .subscribe(ProjectManager.TOPIC, object : ProjectManagerListener {
+                override fun projectOpened(project: Project) {
+                    ApplicationManager.getApplication().invokeLater {
+                        project.statusBar()?.let {
+                            val widget = PomodoroWidget()
+                            it.addWidget(widget, "before Position", project)
+                            settings.addChangeListener(widget)
 
-                        Disposer.register(project) { settings.removeChangeListener(widget) }
+                            Disposer.register(project) { settings.removeChangeListener(widget) }
+                        }
                     }
                 }
-            }
-
-            override fun projectClosing(project: Project) {}
-
-            override fun projectClosed(project: Project) {}
-
-            override fun projectClosingBeforeSave(project: Project) {}
-        })
+            })
 
         timeSource = TimeSource(listener = { time -> model.onTimer(time) }).start()
     }
@@ -74,19 +68,20 @@ class PomodoroComponent : ApplicationComponent {
             val clipProperty = System.getProperty("javax.sound.sampled.Clip")
             if (SystemInfo.isLinux && clipProperty != null && clipProperty == "org.classpath.icedtea.pulseaudio.PulseAudioMixerProvider") {
                 showPopupNotification(
-                        "JDK used by your IDE can lock up or fail to play sounds.<br/>" +
-                        "Please see <a href=\"https://keithp.com/blogs/Java-Sound-on-Linux\">https://keithp.com/blogs/Java-Sound-on-Linux</a> to fix it.")
+                    "JDK used by your IDE can lock up or fail to play sounds.<br/>" +
+                        "Please see <a href=\"https://keithp.com/blogs/Java-Sound-on-Linux\">https://keithp.com/blogs/Java-Sound-on-Linux</a> to fix it."
+                )
             }
 
             model.addListener(this, object : PomodoroModel.Listener {
                 override fun onStateChange(state: PomodoroState, wasManuallyStopped: Boolean) {
                     val settings = Settings.instance
                     when (state.mode) {
-                        Run -> if (state.lastMode == Break && settings.startNewPomodoroAfterBreak) {
+                        Run   -> if (state.lastMode == Break && settings.startNewPomodoroAfterBreak) {
                             ringSound.play(settings.ringVolume)
                             if (settings.isPopupEnabled) showPopupNotification(UIBundle.message("notification.pomodoro_start"))
                         }
-                        Stop -> if (state.lastMode == Break && !wasManuallyStopped) {
+                        Stop  -> if (state.lastMode == Break && !wasManuallyStopped) {
                             ringSound.play(settings.ringVolume)
                         }
                         Break -> if (state.lastMode != Break) {
