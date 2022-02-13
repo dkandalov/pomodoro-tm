@@ -1,14 +1,22 @@
 package pomodoro.widget
 
+import com.intellij.openapi.actionSystem.DefaultActionGroup
+import com.intellij.openapi.actionSystem.PlatformDataKeys
+import com.intellij.openapi.actionSystem.impl.AsyncDataContext
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.popup.JBPopupFactory
+import com.intellij.openapi.ui.popup.JBPopupFactory.ActionSelectionAid.SPEEDSEARCH
 import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.openapi.wm.StatusBarWidgetFactory
+import com.intellij.ui.awt.RelativePoint
 import com.intellij.util.ui.UIUtil
 import pomodoro.PomodoroService
+import pomodoro.ResetPomodorosCounter
+import pomodoro.StartOrStopPomodoro
 import pomodoro.UIBundle
 import pomodoro.model.PomodoroModel
 import pomodoro.model.PomodoroState
@@ -16,6 +24,7 @@ import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.Settings
 import pomodoro.model.time.Duration
 import pomodoro.model.time.Time
+import java.awt.Point
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import javax.swing.ImageIcon
@@ -45,8 +54,21 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
             }
         })
         panelWithIcon.addMouseListener(object : MouseAdapter() {
-            override fun mouseClicked(e: MouseEvent?) {
-                model.onUserSwitchToNextState(Time.now())
+            override fun mouseClicked(event: MouseEvent?) {
+                if (event != null && event.isAltDown) {
+                    val popup = JBPopupFactory.getInstance().createActionGroupPopup(
+                        null,
+                        DefaultActionGroup(listOf(StartOrStopPomodoro(), ResetPomodorosCounter())),
+                        MapDataContext(mapOf(PlatformDataKeys.CONTEXT_COMPONENT.name to event.component)),
+                        SPEEDSEARCH,
+                        true
+                    )
+                    val dimension = popup.content.preferredSize
+                    val point = Point(0, -dimension.height)
+                    popup.show(RelativePoint(event.component, point))
+                } else {
+                    model.onUserSwitchToNextState(Time.now())
+                }
             }
 
             override fun mouseEntered(e: MouseEvent?) {
@@ -98,6 +120,10 @@ class PomodoroWidget: CustomStatusBarWidget, StatusBarWidget.Multiframe, Setting
         val formattedMinutes = String.format("%02d", minutes)
         val formattedSeconds = String.format("%02d", (this - Duration(minutes)).seconds)
         return "$formattedMinutes:$formattedSeconds"
+    }
+
+    private class MapDataContext(private val map: Map<String, Any?> = HashMap()) : AsyncDataContext {
+        override fun getData(dataId: String) = map[dataId]
     }
 
     companion object {
