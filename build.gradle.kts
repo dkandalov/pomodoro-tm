@@ -7,7 +7,7 @@ plugins {
     idea
     java
     kotlin("jvm") version "1.5.10"
-    id("org.jetbrains.intellij") version "1.3.0"
+    id("org.jetbrains.intellij") version "1.4.0"
 }
 
 repositories {
