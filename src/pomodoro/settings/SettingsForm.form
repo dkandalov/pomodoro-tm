@@ -107,6 +107,9 @@
             </constraints>
             <properties>
               <maximum value="3"/>
+              <opaque value="false"/>
+              <paintLabels value="false"/>
+              <paintTicks value="true"/>
               <snapToTicks value="true"/>
               <value value="1"/>
             </properties>
