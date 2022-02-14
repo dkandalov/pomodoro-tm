@@ -1,7 +1,7 @@
 <idea-plugin>
     <name>Pomodoro-tm</name>
     <version>0.70</version>
-    <vendor url="http://github.com/dkandalov/pomodoro-tm">Dmitry Kandalov</vendor>
+    <vendor url="https://github.com/dkandalov/pomodoro-tm">Dmitry Kandalov</vendor>
     <description>
         <![CDATA[
         Time management plugin for <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique">Pomodoro Technique</a>.
@@ -16,11 +16,11 @@
         ]]>
     </description>
 
-    <!-- http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html -->
+    <!-- https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html -->
     <idea-version since-build="212.4746.92"/>
 
     <!-- Make plugin available in all IntelliJ IDEs
-         http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
+         https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
 
     <actions>
