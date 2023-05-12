@@ -6,8 +6,8 @@ import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet
 plugins {
     idea
     java
-    kotlin("jvm") version "1.5.10"
-    id("org.jetbrains.intellij") version "1.4.0"
+    kotlin("jvm") version "1.6.21"
+    id("org.jetbrains.intellij") version "1.13.3"
 }
 
 repositories {
