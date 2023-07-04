@@ -1,0 +1,43 @@
+plugins {
+    id 'idea'
+    id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
+    id 'org.jetbrains.intellij' version '1.13.3'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
+
+sourceSets {
+    main {
+        java.srcDirs './src'
+        kotlin.srcDirs './src'
+        resources.srcDirs './resources'
+    }
+    test {
+        java.srcDirs './test'
+    }
+}
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "11"
+        apiVersion = "1.5"
+        languageVersion = "1.5"
+    }
+}
+
+intellij {
+    // See https://www.jetbrains.com/intellij-repository/releases
+    version = '212.4746.92'
+    // version = 'LATEST-EAP-SNAPSHOT'
+    pluginName = 'pomodoro'
+    downloadSources = true
+    sameSinceUntilBuild = false
+    updateSinceUntilBuild = false
+}
