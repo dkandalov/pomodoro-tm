@@ -1,16 +1,10 @@
 plugins {
-    id 'idea'
-    id 'java'
+    id 'org.jetbrains.intellij' version '1.16.0'
     id 'org.jetbrains.kotlin.jvm' version '1.6.21'
-    id 'org.jetbrains.intellij' version '1.13.3'
 }
 
 repositories {
     mavenCentral()
-}
-
-dependencies {
-    testImplementation 'junit:junit:4.13.2'
 }
 
 sourceSets {
@@ -20,8 +14,12 @@ sourceSets {
         resources.srcDirs './resources'
     }
     test {
-        java.srcDirs './test'
+        kotlin.srcDirs './test'
     }
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
 }
 
 compileKotlin {
