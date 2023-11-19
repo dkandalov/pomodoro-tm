@@ -19,6 +19,7 @@ import pomodoro.ResetPomodorosCounter
 import pomodoro.StartOrStopPomodoro
 import pomodoro.UIBundle
 import pomodoro.model.PomodoroModel
+import pomodoro.model.PomodoroSnapshot
 import pomodoro.model.PomodoroState
 import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.Settings
@@ -73,7 +74,9 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
             }
 
             override fun mouseEntered(e: MouseEvent?) {
-                statusBar.info = UIBundle.message("statuspanel.tooltip", nextActionName(model), model.state.pomodorosAmount)
+                val (today, week, month) = PomodoroSnapshot.statisticsAt(Time.now(), model.state.history)
+                statusBar.info = UIBundle.message("statuspanel.tooltip", nextActionName(model),
+                        today.completed, today.failed, week.completed, week.failed, month.completed, month.failed)
             }
 
             override fun mouseExited(e: MouseEvent?) {
