@@ -46,6 +46,7 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
                 if (pomodorosTillLongBreak == 0) {
                     pomodorosTillLongBreak = settings.longBreakFrequency
                 }
+                history.add(PomodoroSnapshot.failed(startTime = startTime, endTime = time))
             }
             Break -> {
                 mode = Stop
@@ -67,6 +68,7 @@ class PomodoroModel(originalSettings: Settings, val state: PomodoroState) {
                 if (time >= startTime + progressMax) {
                     mode = Break
                     settings = updatedSettings
+                    history.add(PomodoroSnapshot.completed(startTime = startTime, endTime = time))
                     startTime = time
                     progress = progressSince(time)
                     pomodorosAmount++

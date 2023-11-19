@@ -25,8 +25,13 @@ data class Duration(internal val delegate: JavaDuration = JavaDuration.ZERO) : C
         val zero = Duration(0)
 
         fun between(start: Time, end: Time) = Duration(JavaDuration.between(start.instant, end.instant))
+
+        fun ofDays(days: Long) = Duration(JavaDuration.ofDays(days))
     }
 }
 
 val Number.minutes: Duration
     get() = Duration(minutes = toInt())
+
+val Number.days: Duration
+    get() = Duration.ofDays(days = toLong())

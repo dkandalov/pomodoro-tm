@@ -23,7 +23,8 @@ data class PomodoroState(
     @OptionTag(nameAttribute = "lastUpdateTime", converter = TimeConverter::class) var lastUpdateTime: Time = Time.zero,
     @OptionTag(nameAttribute = "pomodorosAmount") var pomodorosAmount: Int = 0,
     @Transient var progress: Duration = Duration.zero,
-    var pomodorosTillLongBreak: Int = Settings.defaultLongBreakFrequency
+    var pomodorosTillLongBreak: Int = Settings.defaultLongBreakFrequency,
+    val history: MutableList<PomodoroSnapshot> = mutableListOf()
 ) : PersistentStateComponent<PomodoroState> {
 
     override fun getState() = this
