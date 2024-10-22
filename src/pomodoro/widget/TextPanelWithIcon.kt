@@ -1,7 +1,6 @@
 package pomodoro.widget
 
 import com.intellij.openapi.wm.impl.status.TextPanel
-import java.awt.Dimension
 import java.awt.Graphics
 import java.awt.Insets
 import javax.swing.Icon

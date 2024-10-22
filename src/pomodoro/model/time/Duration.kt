@@ -8,7 +8,6 @@ import java.time.Duration as JavaDuration
  * Using wrapper class might be useful to see exactly which part of Duration API is used.
  */
 data class Duration(internal val delegate: JavaDuration = JavaDuration.ZERO) : Comparable<Duration> {
-    val millis: Long = delegate.toMillis()
     val seconds: Long = delegate.seconds
     val minutes: Long = delegate.toMinutes()
 

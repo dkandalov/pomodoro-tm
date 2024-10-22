@@ -1,7 +1,7 @@
 package pomodoro.model
 
 import org.hamcrest.CoreMatchers.equalTo
-import org.junit.Assert.assertThat
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import pomodoro.model.PomodoroState.Mode.*
 import pomodoro.model.time.Duration

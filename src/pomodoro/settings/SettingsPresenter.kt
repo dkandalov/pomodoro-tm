@@ -12,7 +12,7 @@ import javax.swing.JComboBox
 import javax.swing.JComponent
 import javax.swing.event.ChangeListener
 
-class SettingsPresenter constructor(private val settings: Settings = service()): SearchableConfigurable {
+class SettingsPresenter(private val settings: Settings = service()): SearchableConfigurable {
     private var settingsForm: SettingsForm? = null
     private lateinit var uiModel: Settings
     private var updatingUI: Boolean = false
@@ -137,19 +137,16 @@ class SettingsPresenter constructor(private val settings: Settings = service()):
     override fun getDisplayName() = UIBundle.message("settings.title")
 
     override fun getId() = "Pomodoro"
+}
 
-    companion object {
-        private const val MIN_TIME_INTERVAL = 1
-        private const val MAX_TIME_INTERVAL = 240
-
-        private fun selectedItemAsInteger(comboBox: JComboBox<*>): Int {
-            val s = (comboBox.selectedItem as String).trim { it <= ' ' }
-            val value = s.toInt()
-            return when {
-                value < MIN_TIME_INTERVAL -> MIN_TIME_INTERVAL
-                value > MAX_TIME_INTERVAL -> MAX_TIME_INTERVAL
-                else                      -> value
-            }
-        }
+private fun selectedItemAsInteger(comboBox: JComboBox<*>): Int {
+    val s = (comboBox.selectedItem as String).trim { it <= ' ' }
+    val value = s.toInt()
+    val minTimeInterval = 1
+    val maxTimeInterval = 240
+    return when {
+        value < minTimeInterval -> minTimeInterval
+        value > maxTimeInterval -> maxTimeInterval
+        else                      -> value
     }
 }
