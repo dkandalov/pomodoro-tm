@@ -47,7 +47,7 @@ data class Settings(
     }
 
     class MinutesConverter : Converter<Duration>() {
-        override fun toString(mode: Duration) = mode.minutes.toString()
+        override fun toString(value: Duration) = value.minutes.toString()
         override fun fromString(value: String) = Duration(minutes = value.toInt())
     }
 

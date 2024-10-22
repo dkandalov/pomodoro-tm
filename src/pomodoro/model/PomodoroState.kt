@@ -40,12 +40,12 @@ data class PomodoroState(
     }
 
     private class TimeConverter : Converter<Time>() {
-        override fun toString(mode: Time) = mode.epochMilli.toString()
+        override fun toString(value: Time) = value.epochMilli.toString()
         override fun fromString(value: String) = Time(epochMilli = value.toLong())
     }
 
     private class ModeConverter : Converter<Mode>() {
-        override fun toString(mode: Mode) = mode.name.uppercase()
+        override fun toString(value: Mode) = value.name.uppercase()
         override fun fromString(value: String) = when (value.uppercase()) {
             "RUN" -> Run
             "BREAK" -> Break
