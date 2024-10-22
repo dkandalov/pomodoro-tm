@@ -1,5 +1,6 @@
 package pomodoro
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread.BGT
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
@@ -13,17 +14,20 @@ class StartOrStopPomodoro : AnAction(), DumbAware {
     }
 
     override fun update(event: AnActionEvent) {
-        val mode = service<PomodoroService>().model.state.mode
-        event.presentation.text = when (mode) {
-            Run   -> "Stop Pomodoro Timer"
+        event.presentation.text = when (service<PomodoroService>().model.state.mode) {
+            Run -> "Stop Pomodoro Timer"
             Break -> "Stop Pomodoro Timer"
-            Stop  -> "Start Pomodoro Timer"
+            Stop -> "Start Pomodoro Timer"
         }
     }
+
+    override fun getActionUpdateThread() = BGT
 }
 
 class ResetPomodorosCounter : AnAction("Reset Pomodoros Counter"), DumbAware {
     override fun actionPerformed(event: AnActionEvent) {
         service<PomodoroService>().model.resetPomodoros()
     }
+
+    override fun getActionUpdateThread() = BGT
 }
