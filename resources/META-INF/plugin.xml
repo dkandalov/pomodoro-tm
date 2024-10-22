@@ -34,7 +34,7 @@
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="pomodoro.model.Settings"/>
         <applicationService serviceImplementation="pomodoro.model.PomodoroState"/>
-        <applicationConfigurable instance="pomodoro.settings.SettingsPresenter"/>
-        <statusBarWidgetFactory implementation="pomodoro.widget.PomodoroWidgetFactory"/>
+        <applicationConfigurable instance="pomodoro.settings.SettingsPresenter" displayName="Pomodoro"/>
+        <statusBarWidgetFactory implementation="pomodoro.widget.PomodoroWidgetFactory" id="Pomodoro"/>
     </extensions>
 </idea-plugin>
