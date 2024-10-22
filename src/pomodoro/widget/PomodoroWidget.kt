@@ -12,8 +12,8 @@ import com.intellij.openapi.wm.CustomStatusBarWidget
 import com.intellij.openapi.wm.StatusBar
 import com.intellij.openapi.wm.StatusBarWidget
 import com.intellij.openapi.wm.StatusBarWidgetFactory
+import com.intellij.ui.JBColor
 import com.intellij.ui.awt.RelativePoint
-import com.intellij.util.ui.UIUtil
 import pomodoro.PomodoroService
 import pomodoro.ResetPomodorosCounter
 import pomodoro.StartOrStopPomodoro
@@ -100,9 +100,9 @@ class PomodoroWidget : CustomStatusBarWidget, StatusBarWidget.Multiframe, Settin
         panelWithIcon.text = if (showTimeInToolbarWidget) model.timeLeft.formatted() else ""
         panelWithIcon.toolTipText = UIBundle.message("statuspanel.widget_tooltip", nextActionName(model))
         panelWithIcon.icon = when (model.state.mode) {
-            Run   -> if (UIUtil.isUnderDarcula()) pomodoroDarculaIcon else pomodoroIcon
-            Break -> if (UIUtil.isUnderDarcula()) pomodoroBreakDarculaIcon else pomodoroBreakIcon
-            Stop  -> if (UIUtil.isUnderDarcula()) pomodoroStoppedDarculaIcon else pomodoroStoppedIcon
+            Run   -> if (JBColor.isBright()) pomodoroIcon else pomodoroDarculaIcon
+            Break -> if (JBColor.isBright()) pomodoroBreakIcon else pomodoroBreakDarculaIcon
+            Stop  -> if (JBColor.isBright()) pomodoroStoppedIcon else pomodoroStoppedDarculaIcon
         }
         panelWithIcon.repaint()
     }
