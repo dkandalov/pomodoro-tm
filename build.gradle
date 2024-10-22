@@ -1,6 +1,8 @@
+import static org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9
+
 plugins {
-    id 'org.jetbrains.intellij' version '1.16.0'
-    id 'org.jetbrains.kotlin.jvm' version '1.6.21'
+    id 'org.jetbrains.intellij' version '1.17.3'
+    id 'org.jetbrains.kotlin.jvm' version '1.9.22'
 }
 
 repositories {
@@ -9,12 +11,12 @@ repositories {
 
 sourceSets {
     main {
-        java.srcDirs './src'
-        kotlin.srcDirs './src'
-        resources.srcDirs './resources'
+        java.srcDir './src'
+        kotlin.srcDir './src'
+        resources.srcDir './resources'
     }
     test {
-        kotlin.srcDirs './test'
+        kotlin.srcDir './test'
     }
 }
 
@@ -22,17 +24,23 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
 }
 
+kotlin {
+    jvmToolchain(17)
+}
+
 compileKotlin {
-    kotlinOptions {
-        jvmTarget = "11"
-        apiVersion = "1.5"
-        languageVersion = "1.5"
+    compilerOptions {
+        apiVersion.set(KOTLIN_1_9)
+        languageVersion.set(KOTLIN_1_9)
+        // Compiler flag to allow building against pre-released versions of Kotlin
+        // because IJ EAP can be built using pre-released Kotlin but it's still worth doing to check API compatibility
+        freeCompilerArgs = ["-Xskip-metadata-version-check"]
     }
 }
 
 intellij {
     // See https://www.jetbrains.com/intellij-repository/releases
-    version = '212.4746.92'
+    version = '241.14494.240'
     // version = 'LATEST-EAP-SNAPSHOT'
     pluginName = 'pomodoro'
     downloadSources = true

@@ -8,7 +8,7 @@
         </br>
         How to use it:
         <ol>
-            <li>Choose a task to be accomplished and start pomodoro timer (Ctrl+Shift+P or Cmd+Shift+P).</li>
+            <li>Choose a task to be accomplished and start pomodoro timer (ctrl+shift+P or cmd+shift+P).</li>
             <li>Work on the task until the timer rings. If distracted during pomodoro, restart timer.</li>
             <li>Take a break until the timer rings again.</li>
         </ol>
@@ -17,7 +17,7 @@
     </description>
 
     <!-- https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html -->
-    <idea-version since-build="212.4746.92"/>
+    <idea-version since-build="241.14494.240"/>
 
     <!-- Make plugin available in all IntelliJ IDEs
          https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
